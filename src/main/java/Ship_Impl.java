@@ -13,7 +13,8 @@ public class Ship_Impl implements Ship{
     int y; //starting y coord
     int x; //starting x coord
 
-    public Ship_Impl(int size, int hp, String name, int orientation, int x, int y, Mappa Mappa) {
+    private String id_ship; //id ship for position on the map
+    public Ship_Impl(int size, int hp, String name, int orientation, int x, int y, Board_start Mappa) {
         
         this.size = size;
         this.hp = hp;
@@ -54,7 +55,7 @@ public class Ship_Impl implements Ship{
 
     //move Ship to other coordinates
     @Override
-    public void moveShip(int newX, int newY, Mappa mappa) {
+    public void moveShip(int newX, int newY, Board_start mappa) {
 
         // Check if the new coordinates are within the boundaries of the map
         if (newX < 0 || newX >= mappa.getWidth() || newY < 0 || newY >= mappa.getHeight()) {
@@ -79,7 +80,7 @@ public class Ship_Impl implements Ship{
                 for (int j = 0; j < i; j++) {
                     int prevCoordX = (orientation == 0) ? newX + j : newX;
                     int prevCoordY = (orientation == 1) ? newY + j : newY;
-                    mappa.occupaCoordinata(prevCoordX, prevCoordY);
+                    mappa.occupaCoordinata(prevCoordX, prevCoordY, id_ship);
                 }
                 return;
             }
@@ -93,7 +94,7 @@ public class Ship_Impl implements Ship{
         for (int i = 0; i < size; i++) {
             int coordX = (orientation == 0) ? newX + i : newX;
             int coordY = (orientation == 1) ? newY + i : newY;
-            mappa.occupaCoordinata(coordX, coordY);
+            mappa.occupaCoordinata(coordX, coordY, id_ship);
         }
     
         // Update shipMap with new coordinates
@@ -104,7 +105,7 @@ public class Ship_Impl implements Ship{
 
     //show where the ship is
     @Override
-    public void showShip(Ship_Impl Ship, Mappa Mappa){
+    public void showShip(Ship_Impl Ship, Board_start Mappa){
         for(Object obj : Mappa.getshipMap().entrySet()) {
             if (obj instanceof Map.Entry) {
                 Map.Entry<String, Ship> entry = (Map.Entry<String, Ship>) obj;
@@ -114,7 +115,9 @@ public class Ship_Impl implements Ship{
             }
         }
     }
-    
+    public String getId(){
+        return this.id_ship;
+    }
     //when hit reduce hp of Ship
     @Override
     public void takeDamage(Ship_Impl Ship) { 
@@ -141,7 +144,7 @@ public class Ship_Impl implements Ship{
     }
 
     //could also be in class Mappa, will see
-    private void updateShipMap(int newX, int newY, Mappa mappa) {
+    private void updateShipMap(int newX, int newY, Board_start mappa) {
         // Remove old ship coordinates from shipMap
         for (int i = 0; i < size; i++) {
             int oldCoordX = (orientation == 0) ? x + i : x;
@@ -161,14 +164,14 @@ public class Ship_Impl implements Ship{
 
 
 }
-
+/*
 class Mappa {
     private int width;
     private int height;
     private boolean[][] coordinateMap; // true for occupied, false for empty
     private Map<String, Ship> shipMap; //keeps track which Ship is on which coordinate
 
-    public Mappa(int width, int height) {
+  public Mappa(int width, int height) {
         this.width = width;
         this.height = height;
         this.coordinateMap = new boolean[width][height];
@@ -262,6 +265,5 @@ class Mappa {
     public Map getshipMap(){
         return this.shipMap;
     }
-
     
-}
+}*/

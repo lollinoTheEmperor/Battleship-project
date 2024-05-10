@@ -7,6 +7,9 @@ public class Board_feedback extends gameBoard_Impl {
         super(title, width, height);
     }
 
+    //check the board with the ship for the attack if it has water then putt miss,
+    // other wise put hit and if it was already attacked in console log says
+    // already attacked
     public void addFeedBack(Board_start board_starter,int X, int Y){
         if(board_Game[X][Y].equals("water")){
             switch (board_starter.getCell(X,Y)){
