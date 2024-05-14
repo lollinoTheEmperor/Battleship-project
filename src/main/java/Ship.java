@@ -7,4 +7,5 @@ public interface Ship {
     void showShip(Ship_Impl Ship, Mappa Mappa);
     void moveShip(int newX, int newY, Mappa mappa);
 
+    String getId();
 }
