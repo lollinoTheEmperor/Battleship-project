@@ -1,9 +1,9 @@
-public class Board_start extends gameBoard_Impl{
+public class BoardStart extends GameBoard_Impl {
 
-    public Board_start(String title) {
+    public BoardStart(String title) {
         super(title);
     }
-    public Board_start(String title, int width, int height) {
+    public BoardStart(String title, int width, int height) {
         super(title,width,height);
     }
 

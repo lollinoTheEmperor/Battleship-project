@@ -162,7 +162,7 @@ public class PlayerStatus_Impl implements PlayerStatus {
             words.add(elements);
         }
 
-        words.sort(new winsComparator());
+        words.sort(new WinsComparator());
         return words;
     }
 }

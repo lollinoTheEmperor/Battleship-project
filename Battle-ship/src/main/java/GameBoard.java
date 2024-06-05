@@ -1,4 +1,4 @@
-public interface gameBoard {
+public interface GameBoard {
 
     void putWater();
     int getWidth();

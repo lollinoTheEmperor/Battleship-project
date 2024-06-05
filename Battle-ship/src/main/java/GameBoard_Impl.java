@@ -1,4 +1,4 @@
-public class gameBoard_Impl implements gameBoard {
+public class GameBoard_Impl implements GameBoard {
     //name = name mappa, board game is a table
     protected String name;
     protected int width;
@@ -6,19 +6,19 @@ public class gameBoard_Impl implements gameBoard {
     protected String [][] board_Game;
 
     //first one is used when width and heght are not specified
-    public gameBoard_Impl(String title){
+    public GameBoard_Impl(String title){
         this.name=title;
         this.width = 10;
         this.height= 10;
         this.board_Game = new String[width][height];
         putWater();
     }
-    //thi constructor is used when the player can choose the heght and width
-    public gameBoard_Impl(String title, int widht, int height){
+    //this constructor is used when the player can choose the heght and width
+    public GameBoard_Impl(String title, int width, int height){
         this.name=title;
-        this.width = widht;
+        this.width = width;
         this.height= height;
-        this.board_Game = new String[width][height];
+        this.board_Game = new String[this.width][height];
         putWater();
     }
 

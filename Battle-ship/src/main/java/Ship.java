@@ -4,8 +4,8 @@ public interface Ship {
     void takeDamage(Ship_Impl Ship);
     boolean isHit(Ship_Impl Ship);
     boolean isValidMove(Ship_Impl Ship);
-    void showShip(Ship_Impl Ship, Mappa Mappa);
-    void moveShip(int newX, int newY, Mappa mappa);
+    void showShip(Ship_Impl Ship, BoardStart Mappa);
+    void moveShip(int newX, int newY, BoardStart mappa);
 
     String getId();
 }

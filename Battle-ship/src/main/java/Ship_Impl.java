@@ -1,6 +1,3 @@
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -14,7 +11,7 @@ public class Ship_Impl implements Ship{
     int x; //starting x coord
 
     private String id_ship; //id ship for position on the map
-    public Ship_Impl(int size, int hp, String name, int orientation, int x, int y, Board_start Mappa) {
+    public Ship_Impl(int size, int hp, String name, int orientation, int x, int y, BoardStart Mappa) {
         
         this.size = size;
         this.hp = hp;
@@ -55,7 +52,7 @@ public class Ship_Impl implements Ship{
 
     //move Ship to other coordinates
     @Override
-    public void moveShip(int newX, int newY, Board_start mappa) {
+    public void moveShip(int newX, int newY, BoardStart mappa) {
 
         // Check if the new coordinates are within the boundaries of the map
         if (newX < 0 || newX >= mappa.getWidth() || newY < 0 || newY >= mappa.getHeight()) {
@@ -105,7 +102,7 @@ public class Ship_Impl implements Ship{
 
     //show where the ship is
     @Override
-    public void showShip(Ship_Impl Ship, Board_start Mappa){
+    public void showShip(Ship_Impl Ship, BoardStart Mappa){
         for(Object obj : Mappa.getshipMap().entrySet()) {
             if (obj instanceof Map.Entry) {
                 Map.Entry<String, Ship> entry = (Map.Entry<String, Ship>) obj;
@@ -144,7 +141,7 @@ public class Ship_Impl implements Ship{
     }
 
     //could also be in class Mappa, will see
-    private void updateShipMap(int newX, int newY, Board_start mappa) {
+    private void updateShipMap(int newX, int newY, BoardStart mappa) {
         // Remove old ship coordinates from shipMap
         for (int i = 0; i < size; i++) {
             int oldCoordX = (orientation == 0) ? x + i : x;
@@ -164,106 +161,4 @@ public class Ship_Impl implements Ship{
 
 
 }
-/*
-class Mappa {
-    private int width;
-    private int height;
-    private boolean[][] coordinateMap; // true for occupied, false for empty
-    private Map<String, Ship> shipMap; //keeps track which Ship is on which coordinate
 
-  public Mappa(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.coordinateMap = new boolean[width][height];
-        inizializzaMappa();
-        this.shipMap = new HashMap<>();
-    }
-
-    private void inizializzaMappa() {
-        // Initialize map with all coordinates as empty
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                coordinateMap[i][j] = false;
-            }
-        }
-    }
-
-    public void placeShip(int x, int y, int size, int orientation, Ship_Impl Ship) {
-
-        if(orientation == 0 || orientation == 1) {
-        // Check if the ship fits on the game board
-        if ((orientation == 0 && x + size > width) || (orientation == 1 && y + size > height)) {
-            System.out.println("Ship does not fit on the game board.");
-            return;
-        }
-        
-        // Check if the coordinates are already occupied
-        for (int i = 0; i < size; i++) {
-            int newX = (orientation == 0) ? x + i : x;
-            int newY = (orientation == 1) ? y + i : y;
-            if (isCoordinataOccupata(newX, newY)) {
-                System.out.println("Coordinate (" + newX + ", " + newY + ") is already occupied.");
-                return;
-            }
-        }
-    
-        // Place the ship on the game board
-        for (int i = 0; i < size; i++) {
-            int newX = (orientation == 0) ? x + i : x;
-            int newY = (orientation == 1) ? y + i : y;
-            occupaCoordinata(newX, newY);
-        }
-
-        for (int i = 0; i < size; i++) {
-            int newX = (orientation == 0) ? x + i : x;
-            int newY = (orientation == 1) ? y + i : y;
-            String coordinate = newX + "," + newY; // Format coordinate as string
-            shipMap.put(coordinate, Ship); // Associate coordinate with ship
-        }
-        
-        System.out.println("Ship placed successfully.");
-        Ship.setX(x);
-        Ship.setY(y);
-        }
-    }
-
-    public boolean isCoordinataOccupata(int x, int y) {
-        return coordinateMap[x][y];
-    }
-
-    public void occupaCoordinata(int x, int y) {
-        coordinateMap[x][y] = true;
-    }
-
-    public void voidaCoordinata(int x, int y) {
-        coordinateMap[x][y] = false;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public boolean[][] getCoordinateMap() {
-        return coordinateMap;
-    }
-
-    public void setCoordinateMap(boolean[][] coordinateMap) {
-        this.coordinateMap = coordinateMap;
-    }
-    public Map getshipMap(){
-        return this.shipMap;
-    }
-    
-}*/

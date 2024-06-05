@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VisualBoardImp implements VisualBoard {
+public class VisualBoard_Impl implements VisualBoard {
 
     JFrame frame;
     JTextField textField;
@@ -11,7 +11,7 @@ public class VisualBoardImp implements VisualBoard {
     boolean endTurn;
 
 
-    public VisualBoardImp (String player, int size, int myXLocation) {
+    public VisualBoard_Impl(String player, int size, int myXLocation) {
         createVisualBoard(player, size, myXLocation);
         endTurn = false;
     }
