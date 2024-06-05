@@ -20,11 +20,14 @@ public class Ship_Impl implements Ship{
         return this.id_ship;
     }
     public int getSize(){return size;}
+    public int getHp(){return hp;}
     //when hit reduce hp of Ship
     @Override
-    public boolean takeDamage(Ship_Impl ship) {
+    public boolean takeDamage() {
         //if a hit can only take away 1hp, otherwise need more parameters
-        this.hp--;
+        if(hp>0){
+          this.hp--;
+        }
         if (this.hp == 0) {
             return true;
         } else{
