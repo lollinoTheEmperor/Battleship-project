@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-public class PlayerStatusImpl implements PlayerStatus {
+public class PlayerStatus_Impl implements PlayerStatus {
     Path root=Path.of("src","Status.txt");
     String path=root+"";
 
@@ -162,7 +162,7 @@ public class PlayerStatusImpl implements PlayerStatus {
             words.add(elements);
         }
 
-        words.sort(new winsComparator());
+        words.sort(new WinsComparator());
         return words;
     }
 }

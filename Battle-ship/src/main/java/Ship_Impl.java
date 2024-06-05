@@ -1,6 +1,3 @@
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -14,7 +11,7 @@ public class Ship_Impl implements Ship{
     int x; //starting x coord
 
     private String id_ship; //id ship for position on the map
-    public Ship_Impl(int size, int hp, String name, int orientation, int x, int y, Board_start Mappa) {
+    public Ship_Impl(int size, int hp, String name, int orientation, int x, int y, BoardStart Mappa) {
         
         this.size = size;
         this.hp = hp;
@@ -55,7 +52,7 @@ public class Ship_Impl implements Ship{
 
     //move Ship to other coordinates
     @Override
-    public void moveShip(int newX, int newY, Board_start mappa) {
+    public void moveShip(int newX, int newY, BoardStart mappa) {
 
         // Check if the new coordinates are within the boundaries of the map
         if (newX < 0 || newX >= mappa.getWidth() || newY < 0 || newY >= mappa.getHeight()) {
@@ -105,7 +102,7 @@ public class Ship_Impl implements Ship{
 
     //show where the ship is
     @Override
-    public void showShip(Ship_Impl Ship, Board_start Mappa){
+    public void showShip(Ship_Impl Ship, BoardStart Mappa){
         for(Object obj : Mappa.getshipMap().entrySet()) {
             if (obj instanceof Map.Entry) {
                 Map.Entry<String, Ship> entry = (Map.Entry<String, Ship>) obj;
@@ -144,7 +141,7 @@ public class Ship_Impl implements Ship{
     }
 
     //could also be in class Mappa, will see
-    private void updateShipMap(int newX, int newY, Board_start mappa) {
+    private void updateShipMap(int newX, int newY, BoardStart mappa) {
         // Remove old ship coordinates from shipMap
         for (int i = 0; i < size; i++) {
             int oldCoordX = (orientation == 0) ? x + i : x;
