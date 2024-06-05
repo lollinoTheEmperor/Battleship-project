@@ -4,7 +4,7 @@ public class Main {
 
         System.out.printf("Hello and welcome!\n");
 
-        VisualBoardImp myBoard = new VisualBoardImp("palyer1", 10, 0);
+        VisualBoardImp myBoard = new VisualBoardImzvp("palyer1", 10, 0);
         VisualBoardImp mySecondBoard = new VisualBoardImp("player2", 10, 500);
 
         for (int i =0; i < 10; i++) {
