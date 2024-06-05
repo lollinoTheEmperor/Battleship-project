@@ -48,15 +48,15 @@ public class GameBoard_Impl implements GameBoard {
 
     //method used to return the cell
     @Override
-    public String getCell(int X, int Y){
-        if(areValidCoordinates(X,Y)){
+    public String getCell(int x, int y){
+        if(areValidCoordinates(x, y)){
            return null;
         }
-        return board_Game[X][Y];
+        return board_Game[x][y];
     }
     //check if the coordinates are valid
     @Override
-        public boolean areValidCoordinates(int X, int Y) {
-            return (X >= 0 && X < width && Y >= 0 && Y < height);
+        public boolean areValidCoordinates(int x, int y) {
+            return (x >= 0 && x < width && y >= 0 && y < height);
         }
 }

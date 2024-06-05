@@ -4,8 +4,8 @@ public interface GameBoard {
     int getWidth();
     int getHeight();
     String getName();
-    String getCell(int X, int Y);
-    boolean areValidCoordinates(int X, int Y);
+    String getCell(int x, int y);
+    boolean areValidCoordinates(int x, int y);
 
 
 }
