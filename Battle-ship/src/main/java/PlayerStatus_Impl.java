@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,19 +14,16 @@ public class PlayerStatus_Impl implements PlayerStatus {
     String path=root+"";
 
     @Override
-    public String createNewPlayerName() {
-        String name;
-        do {
-            Scanner sc=new Scanner(System.in);
-            System.out.print("Please enter a name: ");
-            name=sc.nextLine();
-            name=name.replaceAll(" ","");
-        }while(!nameCheck(name));
+    public String createNewPlayerName(String name) {
+        if (!nameCheck(name)){
+            return null;
+        }
         if (namePresenceCheck(name)){
             System.out.println("Sorry the name is already in use.");
-            createNewPlayerName();
+            return null;
         }
-        nameWrite(name);
+        String newPlayer=name+":0";
+        writer(newPlayer);
         return name;
     }
 
@@ -60,8 +58,7 @@ public class PlayerStatus_Impl implements PlayerStatus {
     }
 
     //writes the name in the record of names
-    private void nameWrite(String name){
-        String newPlayer=name+":0";
+    private void writer(String toInsert){
         boolean isEmpty=false;
         try (BufferedReader reader = Files.newBufferedReader(Path.of(path))){
             String line = reader.readLine();
@@ -76,7 +73,7 @@ public class PlayerStatus_Impl implements PlayerStatus {
             try {
                 Files.writeString(
                         Path.of(path),
-                        newPlayer
+                        toInsert
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -85,7 +82,7 @@ public class PlayerStatus_Impl implements PlayerStatus {
             try {
                 Files.writeString(
                         Path.of(path),
-                        "\n"+newPlayer,
+                        "\n"+toInsert,
                         StandardOpenOption.APPEND
                 );
             } catch (IOException e) {
@@ -96,21 +93,13 @@ public class PlayerStatus_Impl implements PlayerStatus {
 
 
     @Override
-    public String selectPlayer() {
-        String name;
-        boolean next=false;
-        do {
-            System.out.print("Please enter a name: ");
-            Scanner sc = new Scanner(System.in);
-            name = sc.nextLine();
-            name = name.replaceAll(" ", "");
-            if (namePresenceCheck(name)){
-                next=true;
-            }else {
-                System.out.println("Sorry the name is not present.");
-            }
-        }while (!next);
-        return name;
+    public String selectPlayer(String name) {
+        if (namePresenceCheck(name)){
+            return name;
+        }else {
+            System.out.println("Sorry the name is not present.");
+            return null;
+        }
     }
 
     @Override
@@ -135,19 +124,29 @@ public class PlayerStatus_Impl implements PlayerStatus {
                 newList.add(i);
             }
         }
+        deleter();
+        for (String i:newList){
+            writer(i);
+        }
+    }
 
+    //deletes all the player (they will be rewritten)
+    private void deleter(){
+        FileWriter fileWriter = null;
         try {
-            Files.write(
-                    Path.of(path),
-                    newList
-            );
+            // Open the file in write mode without append (default is false for append)
+            fileWriter = new FileWriter(String.valueOf(root), false);
+            if (fileWriter != null) {
+                // Close the fileWriter which will truncate the file
+                fileWriter.close();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<String[]> ranking(){
+    public List<String> ranking(){
         List<String[]> words=new ArrayList<>();
 
         List<String> allPlayers;
@@ -163,6 +162,11 @@ public class PlayerStatus_Impl implements PlayerStatus {
         }
 
         words.sort(new WinsComparator());
-        return words;
+        List<String> output=new ArrayList<>();
+        for (String[] i:words){
+            output.add(i[0]+":"+i[1]);
+        }
+
+        return output;
     }
 }
