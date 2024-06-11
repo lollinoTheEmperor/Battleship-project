@@ -38,6 +38,10 @@ public class PlayerStatus_Impl implements PlayerStatus {
             System.out.println("The name is too long, at most "+maxLength+" characters!");
             return false;
         }
+        if (name.isBlank()){
+            System.out.println("The name cannot be blank.");
+            return false;
+        }
         return true;
     }
 
