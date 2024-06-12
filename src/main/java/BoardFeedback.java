@@ -1,10 +1,10 @@
 public class BoardFeedback extends GameBoard_Impl {
 
     public BoardFeedback(String title) {
-        super(title);
+        super();
     }
     public BoardFeedback(String title, int width, int height) {
-        super(title, width, height);
+        super(width, height);
     }
 
     //check the board with the ship for the attack if it has water then putt miss,

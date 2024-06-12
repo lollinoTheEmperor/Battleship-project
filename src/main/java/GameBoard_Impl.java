@@ -1,21 +1,18 @@
 public class GameBoard_Impl implements GameBoard {
     //name = name mappa, board game is a table
-    protected String name;
     protected int width;
     protected int height;
     protected String [][] board_Game;
 
     //first one is used when width and heght are not specified
-    public GameBoard_Impl(String title){
-        this.name=title;
+    public GameBoard_Impl(){
         this.width = 10;
         this.height= 10;
         this.board_Game = new String[width][height];
         putWater();
     }
     //this constructor is used when the player can choose the heght and width
-    public GameBoard_Impl(String title, int width, int height){
-        this.name=title;
+    public GameBoard_Impl(int width, int height){
         this.width = width;
         this.height= height;
         this.board_Game = new String[this.width][height];
@@ -41,15 +38,11 @@ public class GameBoard_Impl implements GameBoard {
     public int getHeight() {
         return height;
     }
-    @Override
-    public String getName() {
-        return name;
-    }
 
     //method used to return the cell
     @Override
     public String getCell(int x, int y){
-        if(areValidCoordinates(x, y)){
+        if(!areValidCoordinates(x, y)){
            return null;
         }
         return board_Game[x][y];
