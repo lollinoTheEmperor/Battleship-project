@@ -2,10 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player_Impl implements Player {
-    public String getName() {
-        return name;
-    }
-
     String name;
     BoardStart myBoard;
     BoardStart opponentsBoard;
