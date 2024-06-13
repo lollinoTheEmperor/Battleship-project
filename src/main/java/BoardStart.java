@@ -1,10 +1,10 @@
 public class BoardStart extends GameBoard_Impl {
 
     public BoardStart(String title) {
-        super(title);
+        super();
     }
     public BoardStart(String title, int width, int height) {
-        super(title,width,height);
+        super(width,height);
     }
 
     //used to place the ship
