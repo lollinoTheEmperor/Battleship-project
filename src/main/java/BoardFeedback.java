@@ -1,14 +1,14 @@
 public class BoardFeedback extends GameBoard_Impl {
 
-    public BoardFeedback(String title) {
+    public BoardFeedback() {
         super();
     }
-    public BoardFeedback(String title, int width, int height) {
+    public BoardFeedback( int width, int height) {
         super(width, height);
     }
 
     //check the board with the ship for the attack if it has water then putt miss,
-    // other wise put hit and if it was already attacked in console log says
+    // otherwise put hit and if it was already attacked in console log says
     // already attacked
     public boolean addFeedBack(BoardStart board_starter, int x, int y){
         if(board_Game[x][y].equals("water")){

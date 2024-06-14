@@ -1,12 +1,12 @@
 public class BoardStart extends GameBoard_Impl {
 
-    public BoardStart(String title) {
+    public BoardStart() {
         super();
     }
-    public BoardStart(String title, int width, int height) {
+    public BoardStart(int width, int height) {
         super(width,height);
     }
-
+    //orientation=0 means orizontal, 1 vertical
     //used to place the ship
     public boolean placeShip(int x, int y, int orientation, Ship_Impl ship) {
         if(orientation == 0 || orientation == 1) {
@@ -20,7 +20,7 @@ public class BoardStart extends GameBoard_Impl {
             for (int i = 0; i < ship.getSize(); i++) {
                 int newX = (orientation == 0) ? x + i : x;
                 int newY = (orientation == 1) ? y + i : y;
-                if (!(getCell(x,y).equals("water"))) {
+                if (!(getCell(newX,newY).equals("water"))) {
                     System.out.println("Coordinate (" + newX + ", " + newY + ") is already occupied.");
                     return false;
                 }
@@ -29,7 +29,7 @@ public class BoardStart extends GameBoard_Impl {
             for (int i = 0; i < ship.getSize(); i++) {
                 int newX = (orientation == 0) ? x + i : x;
                 int newY = (orientation == 1) ? y + i : y;
-                board_Game[x][y]=ship.getId();
+                board_Game[newX][newY]=ship.getId();
             }
 
             System.out.println("Ship placed successfully.");
