@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.Set;
 
 interface VisualBoard {
@@ -31,5 +32,9 @@ interface VisualBoard {
     void turnP1();
 
     void turnP2();
+
+    void paintFeedback(int startX, int startY, Color feedbackColor, JPanel targetPanel);
+
+    void paintFeedback(int startX, int startY, int endX, int endY, Color feedbackColor, JPanel targetPanel);
 }
 

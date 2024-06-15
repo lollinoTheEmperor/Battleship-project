@@ -47,18 +47,7 @@ public class VisualBoard_ImplTest {
         stopBackendUntil(gameWindow.allShipPlaced);
 
 
-
-//        VisualBoard_Impl gameWindow = new VisualBoard_Impl("Aldo", "GianPaolo89");
-
-//        BoardStart shipLayoutP1 = new BoardStart("1");
-//        BoardStart shipLayoutP2 = new BoardStart("2");
-
-//        NAVI = set di navi inteso come n navi da 3, ... , usare per pizaazrle.
-//        gameWindow.fetchingShips(shipLayoutP1, NAVI)
-
-
         System.out.println("Now starting game session - all ships are located");
-
         gameWindow.createGameBaords("Aldo", "GianPaolo89");
 
         for (int i =0; i < 4; i++) {

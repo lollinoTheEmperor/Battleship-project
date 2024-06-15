@@ -9,12 +9,16 @@ import java.util.Set;
 public class VisualBoard_Impl implements VisualBoard {
 
     final int HORIZONTAL = 0, VERTICAL = 1, NOTVALID = 3;
+    final boolean HIT = true, MISS = false;
 
+    protected int tableSize;
 
-    protected JFrame megaFrame;
+    protected JFrame gameFrame;
 
     protected JPanel board1;
     protected JPanel board2;
+    protected JPanel boardPanelP1;
+    protected JPanel boardPanelP2;
     protected JTextField textField1;
     protected JTextField textField2;
     protected JButton button1;
@@ -34,12 +38,16 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
     public VisualBoard_Impl() {
-        megaFrame = new JFrame("Game Window");
+        gameFrame = new JFrame("Game Window");
         panelWidth = 450;
         panelHeight = 300;
+        gameFrame.pack();
+        tableSize = 10;
 
         board1 = new JPanel();
         board2 = new JPanel();
+        boardPanelP1 = new JPanel();
+        boardPanelP2 = new JPanel();
         textField1 = new JTextField();
         textField2 = new JTextField();
         button1 = new JButton();
@@ -48,10 +56,10 @@ public class VisualBoard_Impl implements VisualBoard {
         remainingShipsLabel1 = new JLabel();
         remainingShipsLabel2 = new JLabel();
 
-        megaFrame.setSize(panelWidth * 2, panelHeight * 2);
-        megaFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        megaFrame.setLayout(new GridLayout(1, 2, 10, 10)); // allows to size better the elements
-        megaFrame.setVisible(true);
+        gameFrame.setSize(panelWidth * 2, panelHeight * 2);
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setLayout(new GridLayout(1, 2, 10, 10)); // allows to size better the elements
+        gameFrame.setVisible(true);
 
         selectedShipStart = false;
         rememberXforPlace = 0;
@@ -64,24 +72,16 @@ public class VisualBoard_Impl implements VisualBoard {
 
 //        this();     // call to the default constructor
 
-        megaFrame.repaint();
+        gameFrame.repaint();
 
-        createVisualBoard(board1, true, 10, nameP1);
-        createVisualBoard(board2, false, 10, nameP2);
+        createVisualBoard(board1, true, tableSize, nameP1);
+        createVisualBoard(board2, false, tableSize, nameP2);
 
         textField1.setEditable(false);  // do not allow to change coordinates
         textField2.setEditable(false);
-        megaFrame.add(board1);
-        megaFrame.add(board2);
+        gameFrame.add(board1);
+        gameFrame.add(board2);
     }
-
-
-//    private boolean shotHit(int row, int col) {
-//        // TODO: use to change things on board
-//        int myRow = 2, myCol = 3;
-//
-//        return (row == myRow && col == myCol);
-//    }
 
     @Override
     public void createVisualBoard(JPanel panel, boolean isP1, int size, String name) {
@@ -96,14 +96,22 @@ public class VisualBoard_Impl implements VisualBoard {
         remainingShipsLabel.setOpaque(true); // Rendi opaco lo sfondo
         remainingShipsLabel.setBackground(Color.LIGHT_GRAY); // Colore di sfondo
 
-        JPanel boardPanel = getjPanel(size, textField, button);
 
-        // control the button click and it is called
+        JPanel boardPanel  = getjPanel(size, textField, button);
+
+        if (isP1)
+            boardPanelP1 = boardPanel;
+        else
+            boardPanelP2 = boardPanel;
+
+        // BUTTON ////////////
         button.setEnabled(false);   // is set to disable but in method getjPanel, after a click will be re-enabled
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.print(name +"->");
-                parseCord(textField.getText().toUpperCase());
+                int[] saveXY = parseCord(textField.getText().toUpperCase());
+                // TODO change color based on the feedback
+                paintFeedback(saveXY[0], saveXY[1], Color.red , boardPanel);
                 endTurn[0] = true;
             }
         });
@@ -147,10 +155,14 @@ public class VisualBoard_Impl implements VisualBoard {
             button2 = button;
             remainingShipsLabel2 = remainingShipsLabel;
         }
+
+        gameFrame.revalidate();
+        gameFrame.repaint();        // Used to solve a visual bug (show the board without all items)
     }
 
     @Override
     public JPanel getjPanel(int size, JTextField textField, JButton button) {
+
         int boardRows = size, boardCols = size;
 
         JPanel boardPanel = new JPanel(new GridLayout(boardRows, boardCols));
@@ -159,8 +171,11 @@ public class VisualBoard_Impl implements VisualBoard {
         for (int i = 0; i < boardCols * boardRows; i++) {
             final int index = i;
             JButton square = new JButton();
+
             square.setBackground(Color.WHITE);
-            Font font = new Font("Monospaced", Font.BOLD, 20); // Slightly smaller font
+
+//            TODO needed font?
+            Font font = new Font("Monospaced", Font.BOLD, 20);
             square.setFont(font);
 
             square.addActionListener(new ActionListener() {
@@ -172,7 +187,7 @@ public class VisualBoard_Impl implements VisualBoard {
                     button.setEnabled(true);
                 }
             });
-            boardPanel.add(square);
+            boardPanel.add(square, square, i);
         }
         return boardPanel;
     }
@@ -211,7 +226,7 @@ public class VisualBoard_Impl implements VisualBoard {
 
         JPanel panel = new JPanel();
         panel.setVisible(true);
-        megaFrame.add(panel);
+        gameFrame.add(panel);
 
         Set<Ship_Impl> shipCopy = new HashSet<>(ships);
 
@@ -224,7 +239,7 @@ public class VisualBoard_Impl implements VisualBoard {
         coordLabel.setFont(new Font("Arial", Font.PLAIN, 10)); // Smaller font for the label
 
 
-        JPanel boardPanel = getjPanel(10, coordField, button);
+        JPanel boardPanel = getjPanel(tableSize, coordField, button);
 
         // control the button click and it is called
         button.setEnabled(false);   // is set to disable but in method getjPanel, after a click will be re-enabled
@@ -252,9 +267,13 @@ public class VisualBoard_Impl implements VisualBoard {
                     System.out.println("Ship from " + rememberXforPlace + ":" + rememberYforPlace + " to " + saveCoord[0] + ":" + saveCoord[1]);
 
                     currentShip = shipCopy.stream().findAny().get();
-                    feedBackPlaceShip = shipLayout.placeShip( Math.min(rememberXforPlace, saveCoord[0]), Math.min(rememberYforPlace, saveCoord[1]), shipOrientation, currentShip);
+                    int startX = Math.min(rememberXforPlace, saveCoord[0]);
+                    int startY = Math.min(rememberYforPlace, saveCoord[1]);
+                    feedBackPlaceShip = shipLayout.placeShip(startX, startY, shipOrientation, currentShip);
+
 
                     if (feedBackPlaceShip) {
+                        paintFeedback(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1], Color.GRAY, boardPanel);
                         shipCopy.remove(currentShip);
                     }
 
@@ -268,7 +287,7 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
                 if (shipCopy.isEmpty()) {
-                    megaFrame.remove(panel);
+                    gameFrame.remove(panel);
                     allShipPlaced[0] = true;
                     System.out.println("------ Placed all ships ------");
                 }
@@ -288,21 +307,23 @@ public class VisualBoard_Impl implements VisualBoard {
         attackPanel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Padding for right panel
 
         // Align and resize components
-        coordLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // Align to left
-        coordField.setAlignmentX(Component.LEFT_ALIGNMENT); // Align to left
+        coordLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        coordField.setAlignmentX(Component.LEFT_ALIGNMENT);
         coordField.setMaximumSize(new Dimension(100, 20)); // Set maximum size to align with the button
-        button.setAlignmentX(Component.LEFT_ALIGNMENT); // Align to left
+        button.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         attackPanel.add(coordLabel);
         attackPanel.add(coordField);
         attackPanel.add(button);
 
-        // Add right panel and board panel to main panel
         panel.add(attackPanel, BorderLayout.SOUTH);  // Add remainingShip/attack panel to the bottom
         panel.add(boardPanel, BorderLayout.CENTER); // Add board panel to the center
         panel.add(turnLabel, BorderLayout.NORTH);
 
         panel.setPreferredSize(new Dimension(panelWidth, panelHeight));
+
+        gameFrame.revalidate();
+        gameFrame.repaint();        // Used to solve a visual bug (show the board without all items)
     }
 
     @Override
@@ -336,4 +357,46 @@ public class VisualBoard_Impl implements VisualBoard {
         this.board1.setVisible(false);
         this.board2.setVisible(true);
     }
+
+    @Override
+    public void paintFeedback(int startX, int startY, Color feedbackColor, JPanel targetPanel) {
+        paintFeedback(startX, startY, startX, startY, feedbackColor, targetPanel);
+    }
+
+    @Override
+    public void paintFeedback(int startX, int startY, int endX, int endY, Color feedbackColor, JPanel targetPanel) {
+//        Color feedbackColor = feedback ? Color.GRAY : Color.RED;
+
+        int minX = Math.min(startX, endX);
+        int maxX = Math.max(startX, endX);
+        int minY = Math.min(startY, endY);
+        int maxY = Math.max(startY, endY);
+
+        if (minX == maxX && minY == maxY) {         // this is when used for attack
+            JButton square = (JButton) targetPanel.getComponent((minX - 1) * tableSize + (minY - 1));
+            square.setBackground(feedbackColor);
+        } else {
+            if (minX == maxX) { // Horizontal ship for placing ships
+                for (int y = minY; y <= maxY; y++) {
+                    int index = (minX - 1) * tableSize + (y - 1);
+                    if (index >= 0 && index < targetPanel.getComponentCount()) {
+                        JButton square = (JButton) targetPanel.getComponent(index);
+                        square.setBackground(feedbackColor);
+                    }
+                }
+            } else if (minY == maxY) { // Vertical Ship for placing ships
+                for (int x = minX; x <= maxX; x++) {
+                    int index = (x - 1) * tableSize + (minY - 1);
+                    if (index >= 0 && index < targetPanel.getComponentCount()) {
+                        JButton square = (JButton) targetPanel.getComponent(index);
+                        square.setBackground(feedbackColor);
+                    }
+                }
+            }
+        }
+
+        gameFrame.revalidate();
+        gameFrame.repaint();
+    }
+
 }
