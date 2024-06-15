@@ -3,7 +3,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,16 +19,16 @@ public class VisualBoard_Impl implements VisualBoard {
     protected JTextField textField2;
     protected JButton button1;
     protected JButton button2;
+    protected boolean[] endTurn;
 
     protected JPanel placingShipsPanelP1;
     protected JLabel remainingShipsLabel1;
     protected JLabel remainingShipsLabel2;
-    protected boolean selectedShipStart;           // to differentiate start point from end point
-    protected boolean allShipPlaced;
+    protected boolean selectedShipStart;            // to differentiate start point from end point
+    protected boolean[] allShipPlaced;              // used as a array, only to pass it for reference
     protected int rememberXforPlace;
     protected int rememberYforPlace;
 
-    protected boolean endTurn;
     protected int panelWidth;
     protected int panelHeight;
 
@@ -57,12 +56,15 @@ public class VisualBoard_Impl implements VisualBoard {
         selectedShipStart = false;
         rememberXforPlace = 0;
         rememberYforPlace = 0;
-        allShipPlaced = false;
+        endTurn = new boolean[]{false};
+        allShipPlaced = new boolean[]{false};
     }
 
     public void createGameBaords (String nameP1, String nameP2) {
 
 //        this();     // call to the default constructor
+
+        megaFrame.repaint();
 
         createVisualBoard(board1, true, 10, nameP1);
         createVisualBoard(board2, false, 10, nameP2);
@@ -74,12 +76,12 @@ public class VisualBoard_Impl implements VisualBoard {
     }
 
 
-    private boolean shotHit(int row, int col) {
-        // TODO: use to change things on board
-        int myRow = 2, myCol = 3;
-
-        return (row == myRow && col == myCol);
-    }
+//    private boolean shotHit(int row, int col) {
+//        // TODO: use to change things on board
+//        int myRow = 2, myCol = 3;
+//
+//        return (row == myRow && col == myCol);
+//    }
 
     @Override
     public void createVisualBoard(JPanel panel, boolean isP1, int size, String name) {
@@ -102,6 +104,7 @@ public class VisualBoard_Impl implements VisualBoard {
             public void actionPerformed(ActionEvent e) {
                 System.out.print(name +"->");
                 parseCord(textField.getText().toUpperCase());
+                endTurn[0] = true;
             }
         });
 
@@ -146,8 +149,8 @@ public class VisualBoard_Impl implements VisualBoard {
         }
     }
 
-
-    private static JPanel getjPanel(int size, JTextField textField, JButton button) {
+    @Override
+    public JPanel getjPanel(int size, JTextField textField, JButton button) {
         int boardRows = size, boardCols = size;
 
         JPanel boardPanel = new JPanel(new GridLayout(boardRows, boardCols));
@@ -190,32 +193,9 @@ public class VisualBoard_Impl implements VisualBoard {
         String[] parseCoord = cord.split(":");
 //        int myRow = Integer.parseInt(parseCoord[0]);
 //        int myCol = Integer.parseInt(parseCoord[1]);
-        this.endTurn = true;
 
         return new int[]{Integer.parseInt(parseCoord[0]), Integer.parseInt(parseCoord[1])};
     }
-
-    //        TODO disabilitare le caselle
-    @Override
-    public void showBoard1() {
-        this.board1.setVisible(true);
-    }
-
-    @Override
-    public void showBoard2() {
-        this.board2.setVisible(true);
-    }
-
-    @Override
-    public void hideBoard1() {
-        this.board1.setVisible(false);
-    }
-
-    @Override
-    public void hideBoard2() {
-        this.board2.setVisible(false);
-    }
-
 
 //TODO placeShip (shiplayout, nNavi)
 // placeShip piu volte per ogni barca se ritorna vero ok, se falso rifare il place ,
@@ -224,10 +204,10 @@ public class VisualBoard_Impl implements VisualBoard {
 //    TODO passare tutte le navi a placeShip
 
 
+    @Override
+    public void fetchingShips(BoardStart shipLayout, Set<Ship_Impl> ships) {
 
-    protected void getShipsPositions(BoardStart shipLayout, Set<Ship_Impl> ships) {
-
-        allShipPlaced = false;
+        allShipPlaced[0] = false;
 
         JPanel panel = new JPanel();
         panel.setVisible(true);
@@ -288,9 +268,9 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
                 if (shipCopy.isEmpty()) {
-                    System.out.println("------ Placed all ships ------");
-                    allShipPlaced = true;
                     megaFrame.remove(panel);
+                    allShipPlaced[0] = true;
+                    System.out.println("------ Placed all ships ------");
                 }
             }
         });
@@ -339,5 +319,21 @@ public class VisualBoard_Impl implements VisualBoard {
             return HORIZONTAL;
 
         return NOTVALID;
+    }
+
+
+    //        TODO disabilitare le caselle
+    @Override
+    public void turnP1() {
+        endTurn[0] = false;
+        this.board2.setVisible(false);
+        this.board1.setVisible(true);
+    }
+
+    @Override
+    public void turnP2() {
+        endTurn[0] = false;
+        this.board1.setVisible(false);
+        this.board2.setVisible(true);
     }
 }
