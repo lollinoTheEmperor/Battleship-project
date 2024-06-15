@@ -1,10 +1,14 @@
 public class BoardStart extends GameBoard_Impl {
 
-    public BoardStart() {
+    protected String title;
+
+    public BoardStart(String title) {
         super();
+        this.title = title;
     }
-    public BoardStart(int width, int height) {
+    public BoardStart(String title, int width, int height) {
         super(width,height);
+        this.title = title;
     }
     //orientation=0 means orizontal, 1 vertical
     //used to place the ship

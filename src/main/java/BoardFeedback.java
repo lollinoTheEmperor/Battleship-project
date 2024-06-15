@@ -10,9 +10,9 @@ public class BoardFeedback extends GameBoard_Impl {
     //check the board with the ship for the attack if it has water then putt miss,
     // otherwise put hit and if it was already attacked in console log says
     // already attacked
-    public boolean addFeedBack(BoardStart board_starter, int x, int y){
+    public boolean addFeedBack(BoardStart boardWithShip, int x, int y){
         if(board_Game[x][y].equals("water")){
-            switch (board_starter.getCell(x,y)){
+            switch (boardWithShip.getCell(x,y)){
                 case "water" :
                     board_Game[x][y]="miss";
                     return false;

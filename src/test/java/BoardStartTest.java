@@ -6,7 +6,7 @@ public class BoardStartTest {
     Ship_Impl s1 = new Ship_Impl(5, "sumberge", "nave1");
     Ship_Impl s2 = new Ship_Impl(5, "sumberge", "nave2");
     Ship_Impl s3 = new Ship_Impl(11, "sumberge", "nave3");
-    BoardStart b1 = new BoardStart();
+    BoardStart b1 = new BoardStart("Board 1");
 
     @Test
     public  void placeShip_correct() {
