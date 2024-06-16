@@ -1,10 +1,11 @@
+import java.awt.*;
 import java.util.Set;
 
 import org.junit.Test;
 
 public class VisualBoard_ImplTest {
 
-    //// This will be an input for the method so it would be deleted ///////////////
+    //// This will be an input for the method, so it would be deleted ///////////////
     protected Ship_Impl shipS = new Ship_Impl(2, "light", "1");   // int size, String type, String id
     protected Ship_Impl shipM = new Ship_Impl(2, "medium", "2");   // int size, String type, String id
     protected Ship_Impl shipL = new Ship_Impl(2, "heavy", "3");   // int size, String type, String id
@@ -36,8 +37,6 @@ public class VisualBoard_ImplTest {
         System.out.printf("Hello and welcome!\n");
 //        VisualBoard_Impl gameWindow = new VisualBoard_Impl("Aldo", "GianPaolo89");
 
-
-        boolean placedShips = false;
 
         gameWindow.fetchingShips(boardStartP1, ships);
         stopBackendUntil(gameWindow.allShipPlaced);

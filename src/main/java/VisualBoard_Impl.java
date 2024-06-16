@@ -12,23 +12,23 @@ public class VisualBoard_Impl implements VisualBoard {
     final boolean HIT = true, MISS = false;
 
     protected int tableSize;
+    protected Color placeShipColor;
 
     protected JFrame gameFrame;
 
     protected JPanel board1;
     protected JPanel board2;
-    protected JPanel boardPanelP1;
-    protected JPanel boardPanelP2;
+    public JPanel gridPanelP1;
+    protected JPanel gridPanelP2;
     protected JTextField textField1;
     protected JTextField textField2;
     protected JButton button1;
     protected JButton button2;
     protected boolean[] endTurn;
 
-    protected JPanel placingShipsPanelP1;
     protected JLabel remainingShipsLabel1;
     protected JLabel remainingShipsLabel2;
-    protected boolean selectedShipStart;            // to differentiate start point from end point
+    protected boolean shipStartPointSelected;            // to differentiate start point from end point
     protected boolean[] allShipPlaced;              // used as a array, only to pass it for reference
     protected int rememberXforPlace;
     protected int rememberYforPlace;
@@ -43,11 +43,12 @@ public class VisualBoard_Impl implements VisualBoard {
         panelHeight = 300;
         gameFrame.pack();
         tableSize = 10;
+        placeShipColor = Color.GRAY;
 
         board1 = new JPanel();
         board2 = new JPanel();
-        boardPanelP1 = new JPanel();
-        boardPanelP2 = new JPanel();
+        gridPanelP1 = new JPanel();
+        gridPanelP2 = new JPanel();
         textField1 = new JTextField();
         textField2 = new JTextField();
         button1 = new JButton();
@@ -61,7 +62,7 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.setLayout(new GridLayout(1, 2, 10, 10)); // allows to size better the elements
         gameFrame.setVisible(true);
 
-        selectedShipStart = false;
+        shipStartPointSelected = false;
         rememberXforPlace = 0;
         rememberYforPlace = 0;
         endTurn = new boolean[]{false};
@@ -100,9 +101,9 @@ public class VisualBoard_Impl implements VisualBoard {
         JPanel boardPanel  = getjPanel(size, textField, button);
 
         if (isP1)
-            boardPanelP1 = boardPanel;
+            gridPanelP1 = boardPanel;
         else
-            boardPanelP2 = boardPanel;
+            gridPanelP2 = boardPanel;
 
         // BUTTON ////////////
         button.setEnabled(false);   // is set to disable but in method getjPanel, after a click will be re-enabled
@@ -250,18 +251,16 @@ public class VisualBoard_Impl implements VisualBoard {
                 Ship_Impl currentShip = null;
                 boolean feedBackPlaceShip = false;
 
-
-                if (selectedShipStart) {
-                    selectedShipStart = false;
-
-                    button.setText("Select");
-
+                if (shipStartPointSelected) {
                     int shipOrientation = validateCoordPlaceShip(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1]);
                     if (shipOrientation == NOTVALID) {
                         coordField.setText("Invalid points!");
                         System.out.println("Invalid points!");
                         return;
                     }
+
+                    shipStartPointSelected = false;
+                    button.setText("Select");
 
                     // TODO call method with saved x y and other form save cord
                     System.out.println("Ship from " + rememberXforPlace + ":" + rememberYforPlace + " to " + saveCoord[0] + ":" + saveCoord[1]);
@@ -273,14 +272,18 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
                     if (feedBackPlaceShip) {
-                        paintFeedback(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1], Color.GRAY, boardPanel);
+                        paintFeedback(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1], placeShipColor, boardPanel);
                         shipCopy.remove(currentShip);
+                    } else {
+                        coordField.setText("Invalid points!");
                     }
 
                 } else {
-                    selectedShipStart = true;
+                    shipStartPointSelected = true;
                     rememberXforPlace = saveCoord[0];
                     rememberYforPlace = saveCoord[1];
+
+                    paintFeedback(rememberXforPlace, rememberYforPlace, placeShipColor, boardPanel);
 
                     button.setText("Place!");
                 }
@@ -342,7 +345,6 @@ public class VisualBoard_Impl implements VisualBoard {
         return NOTVALID;
     }
 
-
     //        TODO disabilitare le caselle
     @Override
     public void turnP1() {
@@ -375,6 +377,8 @@ public class VisualBoard_Impl implements VisualBoard {
         if (minX == maxX && minY == maxY) {         // this is when used for attack
             JButton square = (JButton) targetPanel.getComponent((minX - 1) * tableSize + (minY - 1));
             square.setBackground(feedbackColor);
+            square.setEnabled(false);
+
         } else {
             if (minX == maxX) { // Horizontal ship for placing ships
                 for (int y = minY; y <= maxY; y++) {
@@ -382,6 +386,7 @@ public class VisualBoard_Impl implements VisualBoard {
                     if (index >= 0 && index < targetPanel.getComponentCount()) {
                         JButton square = (JButton) targetPanel.getComponent(index);
                         square.setBackground(feedbackColor);
+                        square.setEnabled(false);
                     }
                 }
             } else if (minY == maxY) { // Vertical Ship for placing ships
@@ -390,6 +395,7 @@ public class VisualBoard_Impl implements VisualBoard {
                     if (index >= 0 && index < targetPanel.getComponentCount()) {
                         JButton square = (JButton) targetPanel.getComponent(index);
                         square.setBackground(feedbackColor);
+                        square.setEnabled(false);
                     }
                 }
             }
@@ -398,5 +404,4 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.revalidate();
         gameFrame.repaint();
     }
-
 }
