@@ -5,18 +5,13 @@ import java.util.Set;
 interface VisualBoard {
 
     //    create the visual board thanks to the size
-    void createVisualBoard(JPanel panel, boolean isP1, int size, String playerName);
+    void createVisualBoard(JPanel panel, boolean isP1, String playerName);
 
     JPanel getjPanel(int size, JTextField textField, JButton button);
 
-    //    is used to get the coordinates of the cliceck cell
-    void getTableCord(int x, int y);
-
-    void sendAttackCord(int x, int y);
-
     int[] parseCord(String coord);
 
-    void fetchingShips(BoardStart shipLayout, Set<Ship_Impl> ships);
+    void fetchingShips(BoardStart shipLayout, Set<Ship_Impl> ships, boolean isP1);
 
     /**
      *
@@ -36,5 +31,9 @@ interface VisualBoard {
     void paintFeedback(int startX, int startY, Color feedbackColor, JPanel targetPanel);
 
     void paintFeedback(int startX, int startY, int endX, int endY, Color feedbackColor, JPanel targetPanel);
+
+    void paintIsland(int x, int y, String targetPanel);
+
+    void reloadGameView();
 }
 

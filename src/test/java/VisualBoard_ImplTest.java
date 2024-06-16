@@ -5,6 +5,8 @@ import org.junit.Test;
 
 public class VisualBoard_ImplTest {
 
+    final boolean isP1 = true;
+
     //// This will be an input for the method, so it would be deleted ///////////////
     protected Ship_Impl shipS = new Ship_Impl(2, "light", "1");   // int size, String type, String id
     protected Ship_Impl shipM = new Ship_Impl(2, "medium", "2");   // int size, String type, String id
@@ -38,16 +40,17 @@ public class VisualBoard_ImplTest {
 //        VisualBoard_Impl gameWindow = new VisualBoard_Impl("Aldo", "GianPaolo89");
 
 
-        gameWindow.fetchingShips(boardStartP1, ships);
+        gameWindow.fetchingShips(boardStartP1, ships, isP1);
+        gameWindow.paintIsland(3,3, VisualBoard_Impl.MapElements.FETCHING_GRID_PANEL_P1.getValue());
         stopBackendUntil(gameWindow.allShipPlaced);
 
 
-        gameWindow.fetchingShips(boardStartP2, ships);
+        gameWindow.fetchingShips(boardStartP2, ships, !isP1);
         stopBackendUntil(gameWindow.allShipPlaced);
 
 
         System.out.println("Now starting game session - all ships are located");
-        gameWindow.createGameBaords("Aldo", "GianPaolo89");
+        gameWindow.createGameBoards("Aldo", "GianPaolo89");
 
         for (int i =0; i < 4; i++) {
             gameWindow.turnP1();
