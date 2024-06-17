@@ -5,8 +5,7 @@ import java.util.Set;
 
 interface VisualBoard {
 
-    //    create the visual board thanks to the size
-    void createVisualBoard(JPanel panel, boolean isP1, String playerName);
+    void createVisualBoard(JPanel panel, boolean isP1, Player_Impl player);
 
     JPanel getjPanel(int size, JTextField textField, JButton button);
 

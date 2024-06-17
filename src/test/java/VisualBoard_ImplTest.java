@@ -6,17 +6,18 @@ import org.junit.Test;
 public class VisualBoard_ImplTest {
 
     final boolean isP1 = true;
+    protected int nTurns = 2 *2;                                                                                        // 2 turn for 2 player
 
     //// This will be an input for the method, so it would be deleted ///////////////
     protected Ship_Impl shipS = new Ship_Impl(2, "light", "1");   // int size, String type, String id
     protected Ship_Impl shipM = new Ship_Impl(3, "medium", "2");   // int size, String type, String id
     protected Ship_Impl shipL = new Ship_Impl(4, "heavy", "3");   // int size, String type, String id
 
-    public ShipManager shipManager = new ShipManager();
+    public ShipManager shipManagerP1 = new ShipManager();
+    public ShipManager shipManagerP2 = new ShipManager();
 
 //    Map.of(1, shipS, 2, shipM, 3, shipL);
     VisualBoard_Impl gameWindow = new VisualBoard_Impl();
-
 
 
     public void stopBackendUntil(boolean[] condition) {
@@ -32,12 +33,26 @@ public class VisualBoard_ImplTest {
     @Test
     public void testing_boardStartP1AndP2() {
 
-        BoardStart boardStartP1 = new BoardStart("Layout P1");
-        BoardStart boardStartP2 = new BoardStart("Layout P2");
+        BoardStart boardStartP1 = new BoardStart("Layout P1", 10,10);
+        BoardStart boardStartP2 = new BoardStart("Layout P2", 10,10);
 
-        shipManager.addShip(shipS);
-        shipManager.addShip(shipM);
-        shipManager.addShip(shipL);
+        BoardFeedback boardFeedbackP1 = new BoardFeedback(10,10);
+        BoardFeedback boardFeedbackP2 = new BoardFeedback(10,10);
+
+        shipManagerP1.addShip(shipS);
+//        shipManagerP1.addShip(shipM);
+//        shipManagerP1.addShip(shipL);
+
+        shipManagerP2.addShip(shipS);
+//        shipManagerP2.addShip(shipM);
+//        shipManagerP2.addShip(shipL);
+
+        Player_Impl me = new Player_Impl("me", boardStartP1, boardFeedbackP1, shipManagerP1);
+        Player_Impl opponent = new Player_Impl("opponent", boardStartP2, boardFeedbackP2, shipManagerP2);
+
+        me.setOpponentsBoard(boardStartP2);
+        opponent.setOpponentsBoard(boardStartP1);
+
         ////////////////////////////////////////////////////////////////////
 
 
@@ -45,25 +60,34 @@ public class VisualBoard_ImplTest {
 //        VisualBoard_Impl gameWindow = new VisualBoard_Impl("Aldo", "GianPaolo89");
 
 // usare i player
-        gameWindow.fetchingShips(boardStartP1, shipManager.ships, isP1);
+        gameWindow.fetchingShips(boardStartP1, shipManagerP1.ships, isP1);
         gameWindow.paintIsland(3,3, VisualBoard_Impl.MapElements.FETCHING_GRID_PANEL_P1.getValue());
         stopBackendUntil(gameWindow.allShipPlaced);
 
 
-        gameWindow.fetchingShips(boardStartP2, shipManager.ships, !isP1);
+        gameWindow.fetchingShips(boardStartP2, shipManagerP2.ships, !isP1);
         stopBackendUntil(gameWindow.allShipPlaced);
 
 
         System.out.println("Now starting game session - all ships are located");
         // Usare i player?
-        gameWindow.createGameBoards("Aldo", "GianPaolo89");
+        gameWindow.createGameBoards(me, opponent);
 
-        for (int i =0; i < 4; i++) {
+        for (int i =0; i < nTurns; i++) {
             gameWindow.turnP1();
             stopBackendUntil(gameWindow.endTurn);
 
+            if(opponent.hasShips()) {
+                return;
+            }
+
             gameWindow.turnP2();
             stopBackendUntil(gameWindow.endTurn);
+
+            if (me.hasShips()) {
+                return;
+            }
         }
+
     }
 }

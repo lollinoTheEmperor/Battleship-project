@@ -5,13 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.HashSet;
-import java.util.Set;
 
 public class VisualBoard_Impl implements VisualBoard {
 
     final int HORIZONTAL = 0, VERTICAL = 1, ERROR = 3;
-    final boolean HIT = true, MISS = false;
+    final boolean HIT = true;
 
     protected int tableSize;
     private final Color placeShipColor, boardColor, islandColor, hitColor, waterColor;
@@ -105,11 +103,11 @@ public class VisualBoard_Impl implements VisualBoard {
         componentMap.put(MapElements.FETCHING_GRID_PANEL_P2.getValue(), fetchingGridPanelP2);
     }
 
-    public void createGameBoards(String nameP1, String nameP2) {
+    public void createGameBoards(Player_Impl p1, Player_Impl p2) {
         gameFrame.repaint();
 
-        createVisualBoard(board1, true, nameP1);
-        createVisualBoard(board2, false, nameP2);
+        createVisualBoard(board1, true, p1);
+        createVisualBoard(board2, false, p2);
 
         JTextField textField1 = (JTextField) componentMap.get(MapElements.TEXT_FIELD_P1.getValue());
         JTextField textField2 = (JTextField) componentMap.get(MapElements.TEXT_FIELD_P2.getValue());
@@ -124,7 +122,7 @@ public class VisualBoard_Impl implements VisualBoard {
     }
 
     @Override
-    public void createVisualBoard(JPanel panel, boolean isP1, String name) {
+    public void createVisualBoard(JPanel panel, boolean isP1, Player_Impl player) {
 
         JTextField textField = new JTextField();
         JButton button = new JButton("Attack!!");
@@ -142,10 +140,12 @@ public class VisualBoard_Impl implements VisualBoard {
         button.setEnabled(false);                                                                                       // is set to disable but in method getjPanel, after a click will be re-enabled
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {                                                                // eventListener to perform attack
-                System.out.print(name +"->");
+                System.out.print(player.name +"->");
                 int[] saveXY = parseCord(textField.getText().toUpperCase());
+                // FIXME
+                boolean attackFeedback = player.attack(saveXY[0], saveXY[1]);
                 // TODO change color based on the feedback
-                paintFeedback(saveXY[0], saveXY[1], hitColor , boardPanel);
+                paintFeedback(saveXY[0], saveXY[1], attackFeedback == HIT? hitColor : waterColor , boardPanel);
                 endTurn[0] = true;
             }
         });

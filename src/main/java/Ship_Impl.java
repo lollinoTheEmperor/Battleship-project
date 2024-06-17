@@ -28,13 +28,7 @@ public class Ship_Impl implements Ship{
         if(hp>0){
           this.hp--;
         }
-        if (this.hp == 0) {
-
-            return true;
-        } else{
-            return false;
-        }
-
+        return this.hp == 0;
     }
 
 }

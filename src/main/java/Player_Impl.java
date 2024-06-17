@@ -16,6 +16,7 @@ public class Player_Impl implements Player {
         return myBoard;
     }
 
+    // FIXME @lorenzo M. perchè non va nel costruttore
     public void setOpponentsBoard(BoardStart board) {
         this.opponentsBoard = board;
     }
