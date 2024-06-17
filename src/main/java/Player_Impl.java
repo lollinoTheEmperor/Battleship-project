@@ -1,18 +1,15 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Player_Impl implements Player {
     String name;
     BoardStart myBoard;
     BoardStart opponentsBoard;
     BoardFeedback myFeedbacks;
-    List<Ship_Impl> myShips;
+    ShipManager shipManager;
 
-    Player_Impl(String name, BoardStart board, BoardFeedback feedbacks, List<Ship_Impl> ships) {
+    Player_Impl(String name, BoardStart board, BoardFeedback feedbacks, ShipManager ships) {
         this.name = name;
         this.myBoard = board;
         this.myFeedbacks = feedbacks;
-        this.myShips=new ArrayList<>(ships);
+        this.shipManager = ships;
     }
 
     public BoardStart getMyBoard() {
@@ -25,11 +22,11 @@ public class Player_Impl implements Player {
 
     @Override
     public boolean attack(int x, int y) {
-        return myFeedbacks.addFeedBack(opponentsBoard,x,y);
+        return myFeedbacks.addFeedBack(opponentsBoard,x,y, shipManager);
     }
 
     @Override
     public boolean hasShips() {
-        return myShips.isEmpty();
+        return shipManager.ships.isEmpty();
     }
 }
