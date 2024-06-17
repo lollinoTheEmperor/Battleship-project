@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 import java.util.Set;
 
 interface VisualBoard {
@@ -11,7 +12,7 @@ interface VisualBoard {
 
     int[] parseCord(String coord);
 
-    void fetchingShips(BoardStart shipLayout, Set<Ship_Impl> ships, boolean isP1);
+    void fetchingShips(BoardStart shipLayout, Map<Integer, Ship_Impl> ships, boolean isP1);
 
     /**
      *

@@ -1,6 +1,7 @@
 public class BoardStart extends GameBoard_Impl {
 
     protected String title;
+    protected final int HORIZONTAL = 0, VERTICAL = 1;
 
     public BoardStart(String title) {
         super();
@@ -10,20 +11,21 @@ public class BoardStart extends GameBoard_Impl {
         super(width,height);
         this.title = title;
     }
-    //orientation=0 means orizontal, 1 vertical
+
     //used to place the ship
     public boolean placeShip(int x, int y, int orientation, Ship_Impl ship) {
-        if(orientation == 0 || orientation == 1) {
+        if(orientation == HORIZONTAL || orientation == VERTICAL) {
             // Check if the ship fits on the game board
-            if ((orientation == 0 && x + ship.getSize() > width) || (orientation == 1 && y + ship.getSize() > height)) {
+            if ((orientation == HORIZONTAL && x + ship.getSize() > width) || (orientation == VERTICAL && y + ship.getSize() > height)) {
                 System.out.println("Ship does not fit on the game board.");
                 return false;
             }
 
+
             // Check if the coordinates are already occupied
             for (int i = 0; i < ship.getSize(); i++) {
-                int newX = (orientation == 0) ? x + i : x;
-                int newY = (orientation == 1) ? y + i : y;
+                int newX = (orientation == HORIZONTAL) ? x + i : x;
+                int newY = (orientation == VERTICAL) ? y + i : y;
                 if (!(getCell(newX,newY).equals("water"))) {
                     System.out.println("Coordinate (" + newX + ", " + newY + ") is already occupied.");
                     return false;
@@ -31,8 +33,8 @@ public class BoardStart extends GameBoard_Impl {
             }
             // Place the ship on the game board
             for (int i = 0; i < ship.getSize(); i++) {
-                int newX = (orientation == 0) ? x + i : x;
-                int newY = (orientation == 1) ? y + i : y;
+                int newX = (orientation == HORIZONTAL) ? x + i : x;
+                int newY = (orientation == VERTICAL) ? y + i : y;
                 board_Game[newX][newY]=ship.getId();
             }
 

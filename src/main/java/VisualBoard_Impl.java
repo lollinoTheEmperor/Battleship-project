@@ -14,7 +14,7 @@ public class VisualBoard_Impl implements VisualBoard {
     final boolean HIT = true, MISS = false;
 
     protected int tableSize;
-    protected Color placeShipColor, boardColor, islandColor, hitColor, waterColor;
+    private final Color placeShipColor, boardColor, islandColor, hitColor, waterColor;
 
     protected JFrame gameFrame;
     protected JPanel board1, board2;
@@ -199,12 +199,11 @@ public class VisualBoard_Impl implements VisualBoard {
 
     @Override
     public JPanel getjPanel(int size, JTextField textField, JButton button) {
-        int boardRows = size, boardCols = size;
 
-        JPanel boardPanel = new JPanel(new GridLayout(boardRows, boardCols));
+        JPanel boardPanel = new JPanel(new GridLayout(size, size));
         boardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));                                              // Border around the board
-
-        for (int i = 0; i < boardCols * boardRows; i++) {                                                               // creating a grid of buttons to manage input
+        // using only size because the table is a square
+        for (int i = 0; i < size * size; i++) {                                                                         // creating a grid of buttons to manage input
             final int index = i;                                                                                        // using a eventListener
             JButton square = new JButton();
             square.setBackground(boardColor);
@@ -214,8 +213,8 @@ public class VisualBoard_Impl implements VisualBoard {
 
             square.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    int row = index / boardRows + 1;
-                    int col = index % boardCols + 1;
+                    int col = index / size;
+                    int row = index % size;
                     String coord = row + ":" + col;
                     textField.setText(coord);
                     button.setEnabled(true);
@@ -242,7 +241,7 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
     @Override
-    public void fetchingShips(BoardStart shipLayout, Set<Ship_Impl> ships, boolean isP1) {
+    public void fetchingShips(BoardStart shipLayout, Map<Integer, Ship_Impl> ships, boolean isP1) {
 
         allShipPlaced[0] = false;                                                                                       // using an array of 1 element to use value by reference
 
@@ -250,7 +249,7 @@ public class VisualBoard_Impl implements VisualBoard {
         panel.setVisible(true);
         gameFrame.add(panel);
 
-        Set<Ship_Impl> shipCopy = new HashSet<>(ships);
+        Map<Integer, Ship_Impl> shipCopy = new HashMap<>(ships);
         JTextField coordField = new JTextField();
         JButton button = new JButton("Select");
         JLabel coordLabel = new JLabel("Coordinates:");
@@ -275,21 +274,41 @@ public class VisualBoard_Impl implements VisualBoard {
                         return;
                     }
 
-                    shipStartPointSelected = false;
-                    button.setText("Select ship start point");
+// TODO fare label per n barche qui e dallalrta
 
                     // TODO call method with saved x y and other form save cord
                     System.out.println("Ship from " + rememberXforPlace + ":" + rememberYforPlace + " to " + saveCoord[0] + ":" + saveCoord[1]);
 
-                    currentShip = shipCopy.stream().findAny().get();
+                    int shipId = shipCopy.keySet().iterator().next();
+                    currentShip = shipCopy.get(shipId);
+
                     int startX = Math.min(rememberXforPlace, saveCoord[0]);
                     int startY = Math.min(rememberYforPlace, saveCoord[1]);
+                    int endX = Math.max(rememberXforPlace, saveCoord[0]);
+                    int endY = Math.max(rememberYforPlace, saveCoord[1]);
+                    boolean validLenght;
+
+                    if (shipOrientation == HORIZONTAL)
+                        validLenght = validateLenghtShip(startX, endX, currentShip.getSize());
+                    else
+                        validLenght = validateLenghtShip(startY, endY, currentShip.getSize());
+
+                    if (!validLenght) {
+                        coordField.setText("Ship size: " + currentShip.getSize());
+                        System.out.println("Ship size: " + currentShip.getSize());
+                        return;
+                    }
+
+                    shipStartPointSelected = false;
+                    button.setText("Select cell");
+                    System.out.println("Ship from " + rememberXforPlace + ":" + rememberYforPlace + " to " + saveCoord[0] + ":" + saveCoord[1]);
+
                     feedBackPlaceShip = shipLayout.placeShip(startX, startY, shipOrientation, currentShip);
 
 
                     if (feedBackPlaceShip) {
                         paintFeedback(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1], placeShipColor, boardPanel);
-                        shipCopy.remove(currentShip);
+                        shipCopy.remove(shipId);
                     } else {
                         coordField.setText("Ship do not fit!");
                         paintFeedback(rememberXforPlace, rememberYforPlace, boardColor, boardPanel);                         // reset previous square painted
@@ -347,16 +366,21 @@ public class VisualBoard_Impl implements VisualBoard {
         reloadGameView();
     }
 
+    public boolean validateLenghtShip(int startPoint, int endPoint, int shipSize) {
+        System.out.println(startPoint + " " + endPoint + " " + shipSize);
+        return shipSize == endPoint - startPoint+1;                                  // using 0 we have math problem (in method) so do +1
+    }
+
     @Override
     public int validateCoordPlaceShip(int startX, int startY, int endX, int endY) {
 
         //TODO check if need ship of size 1
         if(startX != endX || startY != endY) {
             if (startY == endY)
-                return VERTICAL;
+                return HORIZONTAL;
 
             if (startX == endX)
-                return HORIZONTAL;
+                return VERTICAL;
         }
         return ERROR;
     }
@@ -375,16 +399,16 @@ public class VisualBoard_Impl implements VisualBoard {
         int maxY = Math.max(startY, endY);
 
         if (minX == maxX && minY == maxY) {         // this is used for attack
-            paintSquare(feedbackColor, targetPanel, (minX - 1) * tableSize + (minY - 1));
+            paintSquare(feedbackColor, targetPanel, (minY) * tableSize + (minX));
         } else {
             if (minX == maxX) { // Horizontal ship for placing ships
                 for (int y = minY; y <= maxY; y++) {
-                    int index = (minX - 1) * tableSize + (y - 1);
+                    int index = (y) * tableSize + (minX);
                     paintSquare(feedbackColor, targetPanel, index);
                 }
             } else if (minY == maxY) { // Vertical Ship for placing ships
                 for (int x = minX; x <= maxX; x++) {
-                    int index = (x - 1) * tableSize + (minY - 1);
+                    int index = (minY) * tableSize + (x);
                     paintSquare(feedbackColor, targetPanel, index);
                 }
             }
@@ -392,11 +416,14 @@ public class VisualBoard_Impl implements VisualBoard {
         reloadGameView();
     }
 
-    private static void paintSquare(Color feedbackColor, JPanel targetPanel, int index) {
+    protected void paintSquare(Color feedbackColor, JPanel targetPanel, int index) {
         if (index >= 0 && index < targetPanel.getComponentCount()) {
             JButton square = (JButton) targetPanel.getComponent(index);
             square.setBackground(feedbackColor);
-            square.setEnabled(false);
+            if (boardColor == feedbackColor)
+                square.setEnabled(true);
+            else
+                square.setEnabled(false);
         }
     }
 
