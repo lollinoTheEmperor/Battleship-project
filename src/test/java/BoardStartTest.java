@@ -34,4 +34,26 @@ public class BoardStartTest {
         b1.placeShip(1,1,1,s1);
         assertEquals(false, b1.placeShip(1,2,1,s2));
     }
+
+
+    @Test
+    public  void placeShip_correct_end_map() {
+
+        assertEquals(true, b1.placeShip(1,9,0,s1));
+    }
+
+    @Test
+    public  void placeShip_correct_end_left_map() {
+
+        assertEquals(true, b1.placeShip(9,1,1,s1));
+    }
+
+
+    @Test
+    public  void placeShip_correct_end_left_map_with_0() {
+
+        assertEquals(true, b1.placeShip(9,0,1,s1));
+    }
+
+
 }

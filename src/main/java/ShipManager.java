@@ -15,4 +15,7 @@ public class ShipManager {
     public Ship_Impl getShipById(String id) {
         return ships.get(Integer.parseInt(id));
     }
+    public void removeShipById(String id) {
+        ships.remove(Integer.parseInt(id));
+    }
 }

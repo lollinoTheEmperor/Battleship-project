@@ -10,6 +10,16 @@ public class BoardFeedback extends GameBoard_Impl {
         super(width, height);
     }
 
+    // Check if the cell was already hit
+    public boolean isAlreadyAttacked(int x, int y) {
+        return "hit".equals(board_Game[x][y]) || "miss".equals(board_Game[x][y]);
+    }
+
+    // Check if the cell was a hit
+    public boolean isHit(int x, int y) {
+        return "hit".equals(board_Game[x][y]);
+    }
+
     //check the board with the ship for the attack if it has water then putt miss,
     // otherwise put hit and if it was already attacked in console log says
     // already attacked
@@ -38,6 +48,7 @@ public class BoardFeedback extends GameBoard_Impl {
             return true;
         }
     }
+
 
 
 }

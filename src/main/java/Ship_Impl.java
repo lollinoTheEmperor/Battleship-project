@@ -29,6 +29,7 @@ public class Ship_Impl implements Ship{
           this.hp--;
         }
         if (this.hp == 0) {
+
             return true;
         } else{
             return false;
