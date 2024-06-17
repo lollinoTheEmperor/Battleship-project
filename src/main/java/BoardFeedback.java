@@ -30,21 +30,19 @@ public class BoardFeedback extends GameBoard_Impl {
             return false;
         }
         //check what is hitting, if water or a ship
-        if(board_Game[x][y].equals("water")){
-            switch (boardWithShip.getCell(x,y)){
-                case "water" :
-                    board_Game[x][y]="miss";
-                    return false;
-                default:
-                    board_Game[x][y]="hit";
-                    Ship_Impl ship_hitted = allship.getShipById(boardWithShip.getCell(x,y));
-                    ship_hitted.takeDamage();
-                    return true;
-            }
-        }
-        //if board feed is not water then already hit
-        else{
+        String cellContent = boardWithShip.getCell(x, y);
+        if ("water".equals(cellContent)) {
+            board_Game[x][y] = "miss";
+            return false;
+        } else if ("hit".equals(board_Game[x][y]) || "miss".equals(board_Game[x][y])) {
             System.out.println("Cell already attacked");
+            return true;
+        } else {
+            board_Game[x][y] = "hit";
+            Ship_Impl shipHitted = allship.getShipById(cellContent);
+            if(shipHitted.takeDamage()){
+                allship.removeShipById(shipHitted.getId());
+            };
             return true;
         }
     }

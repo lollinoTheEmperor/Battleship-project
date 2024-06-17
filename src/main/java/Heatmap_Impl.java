@@ -1,11 +1,17 @@
 public class Heatmap_Impl implements Heatmap {
     private int[][] heatmap;
     private BoardFeedback board;
-
-    public Heatmap_Impl(BoardFeedback board) {
+    private ShipManager shipman;
+    public Heatmap_Impl(BoardFeedback board, ShipManager shipman) {
         this.board = board;
         heatmap = new int[10][10];
+        this.shipman=shipman;
     }
+
+   // private int [] takeShipSize(){
+
+
+  // }
     @Override
     public void updateheatMap() {
             for (int i = 0; i < 10; i++) {
@@ -23,16 +29,15 @@ public class Heatmap_Impl implements Heatmap {
 
     private int calculateProbability(int x, int y) {
         int probability = 0;
-        int[] shipLengths = {2, 3}; // lenght ship, how can we take it???
 
-        for (int length : shipLengths) {
-            // Orizzontale e Verticale
+        for (Ship_Impl ship : shipman.ships.values()) {
+            int length = ship.getSize();
             for (int direction = 0; direction < 2; direction++) {
                 boolean possible = true;
                 for (int k = 0; k < length; k++) {
                     int newX = direction == 0 ? x + k : x;
                     int newY = direction == 1 ? y + k : y;
-                    if (newX >= 10 || newY >= 10 || board.isAlreadyAttacked(newX,newY)) {
+                    if (newX >= 10 || newY >= 10 || board.isAlreadyAttacked(newX, newY)) {
                         possible = false;
                         break;
                     }

@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShipManager {
-    private final Map<Integer, Ship_Impl> ships;
+    public final Map<Integer, Ship_Impl> ships;
 
     public ShipManager() {
         ships = new HashMap<>();
