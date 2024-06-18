@@ -18,4 +18,8 @@ public class ShipManager {
     public void removeShipById(String id) {
         ships.remove(Integer.parseInt(id));
     }
+
+    public Map<Integer, Ship_Impl> getShips() {
+        return ships;
+    }
 }

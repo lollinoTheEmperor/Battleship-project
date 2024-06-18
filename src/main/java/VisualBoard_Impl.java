@@ -452,4 +452,6 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.revalidate();
         gameFrame.repaint();
     }
+
+   
 }

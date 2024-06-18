@@ -35,5 +35,7 @@ interface VisualBoard {
     void paintIsland(int x, int y, String targetPanel);
 
     void reloadGameView();
+
+    
 }
 
