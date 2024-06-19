@@ -8,21 +8,24 @@ public class Heatmap_Impl implements Heatmap {
         this.shipman=shipman;
     }
 
-   // private int [] takeShipSize(){
-
-
-  // }
     @Override
     public void updateheatMap() {
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    if (!(board.isAlreadyAttacked(i,j))) {
-                        heatmap[i][j] = calculateProbability(i, j);
-                    } else {
-                        heatmap[i][j] = 0;
-                    }
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                heatmap[i][j] = calculateProbability(i, j);
+            }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (board.isAlreadyAttacked(i, j)) {
+                    heatmap[i][j] = 0;
+                }
+                if (board.isHit(i, j)) {
+                    increaseAdjacentProbabilities(i, j);
                 }
             }
+        }
     }
 
 
@@ -30,34 +33,32 @@ public class Heatmap_Impl implements Heatmap {
     private int calculateProbability(int x, int y) {
         int probability = 0;
 
-        for (Ship_Impl ship : shipman.ships.values()) {
-            int length = ship.getSize();
-            for (int direction = 0; direction < 2; direction++) {
-                boolean possible = true;
-                for (int k = 0; k < length; k++) {
-                    int newX = direction == 0 ? x + k : x;
-                    int newY = direction == 1 ? y + k : y;
-                    if (newX >= 10 || newY >= 10 || board.isAlreadyAttacked(newX, newY)) {
-                        possible = false;
-                        break;
+        if (!board.isAlreadyAttacked(x, y)) {
+            for (Ship_Impl ship : shipman.ships.values()) {
+                int length = ship.getSize();
+                for (int direction = 0; direction < 2; direction++) {
+                    boolean possible = true;
+                    for (int k = 0; k < length; k++) {
+                        int newX = direction == 0 ? x + k : x;
+                        int newY = direction == 1 ? y + k : y;
+                        if (newX >= 10 || newY >= 10 || board.isAlreadyAttacked(newX, newY)) {
+                            possible = false;
+                            break;
+                        }
                     }
+                    if (possible) probability++;
                 }
-                if (possible) probability++;
             }
         }
-        // Increase probability around previous hits that have not sunk ships
-        if (board.isHit(x, y)) {
-            probability += 10; // Arbitrary increment of probability
-            if (x > 0 && !board.isAlreadyAttacked(x - 1, y)) probability += 5;
-            if (x < board.getWidth() - 1 && !board.isAlreadyAttacked(x + 1, y)) probability += 5;
-            if (y > 0 && !board.isAlreadyAttacked(x, y - 1)) probability += 5;
-            if (y < board.getHeight() - 1 && !board.isAlreadyAttacked(x, y + 1)) probability += 5;
-        }
 
-        if (probability == 0 && !board.isAlreadyAttacked(x, y)) {
-            probability = 1;
-        }
-        return probability;
+        return probability > 0 ? probability : 1;
+    }
+
+    private void increaseAdjacentProbabilities(int x, int y) {
+        if (x > 0 && !board.isAlreadyAttacked(x - 1, y)) heatmap[x - 1][y] += 5;
+        if (x < board.getWidth() - 1 && !board.isAlreadyAttacked(x + 1, y)) heatmap[x + 1][y] += 5;
+        if (y > 0 && !board.isAlreadyAttacked(x, y - 1)) heatmap[x][y - 1] += 5;
+        if (y < board.getHeight() - 1 && !board.isAlreadyAttacked(x, y + 1)) heatmap[x][y + 1] += 5;
     }
 
     @Override
