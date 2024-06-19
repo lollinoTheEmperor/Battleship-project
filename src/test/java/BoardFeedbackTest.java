@@ -3,8 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class
-BoardFeedbackTest {
+class BoardFeedbackTest {
     BoardFeedback bf1 = new BoardFeedback();
     BoardStart bs1 = new BoardStart("Board 1");
     ShipManager all_ship = new ShipManager();

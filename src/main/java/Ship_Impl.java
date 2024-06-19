@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class Ship_Impl implements Ship{
         this.hp = size;
         id_ship = id;
        this.typeShip = type;
+       coordinates = new ArrayList<int[]>();
     }
 
     public String getId(){
