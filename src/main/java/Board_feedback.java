@@ -22,7 +22,7 @@ public class Board_feedback extends gameBoard_Impl {
             }
         }
         else{
-            System.out.println("Cell already attacked");
+            System.out.println("Cell already attacked"); //dhdhdh
         }
     }
 
