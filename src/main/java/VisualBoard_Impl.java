@@ -151,7 +151,10 @@ public class VisualBoard_Impl implements VisualBoard {
                 // FIXME performe multiple attacks is is HIT
                 boolean attackFeedback = player.attack(saveXY[0], saveXY[1]);
                 paintFeedback(saveXY[0], saveXY[1], attackFeedback == HIT? hitColor : waterColor , boardPanel);
-                endTurn[0] = true;
+
+                // FIXME better check for winning condition
+                if (!attackFeedback)                                                                                    // attack missed change player turn
+                    endTurn[0] = true;
             }
         });
 

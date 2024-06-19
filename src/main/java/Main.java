@@ -142,10 +142,8 @@ public class Main {
             if (result4 == JOptionPane.OK_OPTION) {
                 try {
                     int size = Integer.parseInt(sizeIn.getText());
-                    String id = Integer.toString(i);
-                    String id2 = id + shipCount;
+                    String id = Integer.toString(i + shipCount);
                     ships1.addShip(new Ship_Impl(size, null, id));
-                    ships2.addShip(new Ship_Impl(size, null, id2));
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Invalid size for ship " + (i + 1));
                     i--; // Retry for the same ship
@@ -164,7 +162,7 @@ public class Main {
             if (result4 == JOptionPane.OK_OPTION) {
                 try {
                     int size = Integer.parseInt(sizeIn.getText());
-                    String id2 = Integer.toString(i) + shipCount;
+                    String id2 = Integer.toString(i + shipCount);
                     
                     ships2.addShip(new Ship_Impl(size, null, id2));
                 } catch (NumberFormatException e) {
