@@ -55,6 +55,8 @@ public class Main {
 
         referee();
 
+        System.out.println("GG");
+
 
         
 
@@ -151,6 +153,27 @@ public class Main {
             }
         }
 
+        for (int i = 0; i < shipCount; i++) {
+            JPanel panel4 = new JPanel();
+            panel4.setLayout(new BoxLayout(panel4, BoxLayout.Y_AXIS));
+            JTextField sizeIn = new JTextField(10);
+            panel4.add(new JLabel("Size of Ship Nr. " + (i + 1) + ": "));
+            panel4.add(sizeIn);
+
+            int result4 = JOptionPane.showConfirmDialog(null, panel4, "Ship Size", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (result4 == JOptionPane.OK_OPTION) {
+                try {
+                    int size = Integer.parseInt(sizeIn.getText());
+                    String id2 = Integer.toString(i) + shipCount;
+                    
+                    ships2.addShip(new Ship_Impl(size, null, id2));
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid size for ship " + (i + 1));
+                    i--; // Retry for the same ship
+                }
+            }
+        }
+
         String namep1 = nameFieldp1.getText();
         String namep2 = nameFieldp2.getText();
         int height;
@@ -179,20 +202,37 @@ public class Main {
 
         p1.setOpponentsBoard(board2);
         p2.setOpponentsBoard(board1);
-        vb.fetchingShips(board1, ships1.getShips(), true);
-        stopBackendUntil(vb.allShipPlaced);
-        vb.fetchingShips(board2, ships1.getShips(), false);
+        vb.fetchingShips(board1, ships1.ships, true);
+        vb.paintIsland(3,3, VisualBoard_Impl.MapElements.FETCHING_GRID_PANEL_P1.getValue());
         stopBackendUntil(vb.allShipPlaced);
 
-        System.out.println("siamo qui");
 
+        vb.fetchingShips(board2, ships2.ships, false);
+        stopBackendUntil(vb.allShipPlaced);
+
+
+        System.out.println("Now starting game session - all ships are located");
+        // Usare i player?
         vb.createGameBoards(p1, p2);
 
-        vb.turnP1();
-        stopBackendUntil(vb.endTurn);
+        
+        for (int i =0; i < 10; i++) {
+            vb.turnP1();
+            stopBackendUntil(vb.endTurn);
 
-        vb.turnP2();
-        stopBackendUntil(vb.endTurn);
+            if(p2.hasShips()) {
+                return;
+            }
+
+            vb.turnP2();
+            stopBackendUntil(vb.endTurn);
+
+            if (p1.hasShips()) {
+                return;
+            }
+        }
+
+
     }
 
 
