@@ -73,6 +73,8 @@ public class VisualBoard_ImplTest {
         // Usare i player?
         gameWindow.createGameBoards(me, opponent);
 
+        // TODO close the program at the end
+        // TODO if player hit a ship shoul performe a second attack
         for (int i =0; i < nTurns; i++) {
             gameWindow.turnP1();
             stopBackendUntil(gameWindow.endTurn);

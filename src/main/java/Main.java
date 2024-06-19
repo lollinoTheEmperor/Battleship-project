@@ -77,7 +77,8 @@ public class Main {
     //     }
     //     B1.endTurn = false;
     // }
-    
+
+//    FIXME, old problem with fetching ship & size of the board is not respected
     public static void referee() throws InterruptedException {
 
         JPanel panel = new JPanel();
@@ -114,6 +115,7 @@ public class Main {
             String widthStr = widthGB.getText();
             String shipStr = shipC.getText();
             JOptionPane.showMessageDialog(null, "Height: " + heightStr + ", Width: " + widthStr + ", Ships: " + shipStr);
+            // TODO method to save heightGB.getText(); or width (+ check if is a square) and save to reuse in the constructor of visualboard
         }
 
         int shipCount;
@@ -169,8 +171,8 @@ public class Main {
         BoardStart board2 = new BoardStart(namep2, width, height);
         BoardFeedback feedb2 = new BoardFeedback(width, height);
         Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, ships2);
-
-        VisualBoard_Impl vb = new VisualBoard_Impl();
+        // TODO decidere se usare un single size per square o fare with e height
+        VisualBoard_Impl vb = new VisualBoard_Impl(height);
        
         System.out.println("quiiii");
 
@@ -185,7 +187,12 @@ public class Main {
         System.out.println("siamo qui");
 
         vb.createGameBoards(p1, p2);
-        
+
+        vb.turnP1();
+        stopBackendUntil(vb.endTurn);
+
+        vb.turnP2();
+        stopBackendUntil(vb.endTurn);
     }
 
 

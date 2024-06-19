@@ -5,6 +5,8 @@ import java.util.Set;
 
 interface VisualBoard {
 
+    void createGameBoards(Player_Impl p1, Player_Impl p2);
+
     void createVisualBoard(JPanel panel, boolean isP1, Player_Impl player);
 
     JPanel getjPanel(int size, JTextField textField, JButton button);
@@ -23,7 +25,6 @@ interface VisualBoard {
      */
     int validateCoordPlaceShip(int startX, int startY, int endX, int endY);
 
-    //        TODO disabilitare le caselle
     void turnP1();
 
     void turnP2();

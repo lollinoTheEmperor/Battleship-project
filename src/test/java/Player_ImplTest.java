@@ -17,8 +17,8 @@ public class Player_ImplTest {
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
         shipManager.addShip(ship);
-        // TODO check is duplicated ?
-//        opponentsBoard.putWater();
+        // TODO check method is it already called previously ?
+        //  opponentsBoard.putWater();
         opponentsBoard.placeShip(0,0,0,ship);
         me.setOpponentsBoard(opponentsBoard);
     }

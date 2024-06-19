@@ -51,6 +51,10 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
     public VisualBoard_Impl() {
+        this(10);                                                                                              // default value
+    }
+
+    public VisualBoard_Impl(int boardSize) {
         singleBoardWidth = 450;
         singleBoardHeight = 300;
         placeShipColor = Color.GRAY;
@@ -58,7 +62,7 @@ public class VisualBoard_Impl implements VisualBoard {
         hitColor = Color.RED;
         waterColor = Color.GRAY;
         boardColor = Color.WHITE;
-        tableSize = 10;
+        tableSize = boardSize;
 
         gameFrame = new JFrame("Game Window");
         gameFrame.pack();
@@ -103,6 +107,8 @@ public class VisualBoard_Impl implements VisualBoard {
         componentMap.put(MapElements.FETCHING_GRID_PANEL_P2.getValue(), fetchingGridPanelP2);
     }
 
+
+    @Override
     public void createGameBoards(Player_Impl p1, Player_Impl p2) {
         gameFrame.repaint();
 
@@ -142,9 +148,8 @@ public class VisualBoard_Impl implements VisualBoard {
             public void actionPerformed(ActionEvent e) {                                                                // eventListener to perform attack
                 System.out.print(player.name +"->");
                 int[] saveXY = parseCord(textField.getText().toUpperCase());
-                // FIXME
+                // FIXME performe multiple attacks is is HIT
                 boolean attackFeedback = player.attack(saveXY[0], saveXY[1]);
-                // TODO change color based on the feedback
                 paintFeedback(saveXY[0], saveXY[1], attackFeedback == HIT? hitColor : waterColor , boardPanel);
                 endTurn[0] = true;
             }
@@ -233,13 +238,6 @@ public class VisualBoard_Impl implements VisualBoard {
         return new int[]{Integer.parseInt(parseCoord[0]), Integer.parseInt(parseCoord[1])};
     }
 
-//TODO placeShip (shiplayout, nNavi)
-// placeShip piu volte per ogni barca se ritorna vero ok, se falso rifare il place ,
-// return false/true se tutto aposto.
-
-//    FIXME con errore sulla mia board non funziona correttamente
-
-
     @Override
     public void fetchingShips(BoardStart shipLayout, Map<Integer, Ship_Impl> ships, boolean isP1) {
 
@@ -274,9 +272,8 @@ public class VisualBoard_Impl implements VisualBoard {
                         return;
                     }
 
-// TODO fare label per n barche qui e dallalrta
+// TODO fare label per n barche qui e dall'alrta
 
-                    // TODO call method with saved x y and other form save cord
                     System.out.println("Ship from " + rememberXforPlace + ":" + rememberYforPlace + " to " + saveCoord[0] + ":" + saveCoord[1]);
 
                     int shipId = shipCopy.keySet().iterator().next();
@@ -310,7 +307,8 @@ public class VisualBoard_Impl implements VisualBoard {
                         paintFeedback(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1], placeShipColor, boardPanel);
                         shipCopy.remove(shipId);
                     } else {
-                        coordField.setText("Ship do not fit!");
+                        // FIXME wrong error message, probably invalid location or similar
+                        coordField.setText("Invalid locations, Ship do not fit!");
                         paintFeedback(rememberXforPlace, rememberYforPlace, boardColor, boardPanel);                         // reset previous square painted
                     }
 
@@ -453,5 +451,5 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.repaint();
     }
 
-   
+    // TODO/FIXME use message dialog for problems or errors
 }
