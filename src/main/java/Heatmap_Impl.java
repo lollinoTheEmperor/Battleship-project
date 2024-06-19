@@ -4,20 +4,22 @@ public class Heatmap_Impl implements Heatmap {
     private ShipManager shipman;
     public Heatmap_Impl(BoardFeedback board, ShipManager shipman) {
         this.board = board;
-        heatmap = new int[10][10];
+        heatmap = new int[board.width][board.height];
         this.shipman=shipman;
     }
 
     @Override
     public void updateheatMap() {
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        int width = board.width;
+        int height = board.height;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 heatmap[i][j] = calculateProbability(i, j);
             }
         }
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 if (board.isAlreadyAttacked(i, j)) {
                     heatmap[i][j] = 0;
                 }
@@ -32,7 +34,8 @@ public class Heatmap_Impl implements Heatmap {
 
     private int calculateProbability(int x, int y) {
         int probability = 0;
-
+        int width = board.width;
+        int height = board.height;
         if (!board.isAlreadyAttacked(x, y)) {
             for (Ship_Impl ship : shipman.ships.values()) {
                 int length = ship.getSize();
@@ -41,7 +44,7 @@ public class Heatmap_Impl implements Heatmap {
                     for (int k = 0; k < length; k++) {
                         int newX = direction == 0 ? x + k : x;
                         int newY = direction == 1 ? y + k : y;
-                        if (newX >= 10 || newY >= 10 || board.isAlreadyAttacked(newX, newY)) {
+                        if (newX >= width || newY >= height || board.isAlreadyAttacked(newX, newY)) {
                             possible = false;
                             break;
                         }

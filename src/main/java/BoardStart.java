@@ -36,6 +36,7 @@ public class BoardStart extends GameBoard_Impl {
                 int newX = (orientation == HORIZONTAL) ? x + i : x;
                 int newY = (orientation == VERTICAL) ? y + i : y;
                 board_Game[newX][newY]=ship.getId();
+                ship.addCoordinate(newX, newY);
             }
 
             System.out.println("Ship placed successfully.");

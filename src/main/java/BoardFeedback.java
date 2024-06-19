@@ -10,6 +10,7 @@ public class BoardFeedback extends GameBoard_Impl {
         super(width, height);
     }
 
+
     // Check if the cell was already hit
     public boolean isAlreadyAttacked(int x, int y) {
         return "hit".equals(board_Game[x][y]) || "miss".equals(board_Game[x][y]);
@@ -42,11 +43,19 @@ public class BoardFeedback extends GameBoard_Impl {
             Ship_Impl shipHitted = allship.getShipById(cellContent);
             if(shipHitted.takeDamage()){
                 allship.removeShipById(shipHitted.getId());
+                markShipDestructed(shipHitted);
             };
             return true;
         }
     }
-
+    private void markShipDestructed(Ship_Impl ship) {
+        ship.getCoordinates().stream()
+                .forEach(coordinate -> {
+                    int x = coordinate[0];
+                    int y = coordinate[1];
+                    board_Game[x][y] = "destruct";
+                });
+    }
 
 
 }

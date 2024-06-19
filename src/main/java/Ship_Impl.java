@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Map;
 
 
@@ -7,7 +8,7 @@ public class Ship_Impl implements Ship{
     String typeShip;    //se vogliamo dare un nome ai tipi di barche
     private String id_ship; //id ship for position on the map
     private int hp; //health of the ship
-
+    List<int[]> coordinates;
 
     public Ship_Impl(int size, String type, String id) {
         this.size = size;
@@ -21,6 +22,15 @@ public class Ship_Impl implements Ship{
     }
     public int getSize(){return size;}
     public int getHp(){return hp;}
+
+    public void addCoordinate(int x, int y) {
+        coordinates.add(new int[]{x, y});
+    }
+
+    public List<int[]> getCoordinates() {
+        return coordinates;
+    }
+
     //when hit reduce hp of Ship
     @Override
     public boolean takeDamage() {
