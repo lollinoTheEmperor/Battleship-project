@@ -17,8 +17,11 @@ public class BotPlayerTest {
         myFeedback = new BoardFeedback(10, 10);
 
         Ship_Impl ship = new Ship_Impl(3, "ship", "1");
+        Ship_Impl ship2 = new Ship_Impl(3, "ship", "2");
         shipManager.addShip(ship);
         opponentsBoard.placeShip(0, 0, 0, ship);
+        shipManager.addShip(ship2);
+        opponentsBoard.placeShip(5, 5, 0, ship2);
 
         botPlayer = new BotPlayer("Bot", myBoard, opponentsBoard, myFeedback, shipManager);
     }
@@ -27,6 +30,12 @@ public class BotPlayerTest {
     public void testBotMakeMove() {
         botPlayer.updateHeatmap();
         assertTrue(botPlayer.makeMove());
+        botPlayer.updateHeatmap();
+        botPlayer.makeMove();
+        botPlayer.updateHeatmap();
+        botPlayer.makeMove();
+        botPlayer.updateHeatmap();
+        botPlayer.makeMove();
         botPlayer.updateHeatmap();
         botPlayer.makeMove();
         botPlayer.updateHeatmap();

@@ -52,4 +52,12 @@ public class GameBoard_Impl implements GameBoard {
         public boolean areValidCoordinates(int x, int y) {
             return (x >= 0 && x < width && y >= 0 && y < height);
         }
+
+        protected void markShipDestructed(Ship_Impl ship) {
+        ship.getCoordinates().forEach(coordinate -> {
+            int x = coordinate[0];
+            int y = coordinate[1];
+            board_Game[x][y] = "destructed";
+        });
+    }
 }

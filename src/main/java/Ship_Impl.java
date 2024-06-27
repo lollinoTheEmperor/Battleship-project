@@ -15,8 +15,13 @@ public class Ship_Impl implements Ship{
         this.size = size;
         this.hp = size;
         id_ship = id;
+<<<<<<< Updated upstream
        this.typeShip = type;
        coordinates = new ArrayList<int[]>();
+=======
+        this.typeShip = type;
+        this.coordinates = new ArrayList<>();
+>>>>>>> Stashed changes
     }
 
     public String getId(){

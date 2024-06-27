@@ -13,7 +13,7 @@ public class BoardFeedback extends GameBoard_Impl {
 
     // Check if the cell was already hit
     public boolean isAlreadyAttacked(int x, int y) {
-        return "hit".equals(board_Game[x][y]) || "miss".equals(board_Game[x][y]);
+        return "hit".equals(board_Game[x][y]) || "miss".equals(board_Game[x][y]) || "destructed".equals(board_Game[x][y]);
     }
 
     // Check if the cell was a hit
@@ -35,27 +35,21 @@ public class BoardFeedback extends GameBoard_Impl {
         if ("water".equals(cellContent)) {
             board_Game[x][y] = "miss";
             return false;
-        } else if ("hit".equals(board_Game[x][y]) || "miss".equals(board_Game[x][y])) {
+        } else if ("hit".equals(board_Game[x][y]) || "miss".equals(board_Game[x][y]) || "destructed".equals(board_Game[x][y])) {
             System.out.println("Cell already attacked");
             return true;
-        } else {
+        }  else {
             board_Game[x][y] = "hit";
             Ship_Impl shipHitted = allship.getShipById(cellContent);
             if(shipHitted.takeDamage()){
                 allship.removeShipById(shipHitted.getId());
                 markShipDestructed(shipHitted);
+                boardWithShip.markShipDestructed(shipHitted);
             };
             return true;
         }
     }
-    private void markShipDestructed(Ship_Impl ship) {
-        ship.getCoordinates().stream()
-                .forEach(coordinate -> {
-                    int x = coordinate[0];
-                    int y = coordinate[1];
-                    board_Game[x][y] = "destruct";
-                });
-    }
+
 
 
 }

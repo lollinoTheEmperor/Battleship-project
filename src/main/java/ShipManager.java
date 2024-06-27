@@ -9,14 +9,19 @@ public class ShipManager {
     }
 
     public void addShip(Ship_Impl ship) {
-        ships.put(Integer.parseInt(ship.getId()), ship);
+        int shipId = Integer.parseInt(ship.getId());
+        ships.put(shipId, ship);
     }
 
     public Ship_Impl getShipById(String id) {
-        return ships.get(Integer.parseInt(id));
+        int shipId = Integer.parseInt(id);
+        Ship_Impl ship = ships.get(shipId);
+        return ship;
     }
+
     public void removeShipById(String id) {
-        ships.remove(Integer.parseInt(id));
+        int shipId = Integer.parseInt(id);
+        ships.remove(shipId);
     }
 
     public Map<Integer, Ship_Impl> getShips() {

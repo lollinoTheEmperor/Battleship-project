@@ -39,7 +39,7 @@ public class BoardStart extends GameBoard_Impl {
                 ship.addCoordinate(newX, newY);
             }
 
-            System.out.println("Ship placed successfully.");
+            System.out.println("Ship placed successfully with ID: " + ship.getId());
              return true;
         }
         return false;
