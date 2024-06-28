@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,5 +48,35 @@ public class BotPlayerTest {
         botPlayer.makeMove();
         botPlayer.makeMove();
         botPlayer.makeMove();
+    }
+
+    //will always be true but when uncommented the related parts in BotPlayer we can visualise the board
+    @Nested
+    class ShipPlacement {
+
+        @Test
+        public void FirstPlacement(){
+            assertTrue(true);
+        }
+
+        @Test
+        public void SecondPlacement(){
+            assertTrue(true);
+        }
+
+        @Test
+        public void ThirdPlacement(){
+            assertTrue(true);
+        }
+
+        @Test
+        public void FourthPlacement(){
+            assertTrue(true);
+        }
+
+        @Test
+        public void FifthPlacement(){
+            assertTrue(true);
+        }
     }
 }

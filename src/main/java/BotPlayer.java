@@ -16,6 +16,13 @@ public class BotPlayer extends Player_Impl {
         this.moveCount = 0;
 
         placeShip();
+        // needed for visualising the board during the tests "ShipPlacement"
+//        for (int i=0;i<myBoard.getWidth();i++){
+//            for (int j=0;j<myBoard.getHeight();j++){
+//                System.out.print("\t"+myBoard.getCell(i,j));
+//            }
+//            System.out.println();
+//        }
     }
 
     private void updateHeatmap() {
@@ -24,11 +31,11 @@ public class BotPlayer extends Player_Impl {
 
     public void placeShip() {
         Random random = new Random();
-        boolean done = false;
         int x,y;
         for (int i:shipManager.ships.keySet()){
             int orientation = random.nextInt(2);
             int shipSize = shipManager.getShipById(Integer.toString(i)).getSize();
+            boolean done = false;
             while (!done){
                 switch (orientation){
                     case 0:
