@@ -187,11 +187,11 @@ public class Main {
 
         BoardStart board1 = new BoardStart(namep1, width, height);
         BoardFeedback feedb1 = new BoardFeedback(width, height);
-        Player_Impl p1 = new Player_Impl(namep1, board1, feedb1, ships1);
+        Player_Impl p1 = new Player_Impl(namep1, board1, feedb1, ships1, ships2);
 
         BoardStart board2 = new BoardStart(namep2, width, height);
         BoardFeedback feedb2 = new BoardFeedback(width, height);
-        Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, ships2);
+        Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, ships2, ships1);
         // TODO decidere se usare un single size per square o fare with e height
         VisualBoard_Impl vb = new VisualBoard_Impl(height);
        

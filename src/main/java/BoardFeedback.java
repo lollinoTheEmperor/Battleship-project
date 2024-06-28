@@ -26,6 +26,7 @@ public class BoardFeedback extends GameBoard_Impl {
     // take one hp from the ship, check if it's still alive and if not all the cell with the
     // id of the ship are putted as destroyed and if it was already attacked in console log says
     // already attacked
+    // FIXME wrong x and y for check in tables
     public boolean addFeedBack(BoardStart boardWithShip, int x, int y, ShipManager allship){
         //check if coordinates valid
         if (!areValidCoordinates(x,y)) {

@@ -12,6 +12,7 @@ public class VisualBoard_ImplTest {
     protected Ship_Impl shipS = new Ship_Impl(2, "light", "1");   // int size, String type, String id
     protected Ship_Impl shipM = new Ship_Impl(3, "medium", "2");   // int size, String type, String id
     protected Ship_Impl shipL = new Ship_Impl(4, "heavy", "3");   // int size, String type, String id
+    protected Ship_Heavy shipHeavy = new Ship_Heavy(4, "heavy", "4");   // int size, String type, String id
 
     public ShipManager shipManagerP1 = new ShipManager();
     public ShipManager shipManagerP2 = new ShipManager();
@@ -43,12 +44,13 @@ public class VisualBoard_ImplTest {
 //        shipManagerP1.addShip(shipM);
 //        shipManagerP1.addShip(shipL);
 
-        shipManagerP2.addShip(shipS);
+        shipManagerP2.addShip(shipHeavy);
+//        shipManagerP2.addShip(shipS);
 //        shipManagerP2.addShip(shipM);
 //        shipManagerP2.addShip(shipL);
 
-        Player_Impl me = new Player_Impl("me", boardStartP1, boardFeedbackP1, shipManagerP1);
-        Player_Impl opponent = new Player_Impl("opponent", boardStartP2, boardFeedbackP2, shipManagerP2);
+        Player_Impl me = new Player_Impl("me", boardStartP1, boardFeedbackP1, shipManagerP1, shipManagerP2);
+        Player_Impl opponent = new Player_Impl("opponent", boardStartP2, boardFeedbackP2, shipManagerP2, shipManagerP1);
 
         me.setOpponentsBoard(boardStartP2);
         opponent.setOpponentsBoard(boardStartP1);
@@ -72,6 +74,11 @@ public class VisualBoard_ImplTest {
         System.out.println("Now starting game session - all ships are located");
         // Usare i player?
         gameWindow.createGameBoards(me, opponent);
+
+        
+//        Ship_Heavy heavyShip = new Ship_Heavy(4, "heavy", "3");
+//        me.attack(2,3, heavyShip);
+
 
         // TODO close the program at the end
         // TODO if player hit a ship shoul performe a second attack

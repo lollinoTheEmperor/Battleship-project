@@ -6,8 +6,11 @@ public class BotPlayer extends Player_Impl {
     private CheckboardStrategy checkboardStrategy;
     private SpiralStrategy spiralStrategy;
     private int moveCount;
-    public BotPlayer(String name, BoardStart myBoard, BoardStart opponentsBoard, BoardFeedback myFeedbacks, ShipManager shipManager) {
-        super(name, myBoard, myFeedbacks, shipManager);
+    private ShipManager opponentsShipManager;
+
+
+    public BotPlayer(String name, BoardStart myBoard, BoardStart opponentsBoard, BoardFeedback myFeedbacks, ShipManager shipManager, ShipManager opponentsShipManager) {
+        super(name, myBoard, myFeedbacks, shipManager, opponentsShipManager);
         this.heatmap = new Heatmap_Impl(myFeedbacks, shipManager);
         this.setOpponentsBoard(opponentsBoard);
         this.checkboardStrategy = new CheckboardStrategy();
@@ -66,7 +69,9 @@ public class BotPlayer extends Player_Impl {
         updateHeatmap();
         int[] move = getNextMove();
         moveCount++;
-        return attack(move[0], move[1]);
+        // FIXME now return tipe is Set<ShotsFeedback> (it is an object with boolean hit, and int x,y)
+        //  return attack(move[0], move[1]);
+        return false;
     }
 
     private void changeStrategyIfNeeded() {

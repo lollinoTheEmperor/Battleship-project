@@ -3,8 +3,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class VisualBoard_Impl implements VisualBoard {
 
@@ -149,11 +148,19 @@ public class VisualBoard_Impl implements VisualBoard {
                 System.out.print(player.name +"->");
                 int[] saveXY = parseCord(textField.getText().toUpperCase());
                 // FIXME performe multiple attacks is is HIT
-                boolean attackFeedback = player.attack(saveXY[0], saveXY[1]);
-                paintFeedback(saveXY[0], saveXY[1], attackFeedback == HIT? hitColor : waterColor , boardPanel);
+
+                boolean endAttack = false;
+                Set<ShotsFeedback> attackFeedback = new HashSet<>();
+
+                attackFeedback.addAll(player.attack(saveXY[0], saveXY[1]));
+
+                for (ShotsFeedback attack : attackFeedback) {
+                    paintFeedback(attack.x, attack.y, attack.hit == HIT ? hitColor : waterColor, boardPanel);
+                    endAttack |= attack.hit;
+                }
 
                 // FIXME better check for winning condition
-                if (!attackFeedback)                                                                                    // attack missed change player turn
+                if (!endAttack)                                                                                    // attack missed change player turn
                     endTurn[0] = true;
             }
         });
@@ -385,6 +392,11 @@ public class VisualBoard_Impl implements VisualBoard {
         }
         return ERROR;
     }
+
+    private void updateRemainingShipsLabel() {
+        // TODO
+    }
+
 
     @Override
     public void paintFeedback(int startX, int startY, Color feedbackColor, JPanel targetPanel) {

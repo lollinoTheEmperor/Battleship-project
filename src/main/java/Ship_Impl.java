@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class Ship_Impl implements Ship{
@@ -43,5 +44,10 @@ public class Ship_Impl implements Ship{
         return this.hp == 0;
     }
 
+    public Set<ShotsFeedback> attack (BoardFeedback myFeedbacks, BoardStart opponentsBoard, int x, int y, ShipManager shipManager) {
+
+        System.out.println("Attack test for normal ship");
+        return Set.of(new ShotsFeedback(myFeedbacks.addFeedBack(opponentsBoard,x,y, shipManager), x, y));
+    }
 }
 
