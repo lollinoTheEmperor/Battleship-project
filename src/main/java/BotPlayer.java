@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class BotPlayer extends Player_Impl {
     private Heatmap_Impl heatmap;
     private AttackStrategy strategy;
@@ -12,10 +14,36 @@ public class BotPlayer extends Player_Impl {
         this.spiralStrategy = new SpiralStrategy();
         this.strategy = checkboardStrategy;
         this.moveCount = 0;
+
+        placeShip();
     }
 
     private void updateHeatmap() {
         heatmap.updateheatMap();
+    }
+
+    public void placeShip() {
+        Random random = new Random();
+        boolean done = false;
+        int x,y;
+        for (int i:shipManager.ships.keySet()){
+            int orientation = random.nextInt(2);
+            int shipSize = shipManager.getShipById(Integer.toString(i)).getSize();
+            while (!done){
+                switch (orientation){
+                    case 0:
+                        x = random.nextInt(myBoard.getWidth());
+                        y = random.nextInt(myBoard.getHeight()-shipSize);
+                        done = myBoard.placeShip(x, y, orientation, shipManager.getShipById(Integer.toString(i)));
+                        break;
+                    case 1:
+                        x = random.nextInt(myBoard.getWidth()-shipSize)+shipSize;
+                        y = random.nextInt(myBoard.getHeight());
+                        done = myBoard.placeShip(x, y, orientation, shipManager.getShipById(Integer.toString(i)));
+                        break;
+                }
+            }
+        }
     }
 
     public int[] getNextMove() {
