@@ -10,17 +10,21 @@ public class BotPlayer extends Player_Impl {
         this.setOpponentsBoard(opponentsBoard);
         this.checkboardStrategy = new CheckboardStrategy();
         this.spiralStrategy = new SpiralStrategy();
-        this.strategy = checkboardStrategy; // Strategia iniziale
+        this.strategy = checkboardStrategy;
         this.moveCount = 0;
     }
 
-    public void updateHeatmap() {
+    private void updateHeatmap() {
         heatmap.updateheatMap();
     }
 
     public int[] getNextMove() {
         changeStrategyIfNeeded();
-        return strategy.getNextMove(heatmap, myFeedbacks);
+        int[] nextMove = findAdjacentMove(); // Cerca prima le celle adiacenti
+        if (nextMove == null) {
+            nextMove = strategy.getNextMove(heatmap, myFeedbacks);
+        }
+        return nextMove;
     }
 
     public boolean makeMove() {
@@ -39,5 +43,29 @@ public class BotPlayer extends Player_Impl {
             }
             moveCount = 0;
         }
+    }
+
+    private int[] findAdjacentMove() {
+        int width = myFeedbacks.getWidth();
+        int height = myFeedbacks.getHeight();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (myFeedbacks.isHit(x, y)) {
+                    int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+                    for (int[] dir : directions) {
+                        int newX = x + dir[0];
+                        int newY = y + dir[1];
+                        if (isValidMove(newX, newY, width, height)) {
+                            return new int[]{newX, newY};
+                        }
+                    }
+                }
+            }
+        }
+        return null; // Nessuna cella adiacente trovata
+    }
+
+    private boolean isValidMove(int x, int y, int width, int height) {
+        return x >= 0 && x < width && y >= 0 && y < height && !myFeedbacks.isAlreadyAttacked(x, y);
     }
 }

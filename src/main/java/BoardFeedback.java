@@ -22,7 +22,9 @@ public class BoardFeedback extends GameBoard_Impl {
     }
 
     //check the board with the ship for the attack if it has water then putt miss,
-    // otherwise put hit and if it was already attacked in console log says
+    // otherwise put hit, with hit is called the method take damage, that
+    // take one hp from the ship, check if it's still alive and if not all the cell with the
+    // id of the ship are putted as destroyed and if it was already attacked in console log says
     // already attacked
     public boolean addFeedBack(BoardStart boardWithShip, int x, int y, ShipManager allship){
         //check if coordinates valid
@@ -41,6 +43,10 @@ public class BoardFeedback extends GameBoard_Impl {
         }  else {
             board_Game[x][y] = "hit";
             Ship_Impl shipHitted = allship.getShipById(cellContent);
+            //if take damage, call the method to take an hp, and if
+            // it's destructed (so th method return true) remove the
+            // ship from the ship manage, and putt destructed where
+            // there was the id
             if(shipHitted.takeDamage()){
                 allship.removeShipById(shipHitted.getId());
                 markShipDestructed(shipHitted);
@@ -49,7 +55,4 @@ public class BoardFeedback extends GameBoard_Impl {
             return true;
         }
     }
-
-
-
 }

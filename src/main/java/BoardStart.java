@@ -20,8 +20,6 @@ public class BoardStart extends GameBoard_Impl {
                 System.out.println("Ship does not fit on the game board.");
                 return false;
             }
-
-
             // Check if the coordinates are already occupied
             for (int i = 0; i < ship.getSize(); i++) {
                 int newX = (orientation == HORIZONTAL) ? x + i : x;
@@ -38,8 +36,6 @@ public class BoardStart extends GameBoard_Impl {
                 board_Game[newX][newY]=ship.getId();
                 ship.addCoordinate(newX, newY);
             }
-
-            System.out.println("Ship placed successfully with ID: " + ship.getId());
              return true;
         }
         return false;
