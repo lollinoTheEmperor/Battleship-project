@@ -65,20 +65,6 @@ public class Main {
 
 
     }
-    
-        // created to test tables TODO insert this in other class 'referee'
-    // public static void turnManager(VisualBoard_Impl B1, VisualBoard_Impl B2){
-    //     B2.hideTable();
-    //     B1.showTable();
-    //     while (!B1.endTurn) {
-    //         try {
-    //                 Thread.sleep(250);
-    //         } catch (InterruptedException e) {
-    //             throw new RuntimeException(e);
-    //         }
-    //     }
-    //     B1.endTurn = false;
-    // }
 
 //    FIXME, old problem with fetching ship & size of the board is not respected
     public static void referee() throws InterruptedException {
@@ -193,7 +179,7 @@ public class Main {
         BoardFeedback feedb2 = new BoardFeedback(width, height);
         Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, ships2, ships1);
         // TODO decidere se usare un single size per square o fare with e height
-        VisualBoard_Impl vb = new VisualBoard_Impl(height);
+        VisualBoard_Impl vb = new VisualBoard_Impl(height, p1, p2);
        
         System.out.println("quiiii");
 
@@ -201,7 +187,7 @@ public class Main {
         p1.setOpponentsBoard(board2);
         p2.setOpponentsBoard(board1);
         vb.fetchingShips(board1, ships1.ships, true);
-        vb.paintIsland(3,3, VisualBoard_Impl.MapElements.FETCHING_GRID_PANEL_P1.getValue());
+        vb.paintIsland(3,3, true);
         stopBackendUntil(vb.allShipPlaced);
 
 
@@ -218,14 +204,14 @@ public class Main {
             vb.turnP1();
             stopBackendUntil(vb.endTurn);
 
-            if(p2.hasShips()) {
+            if(!p2.hasShips()) {
                 return;
             }
 
             vb.turnP2();
             stopBackendUntil(vb.endTurn);
 
-            if (p1.hasShips()) {
+            if (!p1.hasShips()) {
                 return;
             }
         }

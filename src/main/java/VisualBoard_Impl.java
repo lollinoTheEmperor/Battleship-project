@@ -11,7 +11,7 @@ public class VisualBoard_Impl implements VisualBoard {
     final boolean HIT = true;
 
     protected int tableSize;
-    private final Color placeShipColor, boardColor, islandColor, hitColor, waterColor;
+    private final Color placeShipColor, waterColor, islandColor, hitColor, missColor, healColor;
 
     protected JFrame gameFrame;
     protected JPanel board1, board2;
@@ -23,6 +23,9 @@ public class VisualBoard_Impl implements VisualBoard {
     protected int singleBoardWidth, singleBoardHeight;
 
     protected Map<String, Component> componentMap;
+
+    protected Player_Impl player1;
+    protected Player_Impl player2;
 
 
     public enum MapElements {                                                                                           // created variables to have help when writing code
@@ -49,18 +52,19 @@ public class VisualBoard_Impl implements VisualBoard {
     }
 
 
-    public VisualBoard_Impl() {
-        this(10);                                                                                              // default value
+    public VisualBoard_Impl(Player_Impl p1, Player_Impl p2) {
+        this(10, p1, p2);                                                                                              // default value
     }
 
-    public VisualBoard_Impl(int boardSize) {
+    public VisualBoard_Impl(int boardSize, Player_Impl player1, Player_Impl player2) {
         singleBoardWidth = 450;
         singleBoardHeight = 300;
         placeShipColor = Color.GRAY;
         islandColor = Color.BLACK;
         hitColor = Color.RED;
-        waterColor = Color.GRAY;
-        boardColor = Color.WHITE;
+        missColor = Color.GRAY;
+        waterColor = Color.WHITE;
+        healColor = Color.YELLOW;
         tableSize = boardSize;
 
         gameFrame = new JFrame("Game Window");
@@ -80,6 +84,9 @@ public class VisualBoard_Impl implements VisualBoard {
 
         componentMap = new HashMap<>();
         createComponents();
+
+        this.player1 = player1;
+        this.player2 = player2;
     }
 
     private void createComponents() {
@@ -111,8 +118,8 @@ public class VisualBoard_Impl implements VisualBoard {
     public void createGameBoards(Player_Impl p1, Player_Impl p2) {
         gameFrame.repaint();
 
-        createVisualBoard(board1, true, p1);
-        createVisualBoard(board2, false, p2);
+        createVisualBoard(board1, true);
+        createVisualBoard(board2, false);
 
         JTextField textField1 = (JTextField) componentMap.get(MapElements.TEXT_FIELD_P1.getValue());
         JTextField textField2 = (JTextField) componentMap.get(MapElements.TEXT_FIELD_P2.getValue());
@@ -127,7 +134,9 @@ public class VisualBoard_Impl implements VisualBoard {
     }
 
     @Override
-    public void createVisualBoard(JPanel panel, boolean isP1, Player_Impl player) {
+    public void createVisualBoard(JPanel panel, boolean isP1) {
+
+        Player_Impl player = isP1 ? player1 : player2;
 
         JTextField textField = new JTextField();
         JButton button = new JButton("Attack!!");
@@ -145,22 +154,20 @@ public class VisualBoard_Impl implements VisualBoard {
         button.setEnabled(false);                                                                                       // is set to disable but in method getjPanel, after a click will be re-enabled
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {                                                                // eventListener to perform attack
-                System.out.print(player.name +"->");
+                System.out.print(player.name + "->");
                 int[] saveXY = parseCord(textField.getText().toUpperCase());
-                // FIXME performe multiple attacks is is HIT
 
-                boolean endAttack = false;
+                boolean attacking = false;
                 Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
                 attackFeedback.addAll(player.attack(saveXY[0], saveXY[1]));
 
                 for (ShotsFeedback attack : attackFeedback) {
-                    paintFeedback(attack.x, attack.y, attack.hit == HIT ? hitColor : waterColor, boardPanel);
-                    endAttack |= attack.hit;
+                    paintFeedback(attack.x, attack.y, attack.hit == HIT ? hitColor : missColor, boardPanel);
+                    attacking |= attack.hit;
                 }
 
-                // FIXME better check for winning condition
-                if (!endAttack)                                                                                    // attack missed change player turn
+                if (!attacking || (isP1 ? !player2.hasShips() : !player1.hasShips()) )                                                                                    // attack missed change player turn
                     endTurn[0] = true;
             }
         });
@@ -221,7 +228,7 @@ public class VisualBoard_Impl implements VisualBoard {
         for (int i = 0; i < size * size; i++) {                                                                         // creating a grid of buttons to manage input
             final int index = i;                                                                                        // using a eventListener
             JButton square = new JButton();
-            square.setBackground(boardColor);
+            square.setBackground(waterColor);
 //            TODO needed font?
             Font font = new Font("Monospaced", Font.BOLD, 20);
             square.setFont(font);
@@ -317,9 +324,8 @@ public class VisualBoard_Impl implements VisualBoard {
                         paintFeedback(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1], placeShipColor, boardPanel);
                         shipCopy.remove(shipId);
                     } else {
-                        // FIXME wrong error message, probably invalid location or similar
-                        coordField.setText("Invalid locations, Ship do not fit!");
-                        paintFeedback(rememberXforPlace, rememberYforPlace, boardColor, boardPanel);                         // reset previous square painted
+                        coordField.setText("Invalid locations!");
+                        paintFeedback(rememberXforPlace, rememberYforPlace, waterColor, boardPanel);                         // reset previous square painted
                     }
 
                 } else {
@@ -426,14 +432,15 @@ public class VisualBoard_Impl implements VisualBoard {
                 }
             }
         }
-        reloadGameView();
+//        reloadGameView();
     }
 
+    // -todo Possible Private
     protected void paintSquare(Color feedbackColor, JPanel targetPanel, int index) {
         if (index >= 0 && index < targetPanel.getComponentCount()) {
             JButton square = (JButton) targetPanel.getComponent(index);
             square.setBackground(feedbackColor);
-            if (boardColor == feedbackColor)
+            if (feedbackColor == waterColor || feedbackColor == healColor)
                 square.setEnabled(true);
             else
                 square.setEnabled(false);
@@ -441,9 +448,45 @@ public class VisualBoard_Impl implements VisualBoard {
     }
 
     @Override
-    public void paintIsland(int x, int y, String targetPanel) {
-        JPanel panel = (JPanel) componentMap.get(targetPanel);
-        paintFeedback(x, y, islandColor, panel);
+    public void paintIsland(int x, int y, boolean isP1) {
+        JPanel placeShipBoard = (JPanel) (isP1 ? componentMap.get(MapElements.FETCHING_GRID_PANEL_P1.getValue()) : componentMap.get(MapElements.FETCHING_GRID_PANEL_P2.getValue()));
+        paintFeedback(x, y, islandColor, placeShipBoard);
+    }
+
+    public void repaintMap (BoardFeedback sourceBoard, boolean isP1) {
+
+        JPanel targetPanel = (JPanel) componentMap.get((isP1 ? MapElements.GRID_PANEL_P1.getValue() : MapElements.GRID_PANEL_P2.getValue()));
+
+        for(int x = 0; x < sourceBoard.getWidth(); x ++) {
+            for (int y = 0; y < sourceBoard.getHeight(); y++) {
+                switch (sourceBoard.getCell(x,y)) {
+                    case "hit":
+                        paintFeedback(x, y, hitColor, targetPanel);
+                        break;
+
+                    case "miss":
+                        paintFeedback(x, y, missColor, targetPanel);
+                        break;
+
+                    case "water":
+                        paintFeedback(x, y, waterColor, targetPanel);
+                        break;
+
+                    case "heal":
+                        paintFeedback(x, y, healColor, targetPanel);
+                        break;
+
+                    case "island":
+                        paintFeedback(x, y, islandColor, targetPanel);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+//        reloadGameView();
     }
 
     @Override
@@ -466,5 +509,5 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.repaint();
     }
 
-    // TODO/FIXME use message dialog for problems or errors
+    // TODO use message dialog for problems or errors
 }

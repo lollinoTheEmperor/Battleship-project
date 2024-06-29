@@ -25,6 +25,7 @@ public class Ship_Impl implements Ship{
     }
     public int getSize(){return size;}
     public int getHp(){return hp;}
+    public void setHp(int hp){this.hp = hp;}
 
     public void addCoordinate(int x, int y) {
         coordinates.add(new int[]{x, y});
@@ -39,14 +40,12 @@ public class Ship_Impl implements Ship{
     public boolean takeDamage() {
         //if a hit can only take away 1hp, otherwise need more parameters
         if(hp>0){
-          this.hp--;
+            this.hp--;
         }
         return this.hp == 0;
     }
 
     public Set<ShotsFeedback> attack (BoardFeedback myFeedbacks, BoardStart opponentsBoard, int x, int y, ShipManager shipManager) {
-
-        System.out.println("Attack test for normal ship");
         return Set.of(new ShotsFeedback(myFeedbacks.addFeedBack(opponentsBoard,x,y, shipManager), x, y));
     }
 }

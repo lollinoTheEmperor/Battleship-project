@@ -7,7 +7,7 @@ interface VisualBoard {
 
     void createGameBoards(Player_Impl p1, Player_Impl p2);
 
-    void createVisualBoard(JPanel panel, boolean isP1, Player_Impl player);
+    void createVisualBoard(JPanel panel, boolean isP1);
 
     JPanel getjPanel(int size, JTextField textField, JButton button);
 
@@ -25,6 +25,8 @@ interface VisualBoard {
      */
     int validateCoordPlaceShip(int startX, int startY, int endX, int endY);
 
+    void paintIsland(int x, int y, boolean isP1);
+
     void turnP1();
 
     void turnP2();
@@ -32,8 +34,6 @@ interface VisualBoard {
     void paintFeedback(int startX, int startY, Color feedbackColor, JPanel targetPanel);
 
     void paintFeedback(int startX, int startY, int endX, int endY, Color feedbackColor, JPanel targetPanel);
-
-    void paintIsland(int x, int y, String targetPanel);
 
     void reloadGameView();
 
