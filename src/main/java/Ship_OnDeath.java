@@ -9,8 +9,10 @@ public class Ship_OnDeath extends Ship_Impl{
         this.opponentsBoard = opponentsBoard;
     }
 
-    public void onDeath(BoardFeedback myFeedbacks, BoardStart opponentsBoard, int x, int y, ShipManager shipManager){
+    public void onDeath(BoardFeedback myFeedbacks, BoardStart opponentsBoard, ShipManager shipManager){
         for (int i=0;i<3;i++){
+            int x = opponentsBoard.getWidth();
+            int y = opponentsBoard.getHeight();
             attack(myFeedbacks,opponentsBoard,x,y,shipManager);
         }
     }
