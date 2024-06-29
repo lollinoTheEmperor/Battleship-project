@@ -15,7 +15,7 @@ class Heatmap_ImplTest {
         boardFeedback = new BoardFeedback(10, 10);
         shipManager = new ShipManager();
         heatmap = new Heatmap_Impl(boardFeedback, shipManager);
-        // Popolare il board con navi
+        // Populate the board with ship
         playerBoard = new BoardStart("PlayerBoard", 10, 10);
         shipManager.addShip(new Ship_Impl(2, "Destroyer", "1")); // Nave di lunghezza 2
         shipManager.addShip(new Ship_Impl(3, "Submarine", "2")); // Nave di lunghezza 3
@@ -40,7 +40,7 @@ class Heatmap_ImplTest {
         assertTrue(boardFeedback.addFeedBack(playerBoard, 2, 2, shipManager));
         heatmap.updateheatMap();
 
-        // Controlla che le probabilità intorno ai colpi siano aumentate
+        // check if probability is higher
         assertEquals(0, heatmap.getHeatmapValue(2, 2), "Heatmap value at (2, 2) should be 0 because already hitted");
         assertTrue(heatmap.getHeatmapValue(2, 1) > 1, "Heatmap value at (2, 1) should be greater than 1");
         assertTrue(heatmap.getHeatmapValue(2, 3) > 3, "Heatmap value at (2, 3) should be greater than 3");
