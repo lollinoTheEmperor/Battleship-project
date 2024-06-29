@@ -6,7 +6,7 @@
 - Pugnani Stefano ()
 
 **Instrcutions** \
-How to start the project
+mvn package
 
 **Description** \
 This project is a Battleship game with some variations from the traditional version. You can play 1 vs 1 or 1 vs bot. There are different types of ships that perform various kinds of shots. The goal of the game is to eliminate all the ships of the other player.
@@ -18,7 +18,7 @@ This project is a Battleship game with some variations from the traditional vers
 the different (high-level) components and interfaces between components, which third-party libraries were used (if any), and some programming techniques (seen in the course or not) that were particularly relevant for this project.
 
 **Human experience** \
-The work was divided equally as follow: \
+The work was divided equally as follow: 
 * Gruber: \
  -Main \
  -Ship \
@@ -54,7 +54,7 @@ The work was divided equally as follow: \
   -SpiralStrategy 
   
 Each one has also done the respective tests. \
-Git was used to communicate and develop on different branches. Because of this, we had many branches and sometimes needed to merge them, which allowed us to develop the game faster. Each one faced different challenges in this project, some of which were similar, such as how to organize the code before actually writing it. We will describe one individual challenge for each member: \
+Git was used to communicate and develop on different branches. Because of this, we had many branches and sometimes needed to merge them, which allowed us to develop the game faster. Each one faced different challenges in this project, some of which were similar, such as how to organize the code before actually writing it. We will describe one individual challenge for each member: 
 
 * Gruber: 
 * Larcher: 
