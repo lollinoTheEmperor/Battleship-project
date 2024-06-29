@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Set;
 
 public class BotPlayer extends Player_Impl {
     private Heatmap_Impl heatmap;
@@ -69,13 +70,12 @@ public class BotPlayer extends Player_Impl {
     }
     //update the heat map, call getNextMove and adjour the move count,
     // attack in base which one is the next move
-    public boolean makeMove() {
+    public Set<ShotsFeedback> makeMove() {
         heatmap.updateheatMap();
         int[] move = getNextMove();
         moveCount++;
-        // FIXME now return tipe is Set<ShotsFeedback> (it is an object with boolean hit, and int x,y)
-        //  return attack(move[0], move[1]);
-        return false;
+        Ship_Impl ship = shipManager.getShipById(shipManager.ships.entrySet().stream().findFirst().get().getKey().toString());
+        return ship.attack(myFeedbacks, opponentsBoard, move[0], move[1], opponentsShipManager);
     }
     //every three move it change the strategy.
     private void changeStrategyIfNeeded() {
