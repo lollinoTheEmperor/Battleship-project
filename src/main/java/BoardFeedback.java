@@ -51,9 +51,9 @@ public class BoardFeedback extends GameBoard_Impl {
                 if (shipHitted.typeShip.equals("Ship_OnDeath")){
                     ((Ship_OnDeath)shipHitted).onDeath(this,boardWithShip,allship);
                 }
-                allship.removeShipById(shipHitted.getId());
                 markShipDestructed(shipHitted);
                 boardWithShip.markShipDestructed(shipHitted);
+                allship.removeShipById(shipHitted.getId());
             }
             return true;
         }
