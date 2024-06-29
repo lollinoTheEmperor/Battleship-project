@@ -16,16 +16,14 @@ The scope of the game is to eliminate all the ship of the other player.
 ?video or text guide?
 
 **Implementation of the project**
-the different (high-level) components and interfaces between components,
-which third-party libraries were used (if any), and
-some programming techniques (seen in the course or not) that were particularly relevant for this project.
+the different (high-level) components and interfaces between components, which third-party libraries were used (if any), and some programming techniques (seen in the course or not) that were particularly relevant for this project.
 
 **Human experience**
-The work was divided equally as follow:
--Gruber:
- -Main
- -Ship
- -Ship_Impl(no take_damage)
+The work was divided equally as follow: \
+-Gruber: \
+ -Main \
+ -Ship \
+ -Ship_Impl(no take_damage) \
 
 -Larcher:
   -ShotsFeedback
