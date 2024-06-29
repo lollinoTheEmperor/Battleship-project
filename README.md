@@ -23,42 +23,42 @@ The work was divided equally as follow: \
 -Gruber: \
  -Main \
  -Ship \
- -Ship_Impl(no take_damage) \
+ -Ship_Impl(no take_damage) 
 
--Larcher:
-  -ShotsFeedback
-  -VisualBoard
-  -VisualBoard_Impl
-  -Ship_Heavy
-  -Ship_kill
--Marcon:
-  -PlayerStatus
-  -WinsComparator
-  -Player
-  -Bot_Player (only place_ship)
-  -Ship1_noName
-  -Ship2_noname
+-Larcher: \
+  -ShotsFeedback \
+  -VisualBoard \
+  -VisualBoard_Impl \
+  -Ship_Heavy \
+  -Ship_kill \
+-Marcon: \
+  -PlayerStatus \
+  -WinsComparator \
+  -Player \
+  -Bot_Player (only place_ship) \
+  -Ship1_noName \
+  -Ship2_noname 
   
--Pugnani:
-  -AttackStrategy
-  -BoardFeedback
-  -BoardStart (place_ship made by Gruber with some change)
-  -BotPlayer (place ship made by Marcon)
-  -CheckboardStrategy
-  -GameBoard
-  -GameBoard_Impl
-  -Heatmap
-  -Heatmap_Impl
-  -Ship_impl (only take damage)
-  -ShipManager
-  -SpiralStrategy
-Each one has also done the respective test.
+-Pugnani: \
+  -AttackStrategy \
+  -BoardFeedback \
+  -BoardStart (place_ship made by Gruber with some change) \
+  -BotPlayer (place ship made by Marcon) \
+  -CheckboardStrategy \
+  -GameBoard \
+  -GameBoard_Impl \
+  -Heatmap \
+  -Heatmap_Impl \
+  -Ship_impl (only take damage) \
+  -ShipManager \
+  -SpiralStrategy \
+Each one has also done the respective test. \
 Git was used to comunicate and develop on different branch each work, because of that we had a lot of branch and sometimes we had to merge but this has let us develop faster the game. 
 Each one has faced different challenge in doing this project and some that are similar such as how to organise the code before actualy writing it and others. 
-We will describe one individual challenge on our part of code for each memeber:
--Gruber:
--Larcher:
--Marcon:
+We will describe one individual challenge on our part of code for each memeber: \
+-Gruber: \
+-Larcher: \
+-Marcon: \
 -Pugnani: The biggest challenge that I faced was creating the bot, I never did a game and I'm new in developing so I didn't know how a bot could work and the different 
           type of strategy, to resolve this challenge I first thought of how a bot should attack, so it should choose between all different cell and because of that each 
           should have a probability that there is a ship there. Then I thought how to calculate the probability, if there is a part of a ship hitted then near them the 
