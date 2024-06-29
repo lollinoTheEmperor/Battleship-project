@@ -52,7 +52,7 @@ public class GameBoard_Impl implements GameBoard {
         public boolean areValidCoordinates(int x, int y) {
             return (x >= 0 && x < width && y >= 0 && y < height);
         }
-
+        //mark the board cell as destrcuted when a ship is destructed
         protected void markShipDestructed(Ship_Impl ship) {
         ship.getCoordinates().forEach(coordinate -> {
             int x = coordinate[0];

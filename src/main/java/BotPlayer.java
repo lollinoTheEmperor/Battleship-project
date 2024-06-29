@@ -8,7 +8,7 @@ public class BotPlayer extends Player_Impl {
     private int moveCount;
     private ShipManager opponentsShipManager;
 
-
+    //a bot need name, board start his and of the adversare, board feedback, a shipmanager, a strategy.
     public BotPlayer(String name, BoardStart myBoard, BoardStart opponentsBoard, BoardFeedback myFeedbacks, ShipManager shipManager, ShipManager opponentsShipManager) {
         super(name, myBoard, myFeedbacks, shipManager, opponentsShipManager);
         this.heatmap = new Heatmap_Impl(myFeedbacks, shipManager);
@@ -19,7 +19,7 @@ public class BotPlayer extends Player_Impl {
         this.moveCount = 0;
 
         placeShip();
-        // needed for visualising the board during the tests "ShipPlacement"
+//      needed for visualising the board during the tests "ShipPlacement"
 //        for (int i=0;i<myBoard.getWidth();i++){
 //            for (int j=0;j<myBoard.getHeight();j++){
 //                System.out.print("\t"+myBoard.getCell(i,j));
@@ -56,24 +56,28 @@ public class BotPlayer extends Player_Impl {
         }
     }
 
+
+    // choose which one is the next move, first if there is a ship marked
+    // as hitted chose an adjante to hit otherwise it use a strategy
     public int[] getNextMove() {
         changeStrategyIfNeeded();
-        int[] nextMove = findAdjacentMove(); // Cerca prima le celle adiacenti
+        int[] nextMove = findAdjacentMove(); // check befoe adiacent cell
         if (nextMove == null) {
             nextMove = strategy.getNextMove(heatmap, myFeedbacks);
         }
         return nextMove;
     }
-
+    //update the heat map, call getNextMove and adjour the move count,
+    // attack in base which one is the next move
     public boolean makeMove() {
-        updateHeatmap();
+        heatmap.updateheatMap();
         int[] move = getNextMove();
         moveCount++;
         // FIXME now return tipe is Set<ShotsFeedback> (it is an object with boolean hit, and int x,y)
         //  return attack(move[0], move[1]);
         return false;
     }
-
+    //every three move it change the strategy.
     private void changeStrategyIfNeeded() {
         if (moveCount > 3) {
             if (strategy instanceof CheckboardStrategy) {
@@ -84,7 +88,7 @@ public class BotPlayer extends Player_Impl {
             moveCount = 0;
         }
     }
-
+    //check if there are ship marked as hitted and if so check the near one
     private int[] findAdjacentMove() {
         int width = myFeedbacks.getWidth();
         int height = myFeedbacks.getHeight();
@@ -102,9 +106,9 @@ public class BotPlayer extends Player_Impl {
                 }
             }
         }
-        return null; // Nessuna cella adiacente trovata
+        return null; // none found
     }
-
+    //check if is a valid move
     private boolean isValidMove(int x, int y, int width, int height) {
         return x >= 0 && x < width && y >= 0 && y < height && !myFeedbacks.isAlreadyAttacked(x, y);
     }

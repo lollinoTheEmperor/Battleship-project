@@ -2,12 +2,14 @@ public class Heatmap_Impl implements Heatmap {
     private int[][] heatmap;
     private BoardFeedback board;
     private ShipManager shipman;
+    //need a board feedback, a ship manager
     public Heatmap_Impl(BoardFeedback board, ShipManager shipman) {
         this.board = board;
         heatmap = new int[board.width][board.height];
         this.shipman=shipman;
     }
 
+    //for every cell it recount the probability that there is a cell, used only if the strategis are all complete
     @Override
     public void updateheatMap() {
         int width = board.width;
@@ -64,6 +66,7 @@ public class Heatmap_Impl implements Heatmap {
         if (y < board.getHeight() - 1 && !board.isAlreadyAttacked(x, y + 1)) heatmap[x][y + 1] += 5;
     }
 
+    //take the cell with the highest probability
     @Override
     public int[] getBestMove() {
         int bestX = 0;
@@ -81,7 +84,8 @@ public class Heatmap_Impl implements Heatmap {
         }
         return new int[]{bestX, bestY};
     }
-    public int getHeatmapValue(int x, int y) {
+    //only used for the test
+    protected int getHeatmapValue(int x, int y) {
         return heatmap[x][y];
     }
 }

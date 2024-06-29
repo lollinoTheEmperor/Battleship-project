@@ -52,7 +52,7 @@ public class BoardFeedback extends GameBoard_Impl {
                 allship.removeShipById(shipHitted.getId());
                 markShipDestructed(shipHitted);
                 boardWithShip.markShipDestructed(shipHitted);
-            };
+            }
             return true;
         }
     }

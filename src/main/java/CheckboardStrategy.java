@@ -1,5 +1,6 @@
 public class CheckboardStrategy implements AttackStrategy{
 
+    //attack as a "chess board", if all the "chess position" are attacked use bestmove from heat map
     @Override
     public int[] getNextMove(Heatmap_Impl heatmap, BoardFeedback board) {
         int width = board.getWidth();

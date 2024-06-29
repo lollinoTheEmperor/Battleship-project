@@ -1,4 +1,4 @@
 public interface Heatmap {
-    void updateheatMap();;
+    void updateheatMap();
     int[] getBestMove();
 }
