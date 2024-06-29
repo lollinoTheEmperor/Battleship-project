@@ -19,18 +19,18 @@ the different (high-level) components and interfaces between components, which t
 
 **Human experience** \
 The work was divided equally as follow: \
-*- Gruber:* \
+* Gruber:* \
  -Main \
  -Ship \
  -Ship_Impl(no take_damage) 
 
-*- Larcher:* \
+* Larcher:* \
   -ShotsFeedback \
   -VisualBoard \
   -VisualBoard_Impl \
   -Ship_Heavy \
   -Ship_kill \
-*- Marcon:* \
+* Marcon:* \
   -PlayerStatus \
   -WinsComparator \
   -Player \
@@ -38,7 +38,7 @@ The work was divided equally as follow: \
   -Ship1_noName \
   -Ship2_noname 
   
-*- Pugnani: *\
+* Pugnani:* \
   -AttackStrategy \
   -BoardFeedback \
   -BoardStart (place_ship made by Gruber with some change) \
