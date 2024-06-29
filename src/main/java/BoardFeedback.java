@@ -48,6 +48,9 @@ public class BoardFeedback extends GameBoard_Impl {
             // ship from the ship manage, and putt destructed where
             // there was the id
             if(shipHitted.takeDamage()){
+                if (shipHitted.typeShip.equals("Ship_OnDeath")){
+                    ((Ship_OnDeath)shipHitted).onDeath(this,boardWithShip,x,y,allship);
+                }
                 allship.removeShipById(shipHitted.getId());
                 markShipDestructed(shipHitted);
                 boardWithShip.markShipDestructed(shipHitted);
