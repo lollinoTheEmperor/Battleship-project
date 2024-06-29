@@ -9,8 +9,7 @@
 How to start the project
 
 **Description** \
-This project is a Battleship game with some variations from the normal ones, you can play 1 vs 1 or 1 vs bot, there are different type of ship that do different kind of shots. 
-The scope of the game is to eliminate all the ship of the other player.
+This project is a Battleship game with some variations from the traditional version. You can play 1 vs 1 or 1 vs bot. There are different types of ships that perform various kinds of shots. The goal of the game is to eliminate all the ships of the other player.
 
 **User guide** \
 ?video or text guide?
@@ -52,11 +51,9 @@ The work was divided equally as follow: \
   -Ship_impl (only take damage) \
   -ShipManager \
   -SpiralStrategy \
-Each one has also done the respective test. \
-Git was used to comunicate and develop on different branch each work, because of that we had a lot of branch and sometimes we had to merge but this has let us develop faster the game. 
-Each one has faced different challenge in doing this project and some that are similar such as how to organise the code before actualy writing it and others. 
-We will describe one individual challenge on our part of code for each memeber: \
+Each one has also done the respective tests. \
+Git was used to communicate and develop on different branches. Because of this, we had many branches and sometimes needed to merge them, which allowed us to develop the game faster. Each one faced different challenges in this project, some of which were similar, such as how to organize the code before actually writing it. We will describe one individual challenge for each member: \
 *- Gruber:* \
 *- Larcher:* \
 *- Marcon:* \
-*- Pugnani:* The biggest challenge that I faced was creating the bot, I never did a game and I'm new in developing so I didn't know how a bot could work and the different  type of strategy, to resolve this challenge I first thought of how a bot should attack, so it should choose between all different cell and because of that each  should have a probability that there is a ship there. Then I thought how to calculate the probability, if there is a part of a ship hitted then near them the  probability should be higher otherwise you should check where the ship can't be before of his lenght. After I have implemented that part doing the test I saw that  it was very linear till the bot didn't find a ship so I implemented two attack strategy if none of the ship are hitted, the first one a check type the second one a spiral attack. Because of that now the game is more fluent and the bot seems more and is more random then before. With more time it would be interesting to add  more strategy and change how the strategy are changed.
+*- Pugnani:* The biggest challenge I faced was creating the bot. I had never made a game before, and I am new to development, so I didn't know how a bot could work and the different types of strategies. To resolve this challenge, I first thought about how a bot should attack; it should choose between all different cells, and each should have a probability that there is a ship there. Then, I considered how to calculate the probability: if a part of a ship is hit, the probability should be higher near that area; otherwise, you should check where the ship can't be because of its length. After implementing that part and testing, I saw that it was very linear until the bot found a ship, so I implemented two attack strategies: if none of the ships are hit, the first one checks the area, and the second one performs a spiral attack. Because of this, the game is now more fluid, and the bot seems more random than before. With more time, it would be interesting to add more strategies and change how the strategies are switched.
