@@ -1,9 +1,9 @@
 # Battleship Project
 **Group member:**
-- Gruber Gabriel ()
-- Larcher Lorenzo ()
-- Marcon Lorenzo ()
-- Pugnani Stefano ()
+- Gruber Gabriel (Lytir03)
+- Larcher Lorenzo (lollinoTheEmperor)
+- Marcon Lorenzo (maconlor)
+- Pugnani Stefano (Pugnani and SPugnani@unibz.it (because of change of computer))
 
 **Instrcutions** \
 mvn package
