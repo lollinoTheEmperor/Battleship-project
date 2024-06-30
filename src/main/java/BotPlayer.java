@@ -59,6 +59,7 @@ public class BotPlayer extends Player_Impl {
                 }
             }
         }
+        System.out.println("Ships placed correctly");
     }
 
 
