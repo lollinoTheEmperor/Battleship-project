@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 public class Main {
     private static final int MINIMUM_SHIP_SIZE = 2, MAXIMUM_BOARD_SIZE = 100, MINIMUM_BOARD_SIZE = 3;
     private static int MAXIMUM_SHIP_SIZE = 6;
+    public static BoardStart board1;
+    public static BoardFeedback feedb1;
+    public static BoardStart board2;
+    public static BoardFeedback feedb2;
 
     public static void main(String[] args) throws InterruptedException {
         System.out.printf("Hello and welcome!\n");
@@ -89,11 +93,15 @@ public class Main {
                 JRadioButton typeDestroyer = new JRadioButton("Destroyer");
                 JRadioButton typeExplosive = new JRadioButton("Explosive");
                 JRadioButton typeRadar = new JRadioButton("Radar");
+                JRadioButton typeHeal = new JRadioButton("Heal");
+                JRadioButton typeClassic = new JRadioButton("Classic");
                 ButtonGroup typeGroup = new ButtonGroup();
                 typeGroup.add(typeBattleship);
                 typeGroup.add(typeDestroyer);
                 typeGroup.add(typeExplosive);
                 typeGroup.add(typeRadar);
+                typeGroup.add(typeHeal);
+                typeGroup.add(typeClassic);
 
                 JPanel typePanel = new JPanel();
                 typePanel.add(typeLabel);
@@ -101,6 +109,8 @@ public class Main {
                 typePanel.add(typeDestroyer);
                 typePanel.add(typeExplosive);
                 typePanel.add(typeRadar);
+                typePanel.add(typeHeal);
+                typePanel.add(typeClassic);
                 panel3.add(typePanel);
 
                 int result3 = JOptionPane.showConfirmDialog(null, panel3, "Ship Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -125,6 +135,15 @@ public class Main {
                 else if (typeDestroyer.isSelected()) type = "Destroyer";
                 else if (typeExplosive.isSelected()) type = "Explosive";
                 else if (typeRadar.isSelected()) type = "Radar";
+                else if (typeHeal.isSelected()) type = "Heal";
+                else if(typeClassic.isSelected()) type = "Classic";
+
+                board1 = new BoardStart(namep1, boardSize, boardSize);
+                feedb1 = new BoardFeedback(boardSize, boardSize);
+
+                board2 = new BoardStart(namep2, boardSize, boardSize);
+                feedb2 = new BoardFeedback(boardSize, boardSize);
+
 
                 if (totalOccupiedCells + size > maxOccupiedCells) {
                     JOptionPane.showMessageDialog(null, "Total occupied cells cannot exceed 50% of the board size.");
@@ -135,20 +154,42 @@ public class Main {
                     retrySelection = false; // Valid ship selected, exit the retry loop
                     String id = String.valueOf(i + 1);
 
+
+
                     // TODO change class based on tipe
                     shipsP1.addShip(new Ship_Impl(size, type, id));
                     shipsP2.addShip(new Ship_Impl(size, type, id));
+                    if(type.equals("Radar")) {
+                        shipsP1.addShip(new Ship_Radar(size, type, id, board2));
+                        shipsP2.addShip(new Ship_Radar(size, type, id, board1));
+                    } else if(type.equals("Battleship")) {
+                        shipsP1.addShip(new Ship_Heavy(size, type, id));
+                        shipsP2.addShip(new Ship_Heavy(size, type, id));
+                    } else if(type.equals("Destroyer")) {
+                        shipsP1.addShip(new Ship_Bomber(size, type, id));
+                        shipsP2.addShip(new Ship_Bomber(size, type, id));
+                    } else if(type.equals("Explosive")) {
+                        shipsP1.addShip(new Ship_OnDeath(size, type, id, board2));
+                        shipsP2.addShip(new Ship_OnDeath(size, type, id, board1));
+                    } else if(type.equals("Heal")) {
+                        shipsP1.addShip(new Ship_Heal(size, type, id));
+                        shipsP2.addShip(new Ship_Heal(size, type, id));
+                    } else if(type.equals("Classic")) {
+                        shipsP1.addShip(new Ship_Impl(size, type, id));
+                        shipsP2.addShip(new Ship_Impl(size, type, id));
+                    }
+
+
+
+
                     totalOccupiedCells += size; // Update total occupied cells
                 }
             }
         }
 
-        BoardStart board1 = new BoardStart(namep1, boardSize, boardSize);
-        BoardFeedback feedb1 = new BoardFeedback(boardSize, boardSize);
+        
         Player_Impl p1 = new Player_Impl(namep1, board1, feedb1, shipsP1, shipsP2);
 
-        BoardStart board2 = new BoardStart(namep2, boardSize, boardSize);
-        BoardFeedback feedb2 = new BoardFeedback(boardSize, boardSize);
         Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, shipsP2, shipsP1);
 
         VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, p2);
@@ -156,7 +197,6 @@ public class Main {
         p1.setOpponentsBoard(board2);
         p2.setOpponentsBoard(board1);
         vb.fetchingShips(board1, shipsP1.ships, true);
-        vb.paintIsland(3, 3, true);
         stopBackendUntil(vb.allShipPlaced);
 
         vb.fetchingShips(board2, shipsP2.ships, false);
@@ -169,12 +209,16 @@ public class Main {
             vb.turnP1();
             stopBackendUntil(vb.endTurn);
 
+            vb.repaintMap(feedb1, true);
+
             if (!p2.hasShips()) {
                 break;
             }
 
             vb.turnP2();
             stopBackendUntil(vb.endTurn);
+
+            vb.repaintMap(feedb2, false);
 
             if (!p1.hasShips()) {
                 break;

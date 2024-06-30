@@ -459,7 +459,7 @@ public class VisualBoard_Impl implements VisualBoard {
 
         for(int x = 0; x < sourceBoard.getWidth(); x ++) {
             for (int y = 0; y < sourceBoard.getHeight(); y++) {
-                switch (sourceBoard.getCell(x,y)) {
+                switch (sourceBoard.getCell(x,y).toLowerCase()) {
                     case "hit":
                         paintFeedback(x, y, hitColor, targetPanel);
                         break;
@@ -480,7 +480,7 @@ public class VisualBoard_Impl implements VisualBoard {
                         paintFeedback(x, y, islandColor, targetPanel);
                         break;
 
-                    case "Hotzone":
+                    case "hotzone":
                         paintFeedback(x, y, zoneColor, targetPanel);
                         break;
 

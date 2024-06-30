@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.Random;
 
 //this ship will fire 3 random shots when destroyed
 public class Ship_OnDeath extends Ship_Impl{
@@ -11,8 +12,9 @@ public class Ship_OnDeath extends Ship_Impl{
 
     public void onDeath(BoardFeedback myFeedbacks, BoardStart opponentsBoard, ShipManager shipManager){
         for (int i=0;i<3;i++){
-            int x = opponentsBoard.getWidth();
-            int y = opponentsBoard.getHeight();
+            Random random = new Random();
+            int x = random.nextInt(opponentsBoard.getWidth());
+            int y = random.nextInt(opponentsBoard.getHeight());
             attack(myFeedbacks,opponentsBoard,x,y,shipManager);
         }
     }
