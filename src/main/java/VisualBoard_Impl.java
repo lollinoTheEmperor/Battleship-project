@@ -27,7 +27,7 @@ public class VisualBoard_Impl implements VisualBoard {
     protected Player_Impl player1;
     protected Player_Impl player2;
 
-   public enum MapElements {                                                                                           // created variables to have help when writing code
+   public enum MapElements {                                                                                            // created variables to have help when writing code
         GRID_PANEL_P1("GRID_PANEL_P1"),                                                                           // in order to, do not remember all string but having suggestions
         GRID_PANEL_P2("GRID_PANEL_P2"),
         TEXT_FIELD_P1("TEXT_FIELD_P1"),
@@ -52,7 +52,7 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
     public VisualBoard_Impl(Player_Impl p1, Player_Impl p2) {
-        this(10, p1, p2);                                                                                              // default value
+        this(10, p1, p2);                                                                                      // default value
     }
 
     public VisualBoard_Impl(int boardSize, Player_Impl player1, Player_Impl player2) {
@@ -72,6 +72,7 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.setSize(singleBoardWidth * 2, singleBoardHeight * 2);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setLayout(new GridLayout(1, 2, 10, 10));
+        gameFrame.setLocationRelativeTo(null);                                                                          // place the frame in the middle of the window
         gameFrame.setVisible(true);
 
         board1 = new JPanel();
@@ -202,7 +203,6 @@ public class VisualBoard_Impl implements VisualBoard {
         panel.setPreferredSize(new Dimension(singleBoardWidth, singleBoardHeight));
 ////////////////////////////////////////////
 
-        // Store references for further use (using a map)
         if (isP1) {
             componentMap.put(MapElements.GRID_PANEL_P1.getValue(), boardPanel);
             componentMap.put(MapElements.TEXT_FIELD_P1.getValue(), textField);
@@ -229,7 +229,7 @@ public class VisualBoard_Impl implements VisualBoard {
             final int index = i;                                                                                        // using a eventListener
             JButton square = new JButton();
             square.setBackground(waterColor);
-//            TODO needed font?
+            // TODO needed font?
             Font font = new Font("Monospaced", Font.BOLD, 20);
             square.setFont(font);
 
@@ -273,7 +273,6 @@ public class VisualBoard_Impl implements VisualBoard {
         componentMap.put((isP1 ? MapElements.FETCHING_GRID_PANEL_P1.getValue() : MapElements.FETCHING_GRID_PANEL_P2.getValue()), getjPanel(tableSize, coordField, button));
         JPanel boardPanel = (JPanel) componentMap.get((isP1 ? MapElements.FETCHING_GRID_PANEL_P1.getValue() : MapElements.FETCHING_GRID_PANEL_P2.getValue()));
 
-//        button.setEnabled(false);                                                                                       // is set to disable but in method getjPanel, after a click will be re-enabled
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -349,28 +348,28 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
 //////// BOARD SETTINGS ////////////////////
-        panel.setLayout(new BorderLayout(10, 10)); // Add gap between components
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add padding around the panel
+        panel.setLayout(new BorderLayout(10, 10));                                                           // Add gap between components
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));                                          // Add padding around the panel
         panel.add(boardPanel, BorderLayout.CENTER);
 
         JLabel turnLabel = new JLabel(shipLayout.title);
 
         JPanel attackPanel = new JPanel();
         attackPanel.setLayout(new BoxLayout(attackPanel, BoxLayout.Y_AXIS));
-        attackPanel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Padding for right panel
+        attackPanel.setBorder(new EmptyBorder(10, 10, 10, 10));                                    // Padding for right panel
 
         // Align and resize components
         coordLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         coordField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        coordField.setMaximumSize(new Dimension(100, 20)); // Set maximum size to align with the button
+        coordField.setMaximumSize(new Dimension(100, 20));                                                  // Set maximum size to align with the button
         button.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         attackPanel.add(coordLabel);
         attackPanel.add(coordField);
         attackPanel.add(button);
 
-        panel.add(attackPanel, BorderLayout.SOUTH);  // Add remainingShip/attack panel to the bottom
-        panel.add(boardPanel, BorderLayout.CENTER); // Add board panel to the center
+        panel.add(attackPanel, BorderLayout.SOUTH);                                                                     // Add remainingShip/attack panel to the bottom
+        panel.add(boardPanel, BorderLayout.CENTER);                                                                     // Add board panel to the center
         panel.add(turnLabel, BorderLayout.NORTH);
 
         panel.setPreferredSize(new Dimension(singleBoardWidth, singleBoardHeight));
@@ -382,7 +381,7 @@ public class VisualBoard_Impl implements VisualBoard {
 
     public boolean validateLenghtShip(int startPoint, int endPoint, int shipSize) {
         System.out.println(startPoint + " " + endPoint + " " + shipSize);
-        return shipSize == endPoint - startPoint+1;                                  // using 0 we have math problem (in method) so do +1
+        return shipSize == endPoint - startPoint+1;                                                                     // using 0 we have math problem (in method) so do +1
     }
 
     @Override
@@ -417,15 +416,15 @@ public class VisualBoard_Impl implements VisualBoard {
         int minY = Math.min(startY, endY);
         int maxY = Math.max(startY, endY);
 
-        if (minX == maxX && minY == maxY) {         // this is used for attack
+        if (minX == maxX && minY == maxY) {                                                                             // this is used for attack
             paintSquare(feedbackColor, targetPanel, (minY) * tableSize + (minX));
         } else {
-            if (minX == maxX) { // Horizontal ship for placing ships
+            if (minX == maxX) {                                                                                         // Horizontal ship for placing ships
                 for (int y = minY; y <= maxY; y++) {
                     int index = (y) * tableSize + (minX);
                     paintSquare(feedbackColor, targetPanel, index);
                 }
-            } else if (minY == maxY) { // Vertical Ship for placing ships
+            } else if (minY == maxY) {                                                                                  // Vertical Ship for placing ships
                 for (int x = minX; x <= maxX; x++) {
                     int index = (minY) * tableSize + (x);
                     paintSquare(feedbackColor, targetPanel, index);
@@ -522,5 +521,7 @@ public class VisualBoard_Impl implements VisualBoard {
         JLabel winnerLabel = new JLabel("Il vincitore è: " + (player1.hasShips() ? player1.name : player2.name));
         gameFrame.add(winnerLabel);
         winnerLabel.setVisible(true);
+
+        gameFrame.dispose();
     }
 }

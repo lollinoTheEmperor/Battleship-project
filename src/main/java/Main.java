@@ -1,7 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Main {
     private static final int MINIMUM_SHIP_SIZE = 2, MAXIMUM_BOARD_SIZE = 100, MINIMUM_BOARD_SIZE = 3;
@@ -11,14 +8,65 @@ public class Main {
     public static BoardStart board2;
     public static BoardFeedback feedb2;
 
-    public static void main(String[] args) throws InterruptedException {
-        System.out.printf("Hello and welcome!\n");
-        referee();
+    public static void main(String[] args) {
+        System.out.println("Hello and welcome!");
+
+        Main main = new Main();
+        main.choseMod();
+
         System.out.println("GG");
     }
 
-    //    FIXME, old problem with fetching ship & size of the board is not respected
-    public static void referee() throws InterruptedException {
+    public void choseMod() {
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JLabel modeLabel = new JLabel("Select game mode");
+        JRadioButton PvP = new JRadioButton("PvP");
+        JRadioButton PvE = new JRadioButton("PvE");
+        JRadioButton Bot = new JRadioButton("Bot vs Bot");
+        ButtonGroup typeGroup = new ButtonGroup();
+        typeGroup.add(PvP);
+        typeGroup.add(PvE);
+        typeGroup.add(Bot);
+
+        PvP.setSelected(true);
+
+        JPanel typePanel = new JPanel();
+        typePanel.add(modeLabel);
+        typePanel.add(PvP);
+        typePanel.add(PvE);
+        typePanel.add(Bot);
+        panel.add(typePanel);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Ship Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result != JOptionPane.OK_OPTION) {
+            return;
+        }
+
+        if (PvP.isSelected())
+            referee();
+        else if (PvE.isSelected())
+            playPvE();
+        else if (Bot.isSelected())
+            playBotVsBot();
+    }
+
+
+    public void playPvE() {
+        System.out.println("Playing PvE mode...");
+        // TODO
+    }
+
+    public void playBotVsBot() {
+        System.out.println("Playing Bot vs Bot mode...");
+        // TODO
+    }
+
+    // FIXME change referee into playPvP ?
+    public void referee() {
+        System.out.println("Playing PvP mode...");
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -102,6 +150,7 @@ public class Main {
                 typeGroup.add(typeRadar);
                 typeGroup.add(typeHeal);
                 typeGroup.add(typeClassic);
+                typeBattleship.setSelected(true);
 
                 JPanel typePanel = new JPanel();
                 typePanel.add(typeLabel);
@@ -159,6 +208,7 @@ public class Main {
                     // TODO change class based on tipe
                     shipsP1.addShip(new Ship_Impl(size, type, id));
                     shipsP2.addShip(new Ship_Impl(size, type, id));
+
                     if(type.equals("Radar")) {
                         shipsP1.addShip(new Ship_Radar(size, type, id, board2));
                         shipsP2.addShip(new Ship_Radar(size, type, id, board1));
@@ -179,17 +229,17 @@ public class Main {
                         shipsP2.addShip(new Ship_Impl(size, type, id));
                     }
 
-
-
-
                     totalOccupiedCells += size; // Update total occupied cells
                 }
             }
         }
 
-        
+//        BoardStart board1 = new BoardStart(namep1, boardSize, boardSize);
+//        BoardFeedback feedb1 = new BoardFeedback(boardSize, boardSize);
         Player_Impl p1 = new Player_Impl(namep1, board1, feedb1, shipsP1, shipsP2);
 
+//        BoardStart board2 = new BoardStart(namep2, boardSize, boardSize);
+//        BoardFeedback feedb2 = new BoardFeedback(boardSize, boardSize);
         Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, shipsP2, shipsP1);
 
         VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, p2);
@@ -225,7 +275,7 @@ public class Main {
             }
         }
 
-        // TODO show winner in bether mode ??
+        // TODO show winner in bether way ??
         vb.win();
 
     }
@@ -238,5 +288,20 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
+
+        // TODO check if is possible
+        //  Main thread will wait here until the GUI thread finishes.
+        /*
+        *
+        synchronized (Main.class) {
+            Main.class.wait();
+        }
+        synchronized (Main.class) {
+            Main.class.notify();
+        }
+        *
+        *
+        * */
+
     }
 }
