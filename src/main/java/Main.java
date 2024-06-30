@@ -411,9 +411,6 @@ public class Main {
 
 
                     // TODO change class based on tipe
-                    shipsP1.addShip(new Ship_Impl(size, type, id));
-                    shipsP2.addShip(new Ship_Impl(size, type, id));
-
                     if(type.equals("Radar")) {
                         shipsP1.addShip(new Ship_Radar(size, type, id, board2));
                         shipsP2.addShip(new Ship_Radar(size, type, id, board1));
