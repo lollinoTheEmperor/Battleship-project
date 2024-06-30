@@ -9,10 +9,32 @@
 mvn package
 
 **Description** \
-This project is a Battleship game with some variations from the traditional version. You can play 1 vs 1 or 1 vs bot. There are different types of ships that perform various kinds of shots. The goal of the game is to eliminate all the ships of the other player.
+Welcome to our Battleship game! In this game, you can choose to play against a bot or another player on the same computer. The objective is to sink all of your opponent's ships by strategically positioning your own ships and attacking your opponent's ships.
 
 **User guide** \
-?video or text guide?
+- *Getting Started*
+   + Choosing the Game Mode:
+     When you start the game, you will be prompted to choose whether you want to play against a bot or another player. Select one to procede.
+   + Positioning the Ships:
+      You can place your ships on the board by selecting the starting cell and the ending cell. If the ship doesn't fit, or if it is smaller or longer than the designated ship size, you will be notified and prompted to reselect the cells.
+   + Types of Ships:
+      *  Ship_Bomber: This ship has a powerful attack that can damage multiple cells.
+      *  Ship_Heal: This ship can heal your damaged ships.
+      *  Ship_Heavy: This ship has a stronger defense and can withstand more hits.
+      *  Ship_OnDeath: This ship triggers a special effect when it is sunk.
+- *Playing the Game*
+  + Starting the Game:
+  Once all ships are positioned, the game begins. Players take turns to attack each other’s ships by selecting a cell on the opponent’s board.
+  + Attacking:
+    Select a cell to attack. The outcome of the attack depends on the type of ship you are using. Each ship type has a unique attack pattern and effect. For example, the Ship_Bomber can attack multiple cells at once, while the Ship_Heal can restore health to your own ships.
+  + Winning the Game: The game continues with players taking turns to attack. The objective is to sink all of your opponent’s ships. The first player to sink all enemy ships wins the game.
+  + Tips and Strategies
+      - Strategic Placement: Place your ships in a way that makes them hard to find. Avoid clustering them together.
+      - Balanced Attacks: Use different types of ships to your advantage.
+      - Predict Opponent’s Moves: Try to anticipate where your opponent’s ships might be based on their attack patterns.
+- *Conclusion*
+That’s all you need to know to start playing our Battleship game! Choose your game mode, position your ships strategically, and outsmart your opponent to become the ultimate Battleship champion. Enjoy the game!
+
 
 **Implementation of the project** \
 The high-level components of our game are the Ship, the BoardGame, and the Player. These components interact with each other within the main class as well as among themselves. The Player class is responsible for deciding how to position the ship and which cell to attack. The BoardGame class manages the ships and keeps track of which cells are attacked. The Ship class maintains its health points (HP) and its position on the board. These high-level components were initially conceptualized and later broken down into more specific classes, interfaces, and subclasses to develop the game with greater precision. 
