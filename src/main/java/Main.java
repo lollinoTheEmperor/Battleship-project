@@ -9,6 +9,8 @@ public class Main {
     public static BoardFeedback feedb1;
     public static BoardStart board2;
     public static BoardFeedback feedb2;
+    private final int waitTime = (int) (1 * 1000);
+
 
     public static void main(String[] args) {
         System.out.println("Hello and welcome!");
@@ -240,9 +242,14 @@ public class Main {
 
         System.out.println("Now starting game session - all ships are located");
         vb.createGameBoards(p1, bot1);
+        vb.showBaordPvE();
+
+        boolean attacking = false;
+        Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
         for (int i = 0; i < boardSize*boardSize; i++) {
-            vb.turnP1();
+
+            vb.endTurnBot();
             stopBackendUntil(vb.endTurn);
 
             vb.repaintMap(feedb1, true);
@@ -252,18 +259,28 @@ public class Main {
                 break;
             }
 
-            bot1.makeMove();
+//////////////////////////////////////////////
+            
+            vb.turnBot();
+            try {
+                Thread.sleep(waitTime);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-            vb.repaintMap(feedb1, true);
+            do {
+                attacking = false;
+                attackFeedback = new HashSet<>();
+                attackFeedback.addAll(bot1.makeMove());
+
+                for (ShotsFeedback attack : attackFeedback) {
+                    vb.repaintMap(feedb2, false);
+                    attacking |= attack.hit;
+                }
+            } while (attacking);
 
             if (!p1.hasShips()) {
                 break;
-            }
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
         }
 
@@ -433,7 +450,6 @@ public class Main {
         vb.createGameBoards(bot1, bot2);
         vb.showBaordsForBot();
 
-        int waitTime = (int) (1 * 1000);
         boolean attacking = false;
         Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
@@ -484,12 +500,6 @@ public class Main {
                 break;
             }
         }
-
-        System.out.println(bot1.myFeedbacks);
-        System.out.println(bot2.myFeedbacks);
-//
-//        vb.repaintMap(feedb1, true);
-//        vb.repaintMap(feedb2, false);
 
         vb.win();
     }
@@ -664,12 +674,8 @@ public class Main {
             }
         }
 
-//        BoardStart board1 = new BoardStart(namep1, boardSize, boardSize);
-//        BoardFeedback feedb1 = new BoardFeedback(boardSize, boardSize);
         Player_Impl p1 = new Player_Impl(namep1, board1, feedb1, shipsP1, shipsP2);
 
-//        BoardStart board2 = new BoardStart(namep2, boardSize, boardSize);
-//        BoardFeedback feedb2 = new BoardFeedback(boardSize, boardSize);
         Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, shipsP2, shipsP1);
 
         VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, p2);
@@ -701,6 +707,8 @@ public class Main {
                 writer.incrementWinnerIndex(p1.getName());
                 break;
             }
+
+//////////////////////////////////////////////
 
             vb.turnP2();
             stopBackendUntil(vb.endTurn);

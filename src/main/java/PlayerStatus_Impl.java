@@ -119,29 +119,4 @@ public class PlayerStatus_Impl implements PlayerStatus {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public List<String> ranking(){
-        List<String[]> words=new ArrayList<>();
-
-        List<String> allPlayers;
-        try (Stream<String> stream = Files.lines(Path.of(path))){
-            allPlayers = stream.toList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        for (String i:allPlayers){
-            String[] elements=i.split(":");
-            words.add(elements);
-        }
-
-        words.sort(new WinsComparator());
-        List<String> output=new ArrayList<>();
-        for (String[] i:words){
-            output.add(i[0]+":"+i[1]);
-        }
-
-        return output;
-    }
 }

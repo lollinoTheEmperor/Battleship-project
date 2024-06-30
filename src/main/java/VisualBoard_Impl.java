@@ -161,6 +161,9 @@ public class VisualBoard_Impl implements VisualBoard {
                 System.out.print(player.name + "->");
                 int[] saveXY = parseCord(textField.getText().toUpperCase());
 
+                JTextField textField = isP1 ? (JTextField) componentMap.get(MapElements.TEXT_FIELD_P1.getValue()) : (JTextField) componentMap.get(MapElements.TEXT_FIELD_P2.getValue());
+                textField.setText("");
+
                 boolean attacking = false;
                 Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
@@ -242,7 +245,7 @@ public class VisualBoard_Impl implements VisualBoard {
                     int row = index % size;
                     String coord = row + ":" + col;
                     textField.setText(coord);
-                    button.setEnabled(true);
+//                    button.setEnabled(true);
                 }
             });
             boardPanel.add(square);
@@ -282,6 +285,8 @@ public class VisualBoard_Impl implements VisualBoard {
                 int[] saveCoord = parseCord(coordField.getText().toUpperCase());
                 Ship_Impl currentShip;
                 boolean feedBackPlaceShip;
+
+                coordField.setText("");
 
                 if (shipStartPointSelected) {
                     int shipOrientation = validateCoordPlaceShip(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1]);
@@ -440,10 +445,7 @@ public class VisualBoard_Impl implements VisualBoard {
         if (index >= 0 && index < targetPanel.getComponentCount()) {
             JButton square = (JButton) targetPanel.getComponent(index);
             square.setBackground(feedbackColor);
-            if (feedbackColor == waterColor || feedbackColor == healColor)
-                square.setEnabled(true);
-            else
-                square.setEnabled(false);
+            square.setEnabled(feedbackColor == waterColor || feedbackColor == healColor);
         }
     }
 
@@ -511,12 +513,34 @@ public class VisualBoard_Impl implements VisualBoard {
         this.board2.setVisible(true);
     }
 
+    public void turnBot() {
+        JButton buttonP1 = (JButton) componentMap.get(MapElements.BUTTON_P1.getValue());
+        buttonP1.setEnabled(false);
+        buttonP1.setVisible(false);
+    }
+    public void endTurnBot() {
+        endTurn[0] = false;
+        JButton buttonP1 = (JButton) componentMap.get(MapElements.BUTTON_P1.getValue());
+        buttonP1.setEnabled(true);
+        buttonP1.setVisible(true);
+    }
+
     @Override
     public void reloadGameView() {                                                                                      // Used to solve a visual bug (show the board without all items)
         gameFrame.revalidate();
         gameFrame.repaint();
     }
 
+    public void showBaordPvE() {
+        this.board1.setVisible(true);
+        this.board2.setVisible(true);
+
+        JButton buttonP2 = (JButton) componentMap.get(MapElements.BUTTON_P2.getValue());
+
+        buttonP2.setEnabled(false);
+
+        buttonP2.setVisible(false);
+    }
 
     public void showBaordsForBot() {
         this.board1.setVisible(true);
@@ -535,12 +559,23 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
     public void win() {
-        this.board1.setVisible(false);
-        this.board2.setVisible(false);
+//        this.board1.setVisible(false);
+//        this.board2.setVisible(false);
+//        this.board1.setEnabled(false);
+//        this.board2.setEnabled(false);
 
-        // FIXME ogni tanto non mostra il vincitore (sembra se p2 vinca)
-        JLabel winnerLabel = new JLabel("Il vincitore è: " + (player1.hasShips() ? player1.name : player2.name));
-        gameFrame.add(winnerLabel);
+        JLabel winnerLabel = new JLabel();
+        if (player1.hasShips())
+            winnerLabel.setText("The winner is: " + player1.name);
+
+        if (player2.hasShips())
+            winnerLabel.setText("The winner is: " + player2.name);
+
+        Font font = new Font("Monospaced", Font.BOLD, 30);
+        winnerLabel.setFont(font);
         winnerLabel.setVisible(true);
+        reloadGameView();
+        JOptionPane.showMessageDialog(null, winnerLabel, "Congratulation!!!", JOptionPane.PLAIN_MESSAGE);
+        gameFrame.dispose();
     }
 }

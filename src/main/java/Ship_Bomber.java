@@ -48,7 +48,7 @@ public class Ship_Bomber extends Ship_Impl{
                     xc = x;
                     yc = y+1;
                     xd = x-1;
-                    yd = y-1;
+                    yd = y+1;
                     if (myFeedbacks.areValidCoordinates(xa,ya) && myFeedbacks.areValidCoordinates(xb,yb) && myFeedbacks.areValidCoordinates(xc,yc) && myFeedbacks.areValidCoordinates(xd,yd)){
                         attacks.addAll(super.attack(myFeedbacks, opponentsBoard, xa, ya, shipManager));
                         attacks.addAll(super.attack(myFeedbacks, opponentsBoard, xb, yb, shipManager));
