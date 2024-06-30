@@ -93,34 +93,33 @@ public class VisualBoard_ImplTest {
         gameWindow.repaintMap(opponent.myFeedbacks, !isP1);
 
 
-        for (int i =1; i < nTurns+1; i++) {
-
+        for (int i = 1; i < nTurns + 1; i++) {
             gameWindow.turnP1();
             stopBackendUntil(gameWindow.endTurn);
 
-            if(!opponent.hasShips())
+            if (!opponent.hasShips()) {
                 break;
-
+            }
+            final int current_turn = i;
             gameWindow.turnP2();
             stopBackendUntil(gameWindow.endTurn);
 
-            if (!me.hasShips())
+            if (!me.hasShips()) {
                 break;
+            }
 
             if (i % turnsForHealing == 0) {
                 me.shipManager.ships.values().stream()
                         .filter(ship -> ship instanceof Ship_Heal)
-                        .forEach(ship -> ((Ship_Heal) ship).heal(me.myBoard, opponent.myFeedbacks));
+                        .forEach(ship -> ((Ship_Heal) ship).heal(me.myBoard, opponent.myFeedbacks, current_turn));
 
                 opponent.shipManager.ships.values().stream()
                         .filter(ship -> ship instanceof Ship_Heal)
-                        .forEach(ship -> ((Ship_Heal) ship).heal(opponent.myBoard, me.myFeedbacks));
-
+                        .forEach(ship -> ((Ship_Heal) ship).heal(opponent.myBoard, me.myFeedbacks, current_turn));
 
                 gameWindow.repaintMap(me.myFeedbacks, isP1);
                 gameWindow.repaintMap(opponent.myFeedbacks, !isP1);
             }
         }
-
     }
 }

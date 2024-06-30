@@ -3,10 +3,11 @@ import java.util.*;
 
 public class Ship_Heal extends Ship_Impl {
     final int maxHp;
-
+    private int lastHitTurn;
     public Ship_Heal(int size, String type, String id) {
         super(size, type, id);
         maxHp = size;
+        this.lastHitTurn = -1;
     }
 
     /**
@@ -14,36 +15,43 @@ public class Ship_Heal extends Ship_Impl {
      *
      * @return a boolean to see if it is destroyed
      */
-
-    public boolean heal (BoardStart board, BoardFeedback opponentsBoardFeedback) {
-        return recover() && updateMap(board, opponentsBoardFeedback);
+    public int getLastHitTurn() {
+        return lastHitTurn;
     }
 
-    public boolean recover() {
-        if(this.getHp() != 0 && this.getHp() < maxHp){
-        System.out.println("Healing ship" + this.getId());
+    public void setLastHitTurn(int lastHitTurn) {
+        this.lastHitTurn = lastHitTurn;
+    }
+
+    public boolean heal(BoardStart board, BoardFeedback opponentsBoardFeedback, int currentTurn) {
+        return recover(currentTurn) && updateMap(board, opponentsBoardFeedback, currentTurn);
+    }
+
+    public boolean recover(int currentTurn) {
+        if (this.getHp() != 0 && this.getHp() < maxHp && !isHitRecently(currentTurn, 2)) {
+            System.out.println("Healing ship " + this.getId());
             this.setHp(this.getHp() + 1);
             return true;
         }
         return false;
     }
 
-    private boolean updateMap(BoardStart board, BoardFeedback opponentsBoardFeedback) {
-
+    private boolean updateMap(BoardStart board, BoardFeedback opponentsBoardFeedback, int currentTurn) {
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
-
-                if (board.getCell(x,y).equals(this.getId())) {
-                    if (opponentsBoardFeedback.getCell(x,y).equals("hit")) {
-                        System.out.println("recover" + board.getCell(x,y) +" " + x + " " + y);
-                        opponentsBoardFeedback.healCell(x,y);
+                if (board.getCell(x, y).equals(this.getId())) {
+                    if (opponentsBoardFeedback.getCell(x, y).equals("hit")) {
+                        System.out.println("Recovering " + board.getCell(x, y) + " at " + x + ", " + y);
+                        opponentsBoardFeedback.healCell(x, y);
+                        this.setLastHitTurn(currentTurn);
                         return true;
                     }
                 }
             }
         }
+        return false;
+    }
 
-//
 //
 //        String cellContent = boardWithShip.getCell(x, y);
 //        if ("water".equals(cellContent)) {
@@ -67,6 +75,7 @@ public class Ship_Heal extends Ship_Impl {
 //            return true;
 //        }
 
-        return false;
+    public boolean isHitRecently(int currentTurn, int turnsForHealing) {
+        return (currentTurn - lastHitTurn) < turnsForHealing;
     }
 }
