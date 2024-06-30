@@ -244,7 +244,6 @@ public class Main {
 
         for (int i = 0; i < boardSize*boardSize; i++) {
 
-//            vb.turnP1();
             vb.endTurnBot();
             stopBackendUntil(vb.endTurn);
 
@@ -255,13 +254,15 @@ public class Main {
                 break;
             }
 
+//////////////////////////////////////////////
+            
+            vb.turnBot();
             try {
                 Thread.sleep(waitTime);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-            vb.turnBot();
             do {
                 attacking = false;
                 attackFeedback = new HashSet<>();
@@ -495,12 +496,6 @@ public class Main {
             }
         }
 
-//        System.out.println(bot1.myFeedbacks);
-//        System.out.println(bot2.myFeedbacks);
-//
-//        vb.repaintMap(feedb1, true);
-//        vb.repaintMap(feedb2, false);
-
         vb.win();
     }
 
@@ -677,12 +672,8 @@ public class Main {
             }
         }
 
-//        BoardStart board1 = new BoardStart(namep1, boardSize, boardSize);
-//        BoardFeedback feedb1 = new BoardFeedback(boardSize, boardSize);
         Player_Impl p1 = new Player_Impl(namep1, board1, feedb1, shipsP1, shipsP2);
 
-//        BoardStart board2 = new BoardStart(namep2, boardSize, boardSize);
-//        BoardFeedback feedb2 = new BoardFeedback(boardSize, boardSize);
         Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, shipsP2, shipsP1);
 
         VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, p2);
@@ -708,6 +699,8 @@ public class Main {
                 writer.incrementWinnerIndex(p1.getName());
                 break;
             }
+
+//////////////////////////////////////////////
 
             vb.turnP2();
             stopBackendUntil(vb.endTurn);

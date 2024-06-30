@@ -161,6 +161,9 @@ public class VisualBoard_Impl implements VisualBoard {
                 System.out.print(player.name + "->");
                 int[] saveXY = parseCord(textField.getText().toUpperCase());
 
+                JTextField textField = isP1 ? (JTextField) componentMap.get(MapElements.TEXT_FIELD_P1.getValue()) : (JTextField) componentMap.get(MapElements.TEXT_FIELD_P2.getValue());
+                textField.setText("");
+
                 boolean attacking = false;
                 Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
@@ -282,6 +285,8 @@ public class VisualBoard_Impl implements VisualBoard {
                 int[] saveCoord = parseCord(coordField.getText().toUpperCase());
                 Ship_Impl currentShip;
                 boolean feedBackPlaceShip;
+
+                coordField.setText("");
 
                 if (shipStartPointSelected) {
                     int shipOrientation = validateCoordPlaceShip(rememberXforPlace, rememberYforPlace, saveCoord[0], saveCoord[1]);
@@ -554,17 +559,23 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
     public void win() {
-        this.board1.setVisible(false);
-        this.board2.setVisible(false);
+//        this.board1.setVisible(false);
+//        this.board2.setVisible(false);
+//        this.board1.setEnabled(false);
+//        this.board2.setEnabled(false);
 
         JLabel winnerLabel = new JLabel();
         if (player1.hasShips())
-            winnerLabel.setText(player1.name);
+            winnerLabel.setText("The winner is: " + player1.name);
 
         if (player2.hasShips())
-            winnerLabel.setText(player2.name);
+            winnerLabel.setText("The winner is: " + player2.name);
 
-        gameFrame.add(winnerLabel);
+        Font font = new Font("Monospaced", Font.BOLD, 30);
+        winnerLabel.setFont(font);
         winnerLabel.setVisible(true);
+        reloadGameView();
+        JOptionPane.showMessageDialog(null, winnerLabel, "Congratulation!!!", JOptionPane.PLAIN_MESSAGE);
+        gameFrame.dispose();
     }
 }
