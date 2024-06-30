@@ -11,7 +11,7 @@ public class VisualBoard_Impl implements VisualBoard {
     final boolean HIT = true;
 
     protected int tableSize;
-    private final Color placeShipColor, waterColor, islandColor, hitColor, missColor, healColor;
+    private final Color placeShipColor, waterColor, islandColor, hitColor, missColor, healColor, zoneColor;
 
     protected JFrame gameFrame;
     protected JPanel board1, board2;
@@ -64,6 +64,7 @@ public class VisualBoard_Impl implements VisualBoard {
         missColor = Color.GRAY;
         waterColor = Color.WHITE;
         healColor = Color.YELLOW;
+        zoneColor = Color.ORANGE;
         tableSize = boardSize;
 
         gameFrame = new JFrame("Game Window");
@@ -477,6 +478,10 @@ public class VisualBoard_Impl implements VisualBoard {
 
                     case "island":
                         paintFeedback(x, y, islandColor, targetPanel);
+                        break;
+
+                    case "Hotzone":
+                        paintFeedback(x, y, zoneColor, targetPanel);
                         break;
 
                     default:
