@@ -11,21 +11,21 @@ mvn package
 **Description** \
 Welcome to our Battleship game! In this game, you can choose to play against a bot or another player on the same computer. The objective is to sink all of your opponent's ships by strategically positioning your own ships and attacking your opponent's ships.
 
-**User guide** \
-- *Getting Started*
-   + Choosing the Game Mode:
+**User guide** 
+- *Getting Started* 
+   + Choosing the Game Mode: \
      When you start the game, you will be prompted to choose whether you want to play against a bot or another player. Select one to procede.
-   + Positioning the Ships:
+   + Positioning the Ships: \
       You can place your ships on the board by selecting the starting cell and the ending cell. If the ship doesn't fit, or if it is smaller or longer than the designated ship size, you will be notified and prompted to reselect the cells.
-   + Types of Ships:
+   + Types of Ships: 
       *  Ship_Bomber: This ship has a powerful attack that can damage multiple cells.
       *  Ship_Heal: This ship can heal your damaged ships.
-      *  Ship_Heavy: This ship has a stronger defense and can withstand more hits.
-      *  Ship_OnDeath: This ship triggers a special effect when it is sunk.
+      * Ship_Heavy: This ship hits the selected cell and adjacent cells.
+      * Ship_OnDeath: This ship triggers a special effect when it is sunk. It attacks a random cell of the owner
 - *Playing the Game*
-  + Starting the Game:
+  + Starting the Game: \
   Once all ships are positioned, the game begins. Players take turns to attack each other’s ships by selecting a cell on the opponent’s board.
-  + Attacking:
+  + Attacking: \
     Select a cell to attack. The outcome of the attack depends on the type of ship you are using. Each ship type has a unique attack pattern and effect. For example, the Ship_Bomber can attack multiple cells at once, while the Ship_Heal can restore health to your own ships.
   + Winning the Game: The game continues with players taking turns to attack. The objective is to sink all of your opponent’s ships. The first player to sink all enemy ships wins the game.
   + Tips and Strategies
