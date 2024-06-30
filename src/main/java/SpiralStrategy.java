@@ -1,4 +1,7 @@
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SpiralStrategy implements AttackStrategy{
     @Override
@@ -10,29 +13,31 @@ public class SpiralStrategy implements AttackStrategy{
         Random rand = new Random();
 
         for (int layer = 0; layer <= Math.max(centerX, centerY); layer++) {
-            // Randomize the order of moves
-            int[] indices = rand.ints(-layer, layer + 1).distinct().limit(2 * layer + 1).toArray();
+            List<int[]> possibleMoves = new ArrayList<>();
 
-            for (int i : indices) {
-                int x = centerX + i;
-                int y1 = centerY + layer;
-                int y2 = centerY - layer;
-                if (isValidMove(x, y1, width, height, board)) return new int[]{x, y1};
-                if (isValidMove(x, y2, width, height, board)) return new int[]{x, y2};
+            for (int i = -layer; i <= layer; i++) {
+                possibleMoves.add(new int[]{centerX + i, centerY + layer});
+                possibleMoves.add(new int[]{centerX + i, centerY - layer});
             }
 
-            indices = rand.ints(-layer + 1, layer).distinct().limit(2 * layer - 1).toArray();
+            for (int j = -layer + 1; j <= layer - 1; j++) {
+                possibleMoves.add(new int[]{centerX + layer, centerY + j});
+                possibleMoves.add(new int[]{centerX - layer, centerY + j});
+            }
 
-            for (int j : indices) {
-                int y = centerY + j;
-                int x1 = centerX + layer;
-                int x2 = centerX - layer;
-                if (isValidMove(x1, y, width, height, board)) return new int[]{x1, y};
-                if (isValidMove(x2, y, width, height, board)) return new int[]{x2, y};
+            // Randomize the order of possible moves
+            Collections.shuffle(possibleMoves, rand);
+
+            for (int[] move : possibleMoves) {
+                int x = move[0];
+                int y = move[1];
+                if (isValidMove(x, y, width, height, board)) {
+                    return new int[]{x, y};
+                }
             }
         }
 
-        return heatmap.getBestMove(); // if position already attacked
+        return heatmap.getBestMove(); // if all positions are already attacked
     }
 
     private boolean isValidMove(int x, int y, int width, int height, BoardFeedback board) {

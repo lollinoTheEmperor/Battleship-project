@@ -2,3 +2,4 @@ name1:2
 name2:0
 name3:0
 uffa:1
+pgn99:0
