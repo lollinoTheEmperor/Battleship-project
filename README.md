@@ -22,6 +22,7 @@ Welcome to our Battleship game! In this game, you can choose to play against a b
       *  Ship_Heal: This ship can heal your damaged ships.
       * Ship_Heavy: This ship hits the selected cell and adjacent cells.
       * Ship_OnDeath: This ship triggers a special effect when it is sunk. It attacks a random cell of the owner
+      * Ship_Scanner: 
 - *Playing the Game*
   + Starting the Game: \
   Once all ships are positioned, the game begins. Players take turns to attack each other’s ships by selecting a cell on the opponent’s board.
@@ -43,40 +44,40 @@ We only used Maven as a third-party library for testing. All other libraries are
 
 We applied various techniques taught in our course. First, we used interfaces and subclasses to divide the work and clarify the responsibilities of each method before writing the actual code (interfaces) and to reduce code duplication between classes (subclasses). Another significant technique we employed was using streams to make the code more readable and efficient. Additionally, we learned how to read from and write to files, which we used to save player stats in the game. Lastly, we heavily relied on abstract data types such as Set, List, Map, and HashMap. 
 
-**Human experience** \
+**Human experience** /
 The work was divided equally as follow: 
-* Gruber: \
- - Main \
- - Ship \
+* Gruber: 
+ - Main 
+ - Ship 
  - Ship_Impl(no take_damage) 
 
-* Larcher: \
-  - ShotsFeedback \
-  - VisualBoard \
-  - VisualBoard_Impl \
-  - Ship_Heavy \
+* Larcher: 
+  - ShotsFeedback 
+  - VisualBoard 
+  - VisualBoard_Impl 
+  - Ship_Heavy 
   - Ship_kill 
   
-* Marcon: \
-  - PlayerStatus \
-  - WinsComparator \
-  - Player \
-  - Bot_Player (only place_ship) \
-  - Ship_Bomber \
+* Marcon: 
+  - PlayerStatus 
+  - WinsComparator 
+  - Player 
+  - Bot_Player (only place_ship) 
+  - Ship_Bomber 
   - Ship_OnDeath 
   
-* Pugnani: \
-  - AttackStrategy \
-  - BoardFeedback \
-  - BoardStart (place_ship made by Gruber with some change) \
-  - BotPlayer (place ship made by Marcon) \
-  - CheckboardStrategy \
-  - GameBoard \
-  - GameBoard_Impl \
-  - Heatmap \
-  - Heatmap_Impl \
-  - Ship_impl (only take damage) \
-  - ShipManager \
+* Pugnani: 
+  - AttackStrategy 
+  - BoardFeedback 
+  - BoardStart (place_ship made by Gruber with some change) 
+  - BotPlayer (place ship made by Marcon) 
+  - CheckboardStrategy 
+  - GameBoard 
+  - GameBoard_Impl 
+  - Heatmap 
+  - Heatmap_Impl 
+  - Ship_impl (only take damage) 
+  - ShipManager 
   - SpiralStrategy 
   
 Each one has also done the respective tests. \
