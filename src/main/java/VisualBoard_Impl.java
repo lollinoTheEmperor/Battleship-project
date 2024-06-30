@@ -290,8 +290,6 @@ public class VisualBoard_Impl implements VisualBoard {
 
 // TODO fare label per n barche qui e dall'alrta
 
-                    System.out.println("Ship from " + rememberXforPlace + ":" + rememberYforPlace + " to " + saveCoord[0] + ":" + saveCoord[1]);
-
                     int shipId = shipCopy.keySet().iterator().next();
                     currentShip = shipCopy.get(shipId);
 
@@ -522,6 +520,6 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.add(winnerLabel);
         winnerLabel.setVisible(true);
 
-        gameFrame.dispose();
+//        gameFrame.dispose();
     }
 }

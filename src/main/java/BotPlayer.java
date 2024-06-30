@@ -7,7 +7,6 @@ public class BotPlayer extends Player_Impl {
     private CheckboardStrategy checkboardStrategy;
     private SpiralStrategy spiralStrategy;
     private int moveCount;
-    private ShipManager opponentsShipManager;
 
     //a bot need name, board start his and of the adversare, board feedback, a shipmanager, a strategy.
     public BotPlayer(String name, BoardStart myBoard, BoardFeedback myFeedbacks, ShipManager shipManager, ShipManager opponentsShipManager) {
