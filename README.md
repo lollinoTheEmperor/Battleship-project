@@ -19,10 +19,11 @@ Welcome to our Battleship game! In this game, you can choose to play against a b
       You can place your ships on the board by selecting the starting cell and the ending cell. If the ship doesn't fit, or if it is smaller or longer than the designated ship size, you will be notified and prompted to reselect the cells.
    + Types of Ships: 
       *  Ship_Bomber: This ship has a powerful attack that can damage multiple cells.
-      *  Ship_Heal: This ship can heal your damaged ships.
+      *  Ship_Heal: This ship can heal itself after some turns.
       * Ship_Heavy: This ship hits the selected cell and adjacent cells.
       * Ship_OnDeath: This ship triggers a special effect when it is sunk. It attacks a random cell of the owner
-      * Ship_Scanner: 
+      * Ship_Radar: This ship can reveal which quadrant has the most ships to target.
+
 - *Playing the Game*
   + Starting the Game: \
   Once all ships are positioned, the game begins. Players take turns to attack each other’s ships by selecting a cell on the opponent’s board.
@@ -46,10 +47,12 @@ We applied various techniques taught in our course. First, we used interfaces an
 
 **Human experience** /
 The work was divided equally as follow: 
-* Gruber: 
- - Main 
- - Ship 
- - Ship_Impl(no take_damage) 
+* Gruber:
+   - Main 
+   - Ship 
+   - Ship_Impl(no take_damage)
+   - Ship_radar
+   - BoardStart(only place_ship then modified a bit)
 
 * Larcher: 
   - ShotsFeedback 
