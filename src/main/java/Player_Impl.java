@@ -21,6 +21,8 @@ public class Player_Impl implements Player {
         return myBoard;
     }
 
+    public String getName() {return name;}
+
     public void setOpponentsBoard(BoardStart board) {
         this.opponentsBoard = board;
     }

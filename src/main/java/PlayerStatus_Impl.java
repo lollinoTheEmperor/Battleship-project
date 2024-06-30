@@ -13,36 +13,10 @@ public class PlayerStatus_Impl implements PlayerStatus {
     Path root=Path.of("src","Status.txt");
     String path=root+"";
 
-    @Override
     public String createNewPlayerName(String name) {
-        if (!nameCheck(name)){
-            return null;
-        }
-        if (namePresenceCheck(name)){
-            System.out.println("Sorry the name is already in use.");
-            return null;
-        }
         String newPlayer=name+":0";
         writer(newPlayer);
         return name;
-    }
-
-    //checks the length of the name
-    private boolean nameCheck(String name){
-        int minLength=3, maxLength=20;
-        if (name.length()<minLength){
-            System.out.println("The name is too short, at least "+minLength+" characters!");
-            return false;
-        }
-        if (name.length()>maxLength){
-            System.out.println("The name is too long, at most "+maxLength+" characters!");
-            return false;
-        }
-        if (name.isBlank()){
-            System.out.println("The name cannot be blank.");
-            return false;
-        }
-        return true;
     }
 
     //check if the name is already present in the record of names
@@ -97,12 +71,9 @@ public class PlayerStatus_Impl implements PlayerStatus {
 
 
     @Override
-    public String selectPlayer(String name) {
-        if (namePresenceCheck(name)){
-            return name;
-        }else {
-            System.out.println("Sorry the name is not present.");
-            return null;
+    public void selectPlayer(String name) {
+        if (!namePresenceCheck(name)){
+            createNewPlayerName(name);
         }
     }
 

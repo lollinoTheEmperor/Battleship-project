@@ -15,45 +15,11 @@ class PlayerStatus_ImplTest {
     PlayerStatus_Impl playerStatus_impl = new PlayerStatus_Impl();
     String name1="name1";
     String name2="name2";
-    String blankName="     ";
-    String nameTooLong="nameTooLongToAcceptNow";
-    String nameToShort="a";
 
-    @Nested
-    class createNewPlayerName{
-
-        @Test
-        void createNewValidPlayer() {
-            playerStatus_impl.createNewPlayerName(name1);
-            assertTrue(containsName(name1));
-        }
-
-        @Test
-        void createBlankPlayerName() {
-            assertEquals(null,playerStatus_impl.createNewPlayerName(blankName));
-        }
-
-        @Test
-        void createNameTooLong() {
-            assertEquals(null,playerStatus_impl.createNewPlayerName(nameTooLong));
-        }
-
-        @Test
-        void createNameToShort() {
-            assertEquals(null,playerStatus_impl.createNewPlayerName(nameToShort));
-        }
-    }
-
-    @Nested
-    class selectPLayer {
-        @Test
-        void selectPlayer() {
-            assertEquals(name1,playerStatus_impl.selectPlayer(name1));
-        }
-        @Test
-        void selectPlayerNotValid() {
-            assertNull(playerStatus_impl.selectPlayer("name not valid"));
-        }
+    @Test
+    void createNewValidPlayer() {
+        playerStatus_impl.createNewPlayerName(name1);
+        assertTrue(containsName(name1));
     }
 
     //only works if Status.txt already has "name1:0"

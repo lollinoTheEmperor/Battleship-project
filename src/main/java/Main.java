@@ -68,6 +68,7 @@ public class Main {
     public void referee() {
         System.out.println("Playing PvP mode...");
 
+        PlayerStatus_Impl writer = new PlayerStatus_Impl();
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         JTextField nameFieldp1 = new JTextField(10);
@@ -82,7 +83,9 @@ public class Main {
             return;
         }
         String namep1 = nameFieldp1.getText();
+        writer.selectPlayer(namep1);
         String namep2 = nameFieldp2.getText();
+        writer.selectPlayer(namep2);
         JOptionPane.showMessageDialog(null, "Player 1: " + namep1 + ", Player 2: " + namep2);
 
         JPanel panel2 = new JPanel();
@@ -262,6 +265,7 @@ public class Main {
             vb.repaintMap(feedb1, true);
 
             if (!p2.hasShips()) {
+                writer.incrementWinnerIndex(p1.getName());
                 break;
             }
 
@@ -271,6 +275,7 @@ public class Main {
             vb.repaintMap(feedb2, false);
 
             if (!p1.hasShips()) {
+                writer.incrementWinnerIndex(p2.getName());
                 break;
             }
         }
