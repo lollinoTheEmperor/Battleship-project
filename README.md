@@ -45,7 +45,7 @@ We only used Maven as a third-party library for testing. All other libraries are
 
 We applied various techniques taught in our course. First, we used interfaces and subclasses to divide the work and clarify the responsibilities of each method before writing the actual code (interfaces) and to reduce code duplication between classes (subclasses). Another significant technique we employed was using streams to make the code more readable and efficient. Additionally, we learned how to read from and write to files, which we used to save player stats in the game. Lastly, we heavily relied on abstract data types such as Set, List, Map, and HashMap. 
 
-**Human experience** /
+**Human experience** \
 The work was divided equally as follow: 
 * Gruber:
    - Main 
