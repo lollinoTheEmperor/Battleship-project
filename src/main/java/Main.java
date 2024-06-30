@@ -215,7 +215,29 @@ public class Main {
         BotPlayer bot2=new BotPlayer("bot2",board2,feedb2,shipsP2,shipsP1);
         bot1.setOpponentsBoard(board2);
         bot2.setOpponentsBoard(board1);
-        
+
+        VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, bot1, bot2);
+
+        System.out.println("Now starting game session - all ships are located");
+        vb.createGameBoards(bot1, bot2);
+
+        for (int i = 0; i < boardSize*boardSize; i++) {
+            bot1.makeMove();
+
+            vb.repaintMap(feedb1, true);
+
+            if (!bot2.hasShips()) {
+                break;
+            }
+
+            bot2.makeMove();
+
+            vb.repaintMap(feedb2, false);
+
+            if (!bot2.hasShips()) {
+                break;
+            }
+        }
         // TODO
     }
 
