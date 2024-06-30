@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
     private static final int MINIMUM_SHIP_SIZE = 2, MAXIMUM_BOARD_SIZE = 100, MINIMUM_BOARD_SIZE = 3;
@@ -426,37 +428,63 @@ public class Main {
         vb.createGameBoards(bot1, bot2);
         vb.showBaordsForBot();
 
+        int waitTime = (int) (1 * 1000);
+        boolean attacking = false;
+        Set<ShotsFeedback> attackFeedback = new HashSet<>();
+
         for (int i = 0; /*pseudo infinite move*/; i++) {
-
             System.out.println("Turn " + i);
-            bot1.makeMove();
 
-            vb.repaintMap(feedb1, true);
+            try {
+                Thread.sleep(waitTime);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            do {
+                attacking = false;
+                attackFeedback = new HashSet<>();
+                attackFeedback.addAll(bot1.makeMove());
+
+                for (ShotsFeedback attack : attackFeedback) {
+                    vb.repaintMap(feedb1, true);
+                    attacking |= attack.hit;
+                }
+            } while (attacking);
 
             if (!bot2.hasShips()) {
                 break;
             }
 
+//////////////////////////////////////////////
+
             try {
-                Thread.sleep(1000);
+                Thread.sleep(waitTime);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-            bot2.makeMove();
+            do {
+                attacking = false;
+                attackFeedback = new HashSet<>();
+                attackFeedback.addAll(bot2.makeMove());
 
-            vb.repaintMap(feedb2, false);
+                for (ShotsFeedback attack : attackFeedback) {
+                    vb.repaintMap(feedb2, false);
+                    attacking |= attack.hit;
+                }
+            } while (attacking);
 
             if (!bot1.hasShips()) {
                 break;
             }
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         }
+
+        System.out.println(bot1.myFeedbacks);
+        System.out.println(bot2.myFeedbacks);
+//
+//        vb.repaintMap(feedb1, true);
+//        vb.repaintMap(feedb2, false);
 
         vb.win();
     }

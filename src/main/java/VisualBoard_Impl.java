@@ -1,3 +1,5 @@
+import org.w3c.dom.css.RGBColor;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -11,7 +13,7 @@ public class VisualBoard_Impl implements VisualBoard {
     final boolean HIT = true;
 
     protected int tableSize;
-    private final Color placeShipColor, waterColor, islandColor, hitColor, missColor, healColor, zoneColor;
+    private final Color placeShipColor, waterColor, islandColor, hitColor, missColor, healColor, zoneColor, destructedColor;
 
     protected JFrame gameFrame;
     protected JPanel board1, board2;
@@ -65,6 +67,7 @@ public class VisualBoard_Impl implements VisualBoard {
         waterColor = Color.WHITE;
         healColor = Color.YELLOW;
         zoneColor = Color.ORANGE;
+        destructedColor = Color.PINK ;
         tableSize = boardSize;
 
         gameFrame = new JFrame("Game Window");
@@ -461,6 +464,10 @@ public class VisualBoard_Impl implements VisualBoard {
                         paintFeedback(x, y, hitColor, targetPanel);
                         break;
 
+                    case "destructed":
+                        paintFeedback(x, y, destructedColor, targetPanel);
+                        break;
+
                     case "miss":
                         paintFeedback(x, y, missColor, targetPanel);
                         break;
@@ -531,10 +538,9 @@ public class VisualBoard_Impl implements VisualBoard {
         this.board1.setVisible(false);
         this.board2.setVisible(false);
 
+        // FIXME ogni tanto non mostra il vincitore (sembra se p2 vinca)
         JLabel winnerLabel = new JLabel("Il vincitore è: " + (player1.hasShips() ? player1.name : player2.name));
         gameFrame.add(winnerLabel);
         winnerLabel.setVisible(true);
-
-//        gameFrame.dispose();
     }
 }
