@@ -46,38 +46,38 @@ We applied various techniques taught in our course. First, we used interfaces an
 **Human experience** \
 The work was divided equally as follow: 
 * Gruber: \
- -Main \
- -Ship \
- -Ship_Impl(no take_damage) 
+ - Main \
+ - Ship \
+ - Ship_Impl(no take_damage) 
 
 * Larcher: \
-  -ShotsFeedback \
-  -VisualBoard \
-  -VisualBoard_Impl \
-  -Ship_Heavy \
-  -Ship_kill 
+  - ShotsFeedback \
+  - VisualBoard \
+  - VisualBoard_Impl \
+  - Ship_Heavy \
+  - Ship_kill 
   
 * Marcon: \
-  -PlayerStatus \
-  -WinsComparator \
-  -Player \
-  -Bot_Player (only place_ship) \
-  -Ship_Bomber \
-  -Ship_OnDeath 
+  - PlayerStatus \
+  - WinsComparator \
+  - Player \
+  - Bot_Player (only place_ship) \
+  - Ship_Bomber \
+  - Ship_OnDeath 
   
 * Pugnani: \
-  -AttackStrategy \
-  -BoardFeedback \
-  -BoardStart (place_ship made by Gruber with some change) \
-  -BotPlayer (place ship made by Marcon) \
-  -CheckboardStrategy \
-  -GameBoard \
-  -GameBoard_Impl \
-  -Heatmap \
-  -Heatmap_Impl \
-  -Ship_impl (only take damage) \
-  -ShipManager \
-  -SpiralStrategy 
+  - AttackStrategy \
+  - BoardFeedback \
+  - BoardStart (place_ship made by Gruber with some change) \
+  - BotPlayer (place ship made by Marcon) \
+  - CheckboardStrategy \
+  - GameBoard \
+  - GameBoard_Impl \
+  - Heatmap \
+  - Heatmap_Impl \
+  - Ship_impl (only take damage) \
+  - ShipManager \
+  - SpiralStrategy 
   
 Each one has also done the respective tests. \
 Git was used to communicate and develop on different branches. Because of this, we had many branches and sometimes needed to merge them, which allowed us to develop the game faster. Each one faced different challenges in this project, some of which were similar, such as how to organize the code before actually writing it. We will describe one individual challenge for each member: 
