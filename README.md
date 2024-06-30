@@ -62,8 +62,7 @@ The work was divided equally as follow:
   - Ship_kill 
   
 * Marcon: 
-  - PlayerStatus 
-  - WinsComparator 
+  - PlayerStatus
   - Player 
   - Bot_Player (only place_ship) 
   - Ship_Bomber 
