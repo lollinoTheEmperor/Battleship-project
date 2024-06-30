@@ -49,7 +49,7 @@ public class BoardFeedback extends GameBoard_Impl {
             // there was the id
             if(shipHitted.takeDamage()){
                 if(shipHitted.typeShip.equals("Radar")){
-                    ((Ship_Radar)shipHitted).mapRev();
+                    ((Ship_Radar)shipHitted).mapRev(boardWithShip);
                 }
                 if (shipHitted.typeShip.equals("Explosive")){
                     ((Ship_OnDeath)shipHitted).onDeath(this,boardWithShip,allship);

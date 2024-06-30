@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -68,6 +69,30 @@ public class BotPlayer extends Player_Impl {
         changeStrategyIfNeeded();
         int[] nextMove = findAdjacentMove(); // check befoe adiacent cell
         if (nextMove == null) {
+        //     for (Map.Entry<Integer, Ship_Impl> entry : shipManager.getShips().entrySet()) {
+        //     Ship_Impl ship = entry.getValue();
+        //     // if (ship instanceof Ship_Radar) {
+        //     //     int quadrant = ((Ship_Radar)ship).getQuadrant();
+        //     //     Random ran = new Random();
+        //     //     if(quadrant == 1) {
+        //     //         nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
+        //     //         nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
+        //     //         return nextMove;
+        //     //     } else if(quadrant == 2) {
+        //     //         nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
+        //     //         nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
+        //     //         return nextMove;
+        //     //     } else if(quadrant == 3) {
+        //     //         nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
+        //     //         nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
+        //     //         return nextMove;
+        //     //     } else if(quadrant == 4) {
+        //     //         nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
+        //     //         nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
+        //     //         return nextMove;
+        //     //     }
+        //     // } 
+        // }
             nextMove = strategy.getNextMove(heatmap, myFeedbacks);
         }
         return nextMove;

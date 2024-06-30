@@ -15,9 +15,14 @@ public class Main {
 
         Main main = new Main();
         main.choseMod();
-
-        System.out.println("GG");
     }
+    // public static Player_Impl player;
+    
+    // public static void main(String[] args) throws InterruptedException {
+    //     System.out.printf("Hello and welcome!\n");
+    //     referee();
+    //     System.out.println("GG");
+    // }
 
     public void choseMod() {
 
@@ -634,9 +639,6 @@ public class Main {
 
 
                     // TODO change class based on tipe
-                    shipsP1.addShip(new Ship_Impl(size, type, id));
-                    shipsP2.addShip(new Ship_Impl(size, type, id));
-
                     if(type.equals("Radar")) {
                         shipsP1.addShip(new Ship_Radar(size, type, id, board2));
                         shipsP2.addShip(new Ship_Radar(size, type, id, board1));
@@ -682,6 +684,12 @@ public class Main {
 
         System.out.println("Now starting game session - all ships are located");
         vb.createGameBoards(p1, p2);
+
+        for (int i = 0; i < board2.getHeight(); i++) {
+            for (int x = 0; x < board2.getHeight(); x++) {
+                System.out.println( p1.opponentsBoard.getCell(i, x));
+            }
+        }
 
         for (int i = 0; i < boardSize*boardSize; i++) {
             vb.turnP1();
@@ -735,3 +743,5 @@ public class Main {
 
     }
 }
+
+
