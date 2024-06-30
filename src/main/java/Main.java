@@ -212,12 +212,10 @@ public class Main {
         }
 
         BotPlayer bot1=new BotPlayer("bot1",board1,feedb1,shipsP1,shipsP2);
-        bot1.placeShip();
         BotPlayer bot2=new BotPlayer("bot2",board2,feedb2,shipsP2,shipsP1);
-        bot2.placeShip();
         bot1.setOpponentsBoard(board2);
         bot2.setOpponentsBoard(board1);
-
+        
         // TODO
     }
 
