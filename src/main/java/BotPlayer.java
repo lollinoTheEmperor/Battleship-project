@@ -10,10 +10,9 @@ public class BotPlayer extends Player_Impl {
     private ShipManager opponentsShipManager;
 
     //a bot need name, board start his and of the adversare, board feedback, a shipmanager, a strategy.
-    public BotPlayer(String name, BoardStart myBoard, BoardStart opponentsBoard, BoardFeedback myFeedbacks, ShipManager shipManager, ShipManager opponentsShipManager) {
+    public BotPlayer(String name, BoardStart myBoard, BoardFeedback myFeedbacks, ShipManager shipManager, ShipManager opponentsShipManager) {
         super(name, myBoard, myFeedbacks, shipManager, opponentsShipManager);
         this.heatmap = new Heatmap_Impl(myFeedbacks, shipManager);
-        this.setOpponentsBoard(opponentsBoard);
         this.checkboardStrategy = new CheckboardStrategy();
         this.spiralStrategy = new SpiralStrategy();
         this.strategy = checkboardStrategy;
@@ -27,6 +26,11 @@ public class BotPlayer extends Player_Impl {
 //            }
 //            System.out.println();
 //        }
+    }
+
+    @Override
+    public void setOpponentsBoard(BoardStart board) {
+        super.setOpponentsBoard(board);
     }
 
     private void updateHeatmap() {

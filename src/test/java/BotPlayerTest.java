@@ -34,7 +34,8 @@ public class BotPlayerTest {
         opponentsShipManager.addShip(ship2);
         opponentsBoard.placeShip(5, 5, 0, opShip2);
 
-        botPlayer = new BotPlayer("Bot", new BoardStart("Player1", 10, 10), opponentsBoard, board, shipManager, opponentsShipManager);
+        botPlayer = new BotPlayer("Bot", new BoardStart("Player1", 10, 10), board, shipManager, opponentsShipManager);
+        botPlayer.setOpponentsBoard(opponentsBoard);
     }
 
     @Test

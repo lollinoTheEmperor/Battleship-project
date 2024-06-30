@@ -61,6 +61,163 @@ public class Main {
 
     public void playBotVsBot() {
         System.out.println("Playing Bot vs Bot mode...");
+
+        JPanel panel2 = new JPanel();
+        panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+        JTextField sizeGB = new JTextField(10);
+        JTextField shipC = new JTextField(10);
+        panel2.add(new JLabel("Enter the size of the Gameboard (it will be a square, between " + MINIMUM_BOARD_SIZE + " and " + MAXIMUM_BOARD_SIZE + ")"));
+        panel2.add(sizeGB);
+        panel2.add(Box.createVerticalStrut(15)); // A spacer
+        panel2.add(new JLabel("How many ships will you play with:"));
+        panel2.add(shipC);
+
+        int boardSize = -1;
+        int shipCount = -1;
+        while (true) {
+            int result2 = JOptionPane.showConfirmDialog(null, panel2, "Gameboard Size and Total Ships:", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (result2 != JOptionPane.OK_OPTION) {
+                return;
+            }
+            String sizeStr = sizeGB.getText();
+            String shipStr = shipC.getText();
+            try {
+                boardSize = Integer.parseInt(sizeStr);
+                shipCount = Integer.parseInt(shipStr);
+                if (boardSize < MINIMUM_BOARD_SIZE || boardSize > MAXIMUM_BOARD_SIZE) {
+                    JOptionPane.showMessageDialog(null, "Board size must be between 3 and 100.");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid board size or number of ships.");
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Board Size: " + boardSize + "x" + boardSize + ", Ships: " + shipCount);
+
+
+        int maxOccupiedCells = boardSize * boardSize / 2;
+        int totalOccupiedCells = 0;
+
+        ShipManager shipsP1 = new ShipManager();
+        ShipManager shipsP2 = new ShipManager();
+
+        for (int i = 0; i < shipCount; i++) {
+            boolean retrySelection = true;
+            while (retrySelection) {
+                JPanel panel3 = new JPanel();
+                panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
+
+                JLabel sizeLabel = new JLabel("Select size of Ship Nr. " + (i + 1) + " (between " + MINIMUM_SHIP_SIZE + " and " + boardSize + "):");
+                JTextField sizeInput = new JTextField(5);
+                panel3.add(sizeLabel);
+                panel3.add(sizeInput);
+
+                JLabel typeLabel = new JLabel("Select type of Ship Nr. " + (i + 1) + ":");
+                JRadioButton typeBattleship = new JRadioButton("Battleship");
+                JRadioButton typeDestroyer = new JRadioButton("Destroyer");
+                JRadioButton typeExplosive = new JRadioButton("Explosive");
+                JRadioButton typeRadar = new JRadioButton("Radar");
+                JRadioButton typeHeal = new JRadioButton("Heal");
+                JRadioButton typeClassic = new JRadioButton("Classic");
+                ButtonGroup typeGroup = new ButtonGroup();
+                typeGroup.add(typeBattleship);
+                typeGroup.add(typeDestroyer);
+                typeGroup.add(typeExplosive);
+                typeGroup.add(typeRadar);
+                typeGroup.add(typeHeal);
+                typeGroup.add(typeClassic);
+                typeBattleship.setSelected(true);
+
+                JPanel typePanel = new JPanel();
+                typePanel.add(typeLabel);
+                typePanel.add(typeBattleship);
+                typePanel.add(typeDestroyer);
+                typePanel.add(typeExplosive);
+                typePanel.add(typeRadar);
+                typePanel.add(typeHeal);
+                typePanel.add(typeClassic);
+                panel3.add(typePanel);
+
+                int result3 = JOptionPane.showConfirmDialog(null, panel3, "Ship Details", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (result3 != JOptionPane.OK_OPTION) {
+                    return;
+                }
+
+                int size = -1;
+                try {
+                    size = Integer.parseInt(sizeInput.getText());
+                    if (size < MINIMUM_SHIP_SIZE || size > boardSize) {
+                        JOptionPane.showMessageDialog(null, "Ship size must be between " + MINIMUM_SHIP_SIZE + " and " + boardSize + ".");
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid ship size.");
+                    continue;
+                }
+
+                String type = null;
+                if (typeBattleship.isSelected()) type = "Battleship";
+                else if (typeDestroyer.isSelected()) type = "Destroyer";
+                else if (typeExplosive.isSelected()) type = "Explosive";
+                else if (typeRadar.isSelected()) type = "Radar";
+                else if (typeHeal.isSelected()) type = "Heal";
+                else if(typeClassic.isSelected()) type = "Classic";
+
+                board1 = new BoardStart("bot1", boardSize, boardSize);
+                feedb1 = new BoardFeedback(boardSize, boardSize);
+
+                board2 = new BoardStart("bot2", boardSize, boardSize);
+                feedb2 = new BoardFeedback(boardSize, boardSize);
+
+
+                if (totalOccupiedCells + size > maxOccupiedCells) {
+                    JOptionPane.showMessageDialog(null, "Total occupied cells cannot exceed 50% of the board size.");
+                    retrySelection = true; // Retry for the same ship
+                    i = 0; // Restart from the first ship
+                    totalOccupiedCells = 0; // Reset total occupied cells
+                } else {
+                    retrySelection = false; // Valid ship selected, exit the retry loop
+                    String id = String.valueOf(i + 1);
+
+
+
+                    // TODO change class based on tipe
+                    shipsP1.addShip(new Ship_Impl(size, type, id));
+                    shipsP2.addShip(new Ship_Impl(size, type, id));
+
+                    if(type.equals("Radar")) {
+                        shipsP1.addShip(new Ship_Radar(size, type, id, board2));
+                        shipsP2.addShip(new Ship_Radar(size, type, id, board1));
+                    } else if(type.equals("Battleship")) {
+                        shipsP1.addShip(new Ship_Heavy(size, type, id));
+                        shipsP2.addShip(new Ship_Heavy(size, type, id));
+                    } else if(type.equals("Destroyer")) {
+                        shipsP1.addShip(new Ship_Bomber(size, type, id));
+                        shipsP2.addShip(new Ship_Bomber(size, type, id));
+                    } else if(type.equals("Explosive")) {
+                        shipsP1.addShip(new Ship_OnDeath(size, type, id, board2));
+                        shipsP2.addShip(new Ship_OnDeath(size, type, id, board1));
+                    } else if(type.equals("Heal")) {
+                        shipsP1.addShip(new Ship_Heal(size, type, id));
+                        shipsP2.addShip(new Ship_Heal(size, type, id));
+                    } else if(type.equals("Classic")) {
+                        shipsP1.addShip(new Ship_Impl(size, type, id));
+                        shipsP2.addShip(new Ship_Impl(size, type, id));
+                    }
+
+                    totalOccupiedCells += size; // Update total occupied cells
+                }
+            }
+        }
+
+        BotPlayer bot1=new BotPlayer("bot1",board1,feedb1,shipsP1,shipsP2);
+        bot1.placeShip();
+        BotPlayer bot2=new BotPlayer("bot2",board2,feedb2,shipsP2,shipsP1);
+        bot2.placeShip();
+        bot1.setOpponentsBoard(board2);
+        bot2.setOpponentsBoard(board1);
+
         // TODO
     }
 
