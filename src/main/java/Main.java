@@ -9,6 +9,8 @@ public class Main {
     public static BoardFeedback feedb1;
     public static BoardStart board2;
     public static BoardFeedback feedb2;
+    private final int waitTime = (int) (1 * 1000);
+
 
     public static void main(String[] args) {
         System.out.println("Hello and welcome!");
@@ -235,9 +237,15 @@ public class Main {
 
         System.out.println("Now starting game session - all ships are located");
         vb.createGameBoards(p1, bot1);
+        vb.showBaordPvE();
+
+        boolean attacking = false;
+        Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
         for (int i = 0; i < boardSize*boardSize; i++) {
-            vb.turnP1();
+
+//            vb.turnP1();
+            vb.endTurnBot();
             stopBackendUntil(vb.endTurn);
 
             vb.repaintMap(feedb1, true);
@@ -247,18 +255,26 @@ public class Main {
                 break;
             }
 
-            bot1.makeMove();
+            try {
+                Thread.sleep(waitTime);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-            vb.repaintMap(feedb1, true);
+            vb.turnBot();
+            do {
+                attacking = false;
+                attackFeedback = new HashSet<>();
+                attackFeedback.addAll(bot1.makeMove());
+
+                for (ShotsFeedback attack : attackFeedback) {
+                    vb.repaintMap(feedb2, false);
+                    attacking |= attack.hit;
+                }
+            } while (attacking);
 
             if (!p1.hasShips()) {
                 break;
-            }
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
         }
 
@@ -428,7 +444,6 @@ public class Main {
         vb.createGameBoards(bot1, bot2);
         vb.showBaordsForBot();
 
-        int waitTime = (int) (1 * 1000);
         boolean attacking = false;
         Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
@@ -480,8 +495,8 @@ public class Main {
             }
         }
 
-        System.out.println(bot1.myFeedbacks);
-        System.out.println(bot2.myFeedbacks);
+//        System.out.println(bot1.myFeedbacks);
+//        System.out.println(bot2.myFeedbacks);
 //
 //        vb.repaintMap(feedb1, true);
 //        vb.repaintMap(feedb2, false);

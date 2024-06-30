@@ -242,7 +242,7 @@ public class VisualBoard_Impl implements VisualBoard {
                     int row = index % size;
                     String coord = row + ":" + col;
                     textField.setText(coord);
-                    button.setEnabled(true);
+//                    button.setEnabled(true);
                 }
             });
             boardPanel.add(square);
@@ -440,10 +440,7 @@ public class VisualBoard_Impl implements VisualBoard {
         if (index >= 0 && index < targetPanel.getComponentCount()) {
             JButton square = (JButton) targetPanel.getComponent(index);
             square.setBackground(feedbackColor);
-            if (feedbackColor == waterColor || feedbackColor == healColor)
-                square.setEnabled(true);
-            else
-                square.setEnabled(false);
+            square.setEnabled(feedbackColor == waterColor || feedbackColor == healColor);
         }
     }
 
@@ -511,12 +508,34 @@ public class VisualBoard_Impl implements VisualBoard {
         this.board2.setVisible(true);
     }
 
+    public void turnBot() {
+        JButton buttonP1 = (JButton) componentMap.get(MapElements.BUTTON_P1.getValue());
+        buttonP1.setEnabled(false);
+        buttonP1.setVisible(false);
+    }
+    public void endTurnBot() {
+        endTurn[0] = false;
+        JButton buttonP1 = (JButton) componentMap.get(MapElements.BUTTON_P1.getValue());
+        buttonP1.setEnabled(true);
+        buttonP1.setVisible(true);
+    }
+
     @Override
     public void reloadGameView() {                                                                                      // Used to solve a visual bug (show the board without all items)
         gameFrame.revalidate();
         gameFrame.repaint();
     }
 
+    public void showBaordPvE() {
+        this.board1.setVisible(true);
+        this.board2.setVisible(true);
+
+        JButton buttonP2 = (JButton) componentMap.get(MapElements.BUTTON_P2.getValue());
+
+        buttonP2.setEnabled(false);
+
+        buttonP2.setVisible(false);
+    }
 
     public void showBaordsForBot() {
         this.board1.setVisible(true);
@@ -538,8 +557,13 @@ public class VisualBoard_Impl implements VisualBoard {
         this.board1.setVisible(false);
         this.board2.setVisible(false);
 
-        // FIXME ogni tanto non mostra il vincitore (sembra se p2 vinca)
-        JLabel winnerLabel = new JLabel("Il vincitore è: " + (player1.hasShips() ? player1.name : player2.name));
+        JLabel winnerLabel = new JLabel();
+        if (player1.hasShips())
+            winnerLabel.setText(player1.name);
+
+        if (player2.hasShips())
+            winnerLabel.setText(player2.name);
+
         gameFrame.add(winnerLabel);
         winnerLabel.setVisible(true);
     }
