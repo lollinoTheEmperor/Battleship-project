@@ -220,8 +220,11 @@ public class Main {
 
         System.out.println("Now starting game session - all ships are located");
         vb.createGameBoards(bot1, bot2);
+        vb.showBaordsForBot();
 
-        for (int i = 0; i < boardSize*boardSize; i++) {
+        for (int i = 0; /*pseudo infinite move*/; i++) {
+
+            System.out.println("Turn " + i);
             bot1.makeMove();
 
             vb.repaintMap(feedb1, true);
@@ -230,12 +233,24 @@ public class Main {
                 break;
             }
 
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
             bot2.makeMove();
 
             vb.repaintMap(feedb2, false);
 
-            if (!bot2.hasShips()) {
+            if (!bot1.hasShips()) {
                 break;
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
         // TODO

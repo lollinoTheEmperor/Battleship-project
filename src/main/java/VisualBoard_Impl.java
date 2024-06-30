@@ -27,7 +27,7 @@ public class VisualBoard_Impl implements VisualBoard {
     protected Player_Impl player1;
     protected Player_Impl player2;
 
-   public enum MapElements {                                                                                            // created variables to have help when writing code
+    public enum MapElements {                                                                                            // created variables to have help when writing code
         GRID_PANEL_P1("GRID_PANEL_P1"),                                                                           // in order to, do not remember all string but having suggestions
         GRID_PANEL_P2("GRID_PANEL_P2"),
         TEXT_FIELD_P1("TEXT_FIELD_P1"),
@@ -510,11 +510,26 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.repaint();
     }
 
-    // TODO use message dialog for problems or errors
+
+    public void showBaordsForBot() {
+        this.board1.setVisible(true);
+        this.board2.setVisible(true);
+
+        JButton buttonP1 = (JButton) componentMap.get(MapElements.BUTTON_P1.getValue());
+        JButton buttonP2 = (JButton) componentMap.get(MapElements.BUTTON_P2.getValue());
+
+        buttonP1.setEnabled(false);
+        buttonP2.setEnabled(false);
+
+        buttonP1.setVisible(false);
+        buttonP2.setVisible(false);
+
+    }
+
 
     public void win() {
-       this.board1.setVisible(false);
-       this.board2.setVisible(false);
+        this.board1.setVisible(false);
+        this.board2.setVisible(false);
 
         JLabel winnerLabel = new JLabel("Il vincitore è: " + (player1.hasShips() ? player1.name : player2.name));
         gameFrame.add(winnerLabel);
