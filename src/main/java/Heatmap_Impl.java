@@ -19,7 +19,7 @@ public class Heatmap_Impl implements Heatmap {
         // Adjust heatmap based on board state
         adjustHeatMapBasedOnBoardState(width, height);
     }
-
+//update the heatmap probability
     private void updateHeatMapProbabilities(int width, int height) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -27,7 +27,7 @@ public class Heatmap_Impl implements Heatmap {
             }
         }
     }
-
+//adjust probability based on what is written in the baordfeedback
     private void adjustHeatMapBasedOnBoardState(int width, int height) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -41,16 +41,14 @@ public class Heatmap_Impl implements Heatmap {
     }
 
 
-
+//calculate probability
     private int calculateProbability(int x, int y) {
         if (board.isAlreadyAttacked(x, y)) {
             return 1;  // Return minimum probability if already attacked
         }
-
         int probability = 0;
         int width = board.width;
         int height = board.height;
-
         for (Ship_Impl ship : shipman.ships.values()) {
             int length = ship.getSize();
             probability += checkDirection(x, y, length, width, height, true);  // Horizontal direction
@@ -59,7 +57,7 @@ public class Heatmap_Impl implements Heatmap {
 
         return probability > 0 ? probability : 1; // Ensure minimum probability is 1
     }
-
+//check if it's possible to place the ship in that direction
     private int checkDirection(int x, int y, int length, int width, int height, boolean isHorizontal) {
         for (int k = 0; k < length; k++) {
             int newX = isHorizontal ? x + k : x;
@@ -71,7 +69,7 @@ public class Heatmap_Impl implements Heatmap {
         }
         return 1; // Possible to place ship in this direction
     }
-
+//increase the position of the cell near an hit
     private void increaseAdjacentProbabilities(int x, int y) {
         if (x > 0 && !board.isAlreadyAttacked(x - 1, y)) heatmap[x - 1][y] += 5;
         if (x < board.getWidth() - 1 && !board.isAlreadyAttacked(x + 1, y)) heatmap[x + 1][y] += 5;
