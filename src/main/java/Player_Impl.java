@@ -1,5 +1,4 @@
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Player_Impl implements Player {
     String name;
@@ -34,9 +33,9 @@ public class Player_Impl implements Player {
 
     @Override
     public Set<ShotsFeedback> attack(int x, int y) {
-        // FIXME do bether decision for which ship to use
+        Random rand = new Random();
 
-        Ship_Impl ship = shipManager.getShipById(shipManager.ships.entrySet().stream().findAny().get().getKey().toString());
+        Ship_Impl ship = shipManager.getShipById(Integer.toString(rand.nextInt((shipManager.getShips().keySet().size()))+1));
         return ship.attack(myFeedbacks, opponentsBoard, x, y, opponentsShipManager);
     }
 
