@@ -57,6 +57,8 @@ public class BotPlayer extends Player_Impl {
     public int[] getNextMove() {
         changeStrategyIfNeeded();
         int[] nextMove = findAdjacentMove(); // check befoe adiacent cell
+        //so not computed more time in the for
+        int [] strat = strategy.getNextMove(heatmap, myFeedbacks);
         if (nextMove == null) {
             for (Map.Entry<Integer, Ship_Impl> entry : shipManager.getShips().entrySet()) {
                 Ship_Impl ship = entry.getValue();
@@ -81,7 +83,7 @@ public class BotPlayer extends Player_Impl {
                         return nextMove;
                     }
                 } else {
-                    nextMove = strategy.getNextMove(heatmap, myFeedbacks);
+                    nextMove = strat;
                 }
             }
         }
