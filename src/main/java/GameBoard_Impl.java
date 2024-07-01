@@ -1,24 +1,21 @@
-public class gameBoard_Impl implements gameBoard {
+public class GameBoard_Impl implements GameBoard {
     //name = name mappa, board game is a table
-    protected String name;
     protected int width;
     protected int height;
     protected String [][] board_Game;
 
     //first one is used when width and heght are not specified
-    public gameBoard_Impl(String title){
-        this.name=title;
+    public GameBoard_Impl(){
         this.width = 10;
         this.height= 10;
         this.board_Game = new String[width][height];
         putWater();
     }
-    //thi constructor is used when the player can choose the heght and width
-    public gameBoard_Impl(String title, int widht, int height){
-        this.name=title;
-        this.width = widht;
+    //this constructor is used when the player can choose the heght and width
+    public GameBoard_Impl(int width, int height){
+        this.width = width;
         this.height= height;
-        this.board_Game = new String[width][height];
+        this.board_Game = new String[this.width][height];
         putWater();
     }
 
@@ -41,22 +38,26 @@ public class gameBoard_Impl implements gameBoard {
     public int getHeight() {
         return height;
     }
-    @Override
-    public String getName() {
-        return name;
-    }
 
     //method used to return the cell
     @Override
-    public String getCell(int X, int Y){
-        if(areValidCoordinates(X,Y)){
+    public String getCell(int x, int y){
+        if(!areValidCoordinates(x, y)){
            return null;
         }
-        return board_Game[X][Y];
+        return board_Game[x][y];
     }
     //check if the coordinates are valid
     @Override
-        public boolean areValidCoordinates(int X, int Y) {
-            return (X >= 0 && X < width && Y >= 0 && Y < height);
+        public boolean areValidCoordinates(int x, int y) {
+            return (x >= 0 && x < width && y >= 0 && y < height);
         }
+        //mark the board cell as destrcuted when a ship is destructed
+        protected void markShipDestructed(Ship_Impl ship) {
+        ship.getCoordinates().forEach(coordinate -> {
+            int x = coordinate[0];
+            int y = coordinate[1];
+            board_Game[x][y] = "destructed";
+        });
+    }
 }
