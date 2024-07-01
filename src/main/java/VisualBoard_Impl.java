@@ -66,7 +66,7 @@ public class VisualBoard_Impl implements VisualBoard {
         hitColor = Color.RED;
         missColor = Color.GRAY;
         waterColor = Color.WHITE;
-        healColor = Color.YELLOW;
+        healColor = Color.WHITE;
         hotZoneColor = Color.ORANGE;
         destructedColor = Color.PINK ;
         tableSize = boardSize;
@@ -178,8 +178,6 @@ public class VisualBoard_Impl implements VisualBoard {
                     paintFeedback(attack.x, attack.y, attack.hit == HIT ? hitColor : missColor, boardPanel);
                     attacking |= attack.hit;
                 }
-
-//                remainingShipsLabel.setText(updateRemainingShipsLabel(isP1));
 
                 repaintMap(isP1);
 
@@ -306,7 +304,7 @@ public class VisualBoard_Impl implements VisualBoard {
                         return;
                     }
 
-// TODO fare label per n barche qui e dall'alrta
+// TODO fare label per n barche qui e ?
 
                     int shipId = shipCopy.keySet().iterator().next();
                     currentShip = shipCopy.get(shipId);
@@ -315,14 +313,14 @@ public class VisualBoard_Impl implements VisualBoard {
                     int startY = Math.min(rememberYforPlace, saveCoord[1]);
                     int endX = Math.max(rememberXforPlace, saveCoord[0]);
                     int endY = Math.max(rememberYforPlace, saveCoord[1]);
-                    boolean validLenght;
+                    boolean validLength;
 
                     if (shipOrientation == HORIZONTAL)
-                        validLenght = validateLenghtShip(startX, endX, currentShip.getSize());
+                        validLength = validateLengthShip(startX, endX, currentShip.getSize());
                     else
-                        validLenght = validateLenghtShip(startY, endY, currentShip.getSize());
+                        validLength = validateLengthShip(startY, endY, currentShip.getSize());
 
-                    if (!validLenght) {
+                    if (!validLength) {
                         coordField.setText("Ship size: " + currentShip.getSize());
                         System.out.println("Ship size: " + currentShip.getSize());
                         return;
@@ -395,7 +393,7 @@ public class VisualBoard_Impl implements VisualBoard {
         reloadGameView();
     }
 
-    public boolean validateLenghtShip(int startPoint, int endPoint, int shipSize) {
+    public boolean validateLengthShip(int startPoint, int endPoint, int shipSize) {
         System.out.println(startPoint + " " + endPoint + " " + shipSize);
         return shipSize == endPoint - startPoint+1;                                                                     // using 0 we have math problem (in method) so do +1
     }
@@ -570,7 +568,7 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.repaint();
     }
 
-    public void showBaordPvE() {
+    public void showBoardPvE() {
         this.board1.setVisible(true);
         this.board2.setVisible(true);
 
@@ -581,7 +579,7 @@ public class VisualBoard_Impl implements VisualBoard {
         buttonP2.setVisible(false);
     }
 
-    public void showBaordsForBot() {
+    public void showBoardsForBot() {
         this.board1.setVisible(true);
         this.board2.setVisible(true);
 
@@ -593,7 +591,6 @@ public class VisualBoard_Impl implements VisualBoard {
 
         buttonP1.setVisible(false);
         buttonP2.setVisible(false);
-
     }
 
 

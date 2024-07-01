@@ -18,13 +18,6 @@ public class Main {
         Main main = new Main();
         main.choseMod();
     }
-    // public static Player_Impl player;
-    
-    // public static void main(String[] args) throws InterruptedException {
-    //     System.out.printf("Hello and welcome!\n");
-    //     referee();
-    //     System.out.println("GG");
-    // }
 
     public void choseMod() {
 
@@ -242,25 +235,26 @@ public class Main {
 
         System.out.println("Now starting game session - all ships are located");
         vb.createGameBoards(p1, bot1);
-        vb.showBaordPvE();
+        vb.showBoardPvE();
 
         boolean attacking = false;
         Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
         for (int i = 0; i < boardSize*boardSize; i++) {
+            checkHeal(p1, bot1); // to check for p1
+            checkHeal(bot1, p1);  // to check for bot1
 
+//////////// P1 //////////////////////////////////
             vb.endTurnBot();
-            stopBackendUntil(vb.endTurn);
-
             vb.repaintMap(true);
+            stopBackendUntil(vb.endTurn);
 
             if (!bot1.hasShips()) {
                 writer.incrementWinnerIndex(p1.getName());
                 break;
             }
 
-//////////////////////////////////////////////
-            
+//////////// P2 //////////////////////////////////
             vb.turnBot();
             try {
                 Thread.sleep(waitTime);
@@ -445,14 +439,17 @@ public class Main {
 
         System.out.println("Now starting game session - all ships are located");
         vb.createGameBoards(bot1, bot2);
-        vb.showBaordsForBot();
+        vb.showBoardsForBot();
 
         boolean attacking = false;
         Set<ShotsFeedback> attackFeedback = new HashSet<>();
 
         for (int i = 0; /*pseudo infinite move*/; i++) {
             System.out.println("Turn " + i);
+            checkHeal(bot1, bot2);      // for bot 1
+            checkHeal(bot2, bot1);      // for bot 2
 
+//////////// P1 //////////////////////////////////
             try {
                 Thread.sleep(waitTime);
             } catch (InterruptedException e) {
@@ -474,7 +471,7 @@ public class Main {
                 break;
             }
 
-//////////////////////////////////////////////
+//////////// Bot1 //////////////////////////////////
 
             try {
                 Thread.sleep(waitTime);
@@ -496,6 +493,7 @@ public class Main {
             if (!bot1.hasShips()) {
                 break;
             }
+
         }
 
         vb.win();
@@ -644,8 +642,7 @@ public class Main {
                     String id = String.valueOf(i + 1);
 
 
-
-                    // TODO change class based on tipe
+                    // change ship type based on input
                     if(type.equals("Radar")) {
                         shipsP1.addShip(new Ship_Radar(size, type, id, board1));
                         shipsP2.addShip(new Ship_Radar(size, type, id, board2));
@@ -672,9 +669,7 @@ public class Main {
         }
 
         Player_Impl p1 = new Player_Impl(namep1, board1, feedb1, shipsP1, shipsP2);
-
         Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, shipsP2, shipsP1);
-
         VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, p2, feedb1, feedb2);
 
         p1.setOpponentsBoard(board2);
@@ -692,22 +687,23 @@ public class Main {
         vb.repaintMap(true);
         vb.repaintMap(false);
         for (int i = 0; i < boardSize*boardSize; i++) {
-            vb.turnP1();
-            stopBackendUntil(vb.endTurn);
+            checkHeal(p1, p2); // to check for p1
+            checkHeal(p2, p1);  // to check for p2
 
+//////////// Bot1 //////////////////////////////////
+            vb.turnP1();
             vb.repaintMap(true);
+            stopBackendUntil(vb.endTurn);
 
             if (!p2.hasShips()) {
                 writer.incrementWinnerIndex(p1.getName());
                 break;
             }
 
-//////////////////////////////////////////////
-
+//////////// Bot2 //////////////////////////////////
             vb.turnP2();
-            stopBackendUntil(vb.endTurn);
-
             vb.repaintMap(false);
+            stopBackendUntil(vb.endTurn);
 
             if (!p1.hasShips()) {
                 writer.incrementWinnerIndex(p2.getName());
@@ -715,8 +711,15 @@ public class Main {
             }
         }
 
-        // TODO show winner in bether way ??
         vb.win();
+    }
+
+    private static void checkHeal(Player_Impl owner, Player_Impl opponent) {
+        for (Ship_Impl ship : owner.shipManager.ships.values()) {
+            if (ship instanceof Ship_Heal)
+                if (((Ship_Heal) ship).endTurn())
+                    ((Ship_Heal) ship).heal(owner.myBoard, opponent.myFeedbacks);
+        }
     }
 
     public static void stopBackendUntil(boolean[] condition) {
@@ -727,21 +730,6 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
-
-        // TODO check if is possible
-        //  Main thread will wait here until the GUI thread finishes.
-        /*
-        *
-        synchronized (Main.class) {
-            Main.class.wait();
-        }
-        synchronized (Main.class) {
-            Main.class.notify();
-        }
-        *
-        *
-        * */
-
     }
 }
 
