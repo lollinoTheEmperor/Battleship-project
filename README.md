@@ -6,9 +6,11 @@
 - Pugnani Stefano (Pugnani and SPugnani@unibz.it (because of change of computer))
 
 **Instrcutions** \
-mvn package
+Enter the project folder, then with the terminal use the two following commands
 
-java -jar ./target/Battleship-project-1.0-SNAPSHOT.jar
+`mvn package`
+
+`java -jar ./target/Battleship-project-1.0-SNAPSHOT.jar`
 
 **Description** \
 Welcome to our Battleship game! In this game, you can choose to play against a bot or another player on the same computer. The objective is to sink all of your opponent's ships by strategically positioning your own ships and attacking your opponent's ships.
@@ -61,7 +63,7 @@ The work was divided equally as follow:
   - VisualBoard 
   - VisualBoard_Impl 
   - Ship_Heavy 
-  - Ship_kill 
+  - Ship_Heall 
   
 * Marcon: 
   - PlayerStatus

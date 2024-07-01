@@ -9,8 +9,7 @@ public class Ship_Heavy extends Ship_Impl {
 
     /**
      * it @Override the method attack in Ship_Impl and perform an extra attack with a random spread
-     *
-     * @return a set of hits
+     * @return a set of ShotsFeedback (they have, boolean hit, int x, y)
      */
     @Override
     public Set<ShotsFeedback> attack(BoardFeedback myFeedbacks, BoardStart opponentsBoard, int x, int y, ShipManager shipManager) {
@@ -22,7 +21,7 @@ public class Ship_Heavy extends Ship_Impl {
         int secondX, secondY;
         String cellState;
 
-        // Crea una lista di tutte le possibili caselle attorno al punto (x, y)
+        // Create a list of possible hit around the coordinates (x, y)
         List<int[]> possibleMoves = new ArrayList<>();
         if (x > 0) possibleMoves.add(new int[]{x - 1, y});
         if (x < opponentsBoard.width - 1) possibleMoves.add(new int[]{x + 1, y});

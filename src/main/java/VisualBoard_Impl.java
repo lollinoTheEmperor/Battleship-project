@@ -97,7 +97,8 @@ public class VisualBoard_Impl implements VisualBoard {
         this.boardFeedbackP2 = boardFeedbackP2;
     }
 
-    private void createComponents() {
+    @Override
+    public void createComponents() {
         JPanel gridPanelP1 = new JPanel();
         JPanel gridPanelP2 = new JPanel();
         JTextField textField1 = new JTextField();
@@ -393,6 +394,7 @@ public class VisualBoard_Impl implements VisualBoard {
         reloadGameView();
     }
 
+    @Override
     public boolean validateLengthShip(int startPoint, int endPoint, int shipSize) {
         System.out.println(startPoint + " " + endPoint + " " + shipSize);
         return shipSize == endPoint - startPoint+1;                                                                     // using 0 we have math problem (in method) so do +1
@@ -400,7 +402,6 @@ public class VisualBoard_Impl implements VisualBoard {
 
     @Override
     public int validateCoordPlaceShip(int startX, int startY, int endX, int endY) {
-
         //Are not allowed ship of size 1
         if(startX != endX || startY != endY) {
             if (startY == endY)
@@ -412,7 +413,8 @@ public class VisualBoard_Impl implements VisualBoard {
         return ERROR;
     }
 
-    private void updateRemainingShipsLabel(boolean isP1) {
+    @Override
+    public void updateRemainingShipsLabel(boolean isP1) {
         String remainingShips = "Remaining: ";
         Map<String, Integer> allShips = new HashMap<>();
 
@@ -468,8 +470,8 @@ public class VisualBoard_Impl implements VisualBoard {
         }
     }
 
-    // -todo Possible Private
-    protected void paintSquare(Color feedbackColor, JPanel targetPanel, int index) {
+    @Override
+    public void paintSquare(Color feedbackColor, JPanel targetPanel, int index) {
         if (index >= 0 && index < targetPanel.getComponentCount()) {
             JButton square = (JButton) targetPanel.getComponent(index);
             square.setBackground(feedbackColor);
@@ -483,7 +485,8 @@ public class VisualBoard_Impl implements VisualBoard {
         paintFeedback(x, y, islandColor, placeShipBoard);
     }
 
-    public void repaintMap (boolean isP1) {
+    @Override
+    public void repaintMap(boolean isP1) {
 
         BoardFeedback sourceBoard = (isP1 ? boardFeedbackP1 : boardFeedbackP2);
         JPanel targetPanel = (JPanel) componentMap.get((isP1 ? MapElements.GRID_PANEL_P1.getValue() : MapElements.GRID_PANEL_P2.getValue()));
@@ -550,11 +553,14 @@ public class VisualBoard_Impl implements VisualBoard {
         buttonP2.setVisible(true);
     }
 
+    @Override
     public void turnBot() {
         JButton buttonP1 = (JButton) componentMap.get(MapElements.BUTTON_P1.getValue());
         buttonP1.setEnabled(false);
         buttonP1.setVisible(false);
     }
+
+    @Override
     public void endTurnBot() {
         endTurn[0] = false;
         JButton buttonP1 = (JButton) componentMap.get(MapElements.BUTTON_P1.getValue());
@@ -568,6 +574,7 @@ public class VisualBoard_Impl implements VisualBoard {
         gameFrame.repaint();
     }
 
+    @Override
     public void showBoardPvE() {
         this.board1.setVisible(true);
         this.board2.setVisible(true);
@@ -579,6 +586,7 @@ public class VisualBoard_Impl implements VisualBoard {
         buttonP2.setVisible(false);
     }
 
+    @Override
     public void showBoardsForBot() {
         this.board1.setVisible(true);
         this.board2.setVisible(true);
@@ -594,6 +602,7 @@ public class VisualBoard_Impl implements VisualBoard {
     }
 
 
+    @Override
     public void win() {
         JLabel winnerLabel = new JLabel();
         if (player1.hasShips())
