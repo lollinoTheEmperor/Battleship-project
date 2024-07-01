@@ -101,7 +101,7 @@ public class BotPlayer extends Player_Impl {
                 y = ran.nextInt(halfHeight) + halfHeight;
                 break;
             default:
-                throw new IllegalArgumentException("Invalid quadrant: " + quadrant);
+                 return strategy.getNextMove(heatmap, myFeedbacks);
         }
 
         return new int[]{x, y};

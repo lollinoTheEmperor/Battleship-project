@@ -4,7 +4,6 @@ public class Ship_Radar extends Ship_Impl{
 
     BoardStart board;
     int quadrant;
-
     public Ship_Radar(int size, String type, String id, BoardStart board) {
         super(size, type, id);
         this.board = board;
@@ -53,8 +52,10 @@ public class Ship_Radar extends Ship_Impl{
 
         if(counter1 == 0 && counter2 == 0 && counter3 == 0 && counter4 == 0) {
             System.out.println("No Ships");
-            quadrant = random.nextInt(4) + 1;
         } else {
+            if (counter1 == counter2 && counter2 == counter3 && counter3 == counter4) {
+                quadrant = random.nextInt(4) + 1;
+            } else {
                 int maxCounter = Math.max(Math.max(counter1, counter2), Math.max(counter3, counter4));
                 if (maxCounter == counter1) {
                     System.out.println("The top left quadrant has the most ships!");
@@ -69,6 +70,7 @@ public class Ship_Radar extends Ship_Impl{
                     System.out.println("The bottom right quadrant has the most ships!");
                     quadrant = 4;
                 }
+            }
             }
 
             switch (quadrant) {
