@@ -1,6 +1,4 @@
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class BotPlayer extends Player_Impl {
     private Heatmap_Impl heatmap;
@@ -111,9 +109,13 @@ public class BotPlayer extends Player_Impl {
     public Set<ShotsFeedback> makeMove() {
         heatmap.updateheatMap();
         int[] move = getNextMove();
-        moveCount++;Random rand = new Random();
-        int id = rand.nextInt((shipManager.getShips().keySet().size()))+1;
-        Ship_Impl ship = shipManager.getShipById(Integer.toString(id));
+        moveCount++;
+
+        Random rand = new Random();
+        List<Ship_Impl> list = new ArrayList<>(shipManager.ships.values());
+        int randomIndex = rand.nextInt(list.size());
+        Ship_Impl ship = list.get(randomIndex);
+
         return ship.attack(myFeedbacks, opponentsBoard, move[0], move[1], opponentsShipManager);
     }
     //every three move it change the strategy.

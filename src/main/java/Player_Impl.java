@@ -34,8 +34,10 @@ public class Player_Impl implements Player {
     @Override
     public Set<ShotsFeedback> attack(int x, int y) {
         Random rand = new Random();
+        List<Ship_Impl> list = new ArrayList<>(shipManager.ships.values());
+        int randomIndex = rand.nextInt(list.size());
+        Ship_Impl ship = list.get(randomIndex);
 
-        Ship_Impl ship = shipManager.getShipById(Integer.toString(rand.nextInt((shipManager.getShips().keySet().size()))+1));
         return ship.attack(myFeedbacks, opponentsBoard, x, y, opponentsShipManager);
     }
 
