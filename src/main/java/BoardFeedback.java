@@ -1,6 +1,3 @@
-import java.util.List;
-import java.util.Set;
-
 public class BoardFeedback extends GameBoard_Impl {
 
     public BoardFeedback() {
@@ -49,7 +46,7 @@ public class BoardFeedback extends GameBoard_Impl {
             // there was the id
             if(shipHitted.takeDamage()){
                 if(shipHitted.typeShip.equals("Radar")){
-                    ((Ship_Radar)shipHitted).mapRev(boardWithShip);
+                    ((Ship_Radar)shipHitted).mapRev(boardWithShip, this);
                 }
                 if (shipHitted.typeShip.equals("Explosive")){
                     ((Ship_OnDeath)shipHitted).onDeath(this,boardWithShip,allship);
@@ -62,8 +59,12 @@ public class BoardFeedback extends GameBoard_Impl {
         }
     }
 
-    public void healCell(int x, int y) {
+    public void putHealCell(int x, int y) {
         board_Game[x][y] = "heal";
+    }
+
+    public void puyHotzoneCell(int x, int y) {
+        board_Game[x][y] = "hotzone";
     }
 
     public void placeIsland(int x, int y) {

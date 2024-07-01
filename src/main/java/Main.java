@@ -9,7 +9,7 @@ public class Main {
     public static BoardFeedback feedb1;
     public static BoardStart board2;
     public static BoardFeedback feedb2;
-    private final int waitTime = (int) (1 * 1000);
+    private final int waitTime = (int) (0.5 * 1000);
 
 
     public static void main(String[] args) {
@@ -206,8 +206,8 @@ public class Main {
                     shipsP2.addShip(new Ship_Impl(size, type, id));
 
                     if(type.equals("Radar")) {
-                        shipsP1.addShip(new Ship_Radar(size, type, id, board2));
-                        shipsP2.addShip(new Ship_Radar(size, type, id, board1));
+                        shipsP1.addShip(new Ship_Radar(size, type, id, board1));
+                        shipsP2.addShip(new Ship_Radar(size, type, id, board2));
                     } else if(type.equals("Battleship")) {
                         shipsP1.addShip(new Ship_Heavy(size, type, id));
                         shipsP2.addShip(new Ship_Heavy(size, type, id));
@@ -412,8 +412,8 @@ public class Main {
 
                     // TODO change class based on tipe
                     if(type.equals("Radar")) {
-                        shipsP1.addShip(new Ship_Radar(size, type, id, board2));
-                        shipsP2.addShip(new Ship_Radar(size, type, id, board1));
+                        shipsP1.addShip(new Ship_Radar(size, type, id, board1));
+                        shipsP2.addShip(new Ship_Radar(size, type, id, board2));
                     } else if(type.equals("Battleship")) {
                         shipsP1.addShip(new Ship_Heavy(size, type, id));
                         shipsP2.addShip(new Ship_Heavy(size, type, id));
@@ -647,8 +647,8 @@ public class Main {
 
                     // TODO change class based on tipe
                     if(type.equals("Radar")) {
-                        shipsP1.addShip(new Ship_Radar(size, type, id, board2));
-                        shipsP2.addShip(new Ship_Radar(size, type, id, board1));
+                        shipsP1.addShip(new Ship_Radar(size, type, id, board1));
+                        shipsP2.addShip(new Ship_Radar(size, type, id, board2));
                     } else if(type.equals("Battleship")) {
                         shipsP1.addShip(new Ship_Heavy(size, type, id));
                         shipsP2.addShip(new Ship_Heavy(size, type, id));

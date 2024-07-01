@@ -60,6 +60,7 @@ public class BotPlayer extends Player_Impl {
         //so not computed more time in the for
         int [] strat = strategy.getNextMove(heatmap, myFeedbacks);
         if (nextMove == null) {
+            nextMove = new int[2];
             for (Map.Entry<Integer, Ship_Impl> entry : shipManager.getShips().entrySet()) {
                 Ship_Impl ship = entry.getValue();
                 if (ship instanceof Ship_Radar) {
@@ -81,6 +82,8 @@ public class BotPlayer extends Player_Impl {
                         nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
                         nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
                         return nextMove;
+                    } else {
+                        nextMove = strat;
                     }
                 } else {
                     nextMove = strat;
