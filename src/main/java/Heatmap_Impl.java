@@ -14,18 +14,26 @@ public class Heatmap_Impl implements Heatmap {
     public void updateheatMap() {
         int width = board.width;
         int height = board.height;
+        // Update heatmap probabilities
+        updateHeatMapProbabilities(width, height);
+        // Adjust heatmap based on board state
+        adjustHeatMapBasedOnBoardState(width, height);
+    }
+
+    private void updateHeatMapProbabilities(int width, int height) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 heatmap[i][j] = calculateProbability(i, j);
             }
         }
+    }
 
+    private void adjustHeatMapBasedOnBoardState(int width, int height) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (board.isAlreadyAttacked(i, j)) {
                     heatmap[i][j] = 0;
-                }
-                if (board.isHit(i, j)) {
+                } else if (board.isHit(i, j)) {
                     increaseAdjacentProbabilities(i, j);
                 }
             }
@@ -35,28 +43,33 @@ public class Heatmap_Impl implements Heatmap {
 
 
     private int calculateProbability(int x, int y) {
+        if (board.isAlreadyAttacked(x, y)) {
+            return 1;  // Return minimum probability if already attacked
+        }
+
         int probability = 0;
         int width = board.width;
         int height = board.height;
-        if (!board.isAlreadyAttacked(x, y)) {
-            for (Ship_Impl ship : shipman.ships.values()) {
-                int length = ship.getSize();
-                for (int direction = 0; direction < 2; direction++) {
-                    boolean possible = true;
-                    for (int k = 0; k < length; k++) {
-                        int newX = direction == 0 ? x + k : x;
-                        int newY = direction == 1 ? y + k : y;
-                        if (newX >= width || newY >= height || board.isAlreadyAttacked(newX, newY)) {
-                            possible = false;
-                            break;
-                        }
-                    }
-                    if (possible) probability++;
-                }
-            }
+
+        for (Ship_Impl ship : shipman.ships.values()) {
+            int length = ship.getSize();
+            probability += checkDirection(x, y, length, width, height, true);  // Horizontal direction
+            probability += checkDirection(x, y, length, width, height, false); // Vertical direction
         }
 
-        return probability > 0 ? probability : 1;
+        return probability > 0 ? probability : 1; // Ensure minimum probability is 1
+    }
+
+    private int checkDirection(int x, int y, int length, int width, int height, boolean isHorizontal) {
+        for (int k = 0; k < length; k++) {
+            int newX = isHorizontal ? x + k : x;
+            int newY = isHorizontal ? y : y + k;
+
+            if (newX >= width || newY >= height || board.isAlreadyAttacked(newX, newY)) {
+                return 0; // Not possible to place ship in this direction
+            }
+        }
+        return 1; // Possible to place ship in this direction
     }
 
     private void increaseAdjacentProbabilities(int x, int y) {
