@@ -36,7 +36,7 @@ public class Player_Impl implements Player {
     public Set<ShotsFeedback> attack(int x, int y) {
         // FIXME do bether decision for which ship to use
 
-        Ship_Impl ship = shipManager.getShipById(shipManager.ships.entrySet().stream().findFirst().get().getKey().toString());
+        Ship_Impl ship = shipManager.getShipById(shipManager.ships.entrySet().stream().findAny().get().getKey().toString());
         return ship.attack(myFeedbacks, opponentsBoard, x, y, opponentsShipManager);
     }
 

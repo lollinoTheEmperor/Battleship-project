@@ -150,8 +150,9 @@ public class VisualBoard_Impl implements VisualBoard {
         JButton button = new JButton("Attack!!");
         JLabel coordLabel = new JLabel("Coordinates:");
         coordLabel.setFont(new Font("Arial", Font.PLAIN, 10));
-        JLabel remainingShipsLabel = new JLabel("** x2 *** x1");
-//TODO show effective remainig ship not **x2
+        JLabel remainingShipsLabel = new JLabel();
+        remainingShipsLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        updateRemainingShipsLabel(isP1);
 
         remainingShipsLabel.setOpaque(true);                                                                            // set the background for the game remaining ship label
         remainingShipsLabel.setBackground(Color.LIGHT_GRAY);
@@ -178,10 +179,13 @@ public class VisualBoard_Impl implements VisualBoard {
                     attacking |= attack.hit;
                 }
 
+//                remainingShipsLabel.setText(updateRemainingShipsLabel(isP1));
+
                 repaintMap(isP1);
 
                 if (!attacking || (isP1 ? !player2.hasShips() : !player1.hasShips()) )                                                                                    // attack missed change player turn
                     endTurn[0] = true;
+
             }
         });
 
@@ -399,7 +403,7 @@ public class VisualBoard_Impl implements VisualBoard {
     @Override
     public int validateCoordPlaceShip(int startX, int startY, int endX, int endY) {
 
-        //TODO check if need ship of size 1
+        //Are not allowed ship of size 1
         if(startX != endX || startY != endY) {
             if (startY == endY)
                 return HORIZONTAL;
@@ -410,8 +414,29 @@ public class VisualBoard_Impl implements VisualBoard {
         return ERROR;
     }
 
-    private void updateRemainingShipsLabel() {
-        // TODO
+    private void updateRemainingShipsLabel(boolean isP1) {
+        String remainingShips = "Remaining: ";
+        Map<String, Integer> allShips = new HashMap<>();
+
+        for (Ship_Impl ship : (isP1 ? player2.shipManager.getShips().values() : player1.shipManager.getShips().values())) {
+            if (allShips.containsKey(ship.typeShip))
+                allShips.put(ship.typeShip, allShips.get(ship.typeShip) + 1);
+             else
+                allShips.put(ship.typeShip, 1);
+        }
+
+        for (Map.Entry<String, Integer> entry : allShips.entrySet()) {
+            remainingShips += entry.getKey() + "x" + entry.getValue() + " | ";
+        }
+
+        JLabel remainingShipsLabel;
+
+        if (isP1)
+            remainingShipsLabel = (JLabel) componentMap.get(MapElements.REMAINING_SHIPS_LABEL_P1.getValue());
+        else
+            remainingShipsLabel = (JLabel) componentMap.get(MapElements.REMAINING_SHIPS_LABEL_P2.getValue());
+
+        remainingShipsLabel.setText(remainingShips);
     }
 
 
@@ -443,7 +468,6 @@ public class VisualBoard_Impl implements VisualBoard {
                 }
             }
         }
-//        reloadGameView();
     }
 
     // -todo Possible Private
@@ -503,7 +527,7 @@ public class VisualBoard_Impl implements VisualBoard {
             }
         }
 
-//        reloadGameView();
+        updateRemainingShipsLabel(isP1);
     }
 
     @Override
@@ -574,11 +598,6 @@ public class VisualBoard_Impl implements VisualBoard {
 
 
     public void win() {
-//        this.board1.setVisible(false);
-//        this.board2.setVisible(false);
-//        this.board1.setEnabled(false);
-//        this.board2.setEnabled(false);
-
         JLabel winnerLabel = new JLabel();
         if (player1.hasShips())
             winnerLabel.setText("The winner is: " + player1.name);

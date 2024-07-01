@@ -9,7 +9,7 @@ public class Main {
     public static BoardFeedback feedb1;
     public static BoardStart board2;
     public static BoardFeedback feedb2;
-    private final int waitTime = (int) (0.5 * 1000);
+    private final int waitTime = (int) (0.75 * 1000);
 
 
     public static void main(String[] args) {
@@ -688,12 +688,9 @@ public class Main {
         System.out.println("Now starting game session - all ships are located");
         vb.createGameBoards(p1, p2);
 
-        for (int i = 0; i < board2.getHeight(); i++) {
-            for (int x = 0; x < board2.getHeight(); x++) {
-                System.out.println( p1.opponentsBoard.getCell(i, x));
-            }
-        }
 
+        vb.repaintMap(true);
+        vb.repaintMap(false);
         for (int i = 0; i < boardSize*boardSize; i++) {
             vb.turnP1();
             stopBackendUntil(vb.endTurn);
@@ -720,7 +717,6 @@ public class Main {
 
         // TODO show winner in bether way ??
         vb.win();
-
     }
 
     public static void stopBackendUntil(boolean[] condition) {
