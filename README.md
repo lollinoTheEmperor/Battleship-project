@@ -8,6 +8,8 @@
 **Instrcutions** \
 mvn package
 
+java -jar ./target/Battleship-project-1.0-SNAPSHOT.jar
+
 **Description** \
 Welcome to our Battleship game! In this game, you can choose to play against a bot or another player on the same computer. The objective is to sink all of your opponent's ships by strategically positioning your own ships and attacking your opponent's ships.
 
