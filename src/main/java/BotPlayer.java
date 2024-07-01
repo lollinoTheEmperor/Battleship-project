@@ -19,22 +19,11 @@ public class BotPlayer extends Player_Impl {
         this.moveCount = 0;
 
         placeShip();
-//      needed for visualising the board during the tests "ShipPlacement"
-//        for (int i=0;i<myBoard.getWidth();i++){
-//            for (int j=0;j<myBoard.getHeight();j++){
-//                System.out.print("\t"+myBoard.getCell(i,j));
-//            }
-//            System.out.println();
-//        }
     }
 
     @Override
     public void setOpponentsBoard(BoardStart board) {
         super.setOpponentsBoard(board);
-    }
-
-    private void updateHeatmap() {
-        heatmap.updateheatMap();
     }
 
     public void placeShip() {
@@ -70,30 +59,31 @@ public class BotPlayer extends Player_Impl {
         int[] nextMove = findAdjacentMove(); // check befoe adiacent cell
         if (nextMove == null) {
             for (Map.Entry<Integer, Ship_Impl> entry : shipManager.getShips().entrySet()) {
-            Ship_Impl ship = entry.getValue();
-            if (ship instanceof Ship_Radar) {
-                int quadrant = ((Ship_Radar)ship).getQuadrant();
-                Random ran = new Random();
-                if(quadrant == 1) {
-                    nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
-                    nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
-                    return nextMove;
-                } else if(quadrant == 2) {
-                    nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
-                    nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
-                    return nextMove;
-                } else if(quadrant == 3) {
-                    nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
-                    nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
-                    return nextMove;
-                } else if(quadrant == 4) {
-                    nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
-                    nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
-                    return nextMove;
+                Ship_Impl ship = entry.getValue();
+                if (ship instanceof Ship_Radar) {
+                    int quadrant = ((Ship_Radar)ship).getQuadrant();
+                    Random ran = new Random();
+                    if(quadrant == 1) {
+                        nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
+                        nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
+                        return nextMove;
+                    } else if(quadrant == 2) {
+                        nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
+                        nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
+                        return nextMove;
+                    } else if(quadrant == 3) {
+                        nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
+                        nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
+                        return nextMove;
+                    } else if(quadrant == 4) {
+                        nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
+                        nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
+                        return nextMove;
+                    }
+                } else {
+                    nextMove = strategy.getNextMove(heatmap, myFeedbacks);
                 }
-            } 
-        }
-            nextMove = strategy.getNextMove(heatmap, myFeedbacks);
+            }
         }
         return nextMove;
     }
