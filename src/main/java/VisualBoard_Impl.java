@@ -418,7 +418,7 @@ public class VisualBoard_Impl implements VisualBoard {
 
     @Override
     public void updateRemainingShipsLabel(boolean isP1) {
-        String remainingShips = "Remaining: ";
+        String remainingShips = "Foe has: ";
         Map<String, Integer> allShips = new HashMap<>();
 
         for (Ship_Impl ship : (isP1 ? player2.shipManager.getShips().values() : player1.shipManager.getShips().values())) {
