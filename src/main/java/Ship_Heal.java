@@ -1,6 +1,3 @@
-import java.util.*;
-
-
 public class Ship_Heal extends Ship_Impl {
     final int maxHp;
     private int lastHitTurn;
@@ -42,7 +39,7 @@ public class Ship_Heal extends Ship_Impl {
                 if (board.getCell(x, y).equals(this.getId())) {
                     if (opponentsBoardFeedback.getCell(x, y).equals("hit")) {
                         System.out.println("Recovering " + board.getCell(x, y) + " at " + x + ", " + y);
-                        opponentsBoardFeedback.healCell(x, y);
+                        opponentsBoardFeedback.putHealCell(x, y);
                         this.setLastHitTurn(currentTurn);
                         return true;
                     }

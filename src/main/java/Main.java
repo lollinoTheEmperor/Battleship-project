@@ -232,7 +232,7 @@ public class Main {
 
         Player_Impl p1 = new Player_Impl(namep1, board1, feedb1, shipsP1, shipsP2);
         BotPlayer bot1 = new BotPlayer("bot1", board2, feedb2, shipsP2, shipsP1);
-        VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, bot1);
+        VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, bot1, feedb1, feedb2);
 
         p1.setOpponentsBoard(board2);
         bot1.setOpponentsBoard(board1);
@@ -252,7 +252,7 @@ public class Main {
             vb.endTurnBot();
             stopBackendUntil(vb.endTurn);
 
-            vb.repaintMap(feedb1, true);
+            vb.repaintMap(true);
 
             if (!bot1.hasShips()) {
                 writer.incrementWinnerIndex(p1.getName());
@@ -274,7 +274,7 @@ public class Main {
                 attackFeedback.addAll(bot1.makeMove());
 
                 for (ShotsFeedback attack : attackFeedback) {
-                    vb.repaintMap(feedb2, false);
+                    vb.repaintMap(false);
                     attacking |= attack.hit;
                 }
             } while (attacking);
@@ -441,7 +441,7 @@ public class Main {
         bot1.setOpponentsBoard(board2);
         bot2.setOpponentsBoard(board1);
 
-        VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, bot1, bot2);
+        VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, bot1, bot2, feedb1, feedb2);
 
         System.out.println("Now starting game session - all ships are located");
         vb.createGameBoards(bot1, bot2);
@@ -465,7 +465,7 @@ public class Main {
                 attackFeedback.addAll(bot1.makeMove());
 
                 for (ShotsFeedback attack : attackFeedback) {
-                    vb.repaintMap(feedb1, true);
+                    vb.repaintMap(true);
                     attacking |= attack.hit;
                 }
             } while (attacking);
@@ -488,7 +488,7 @@ public class Main {
                 attackFeedback.addAll(bot2.makeMove());
 
                 for (ShotsFeedback attack : attackFeedback) {
-                    vb.repaintMap(feedb2, false);
+                    vb.repaintMap(false);
                     attacking |= attack.hit;
                 }
             } while (attacking);
@@ -675,7 +675,7 @@ public class Main {
 
         Player_Impl p2 = new Player_Impl(namep2, board2, feedb2, shipsP2, shipsP1);
 
-        VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, p2);
+        VisualBoard_Impl vb = new VisualBoard_Impl(boardSize, p1, p2, feedb1, feedb2);
 
         p1.setOpponentsBoard(board2);
         p2.setOpponentsBoard(board1);
@@ -698,7 +698,7 @@ public class Main {
             vb.turnP1();
             stopBackendUntil(vb.endTurn);
 
-            vb.repaintMap(feedb1, true);
+            vb.repaintMap(true);
 
             if (!p2.hasShips()) {
                 writer.incrementWinnerIndex(p1.getName());
@@ -710,7 +710,7 @@ public class Main {
             vb.turnP2();
             stopBackendUntil(vb.endTurn);
 
-            vb.repaintMap(feedb2, false);
+            vb.repaintMap(false);
 
             if (!p1.hasShips()) {
                 writer.incrementWinnerIndex(p2.getName());

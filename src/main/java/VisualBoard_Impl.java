@@ -1,5 +1,3 @@
-import org.w3c.dom.css.RGBColor;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,7 +11,7 @@ public class VisualBoard_Impl implements VisualBoard {
     final boolean HIT = true;
 
     protected int tableSize;
-    private final Color placeShipColor, waterColor, islandColor, hitColor, missColor, healColor, zoneColor, destructedColor;
+    private final Color placeShipColor, waterColor, islandColor, hitColor, missColor, healColor, hotZoneColor, destructedColor;
 
     protected JFrame gameFrame;
     protected JPanel board1, board2;
@@ -28,6 +26,9 @@ public class VisualBoard_Impl implements VisualBoard {
 
     protected Player_Impl player1;
     protected Player_Impl player2;
+
+    protected BoardFeedback boardFeedbackP1;
+    protected BoardFeedback boardFeedbackP2;
 
     public enum MapElements {                                                                                            // created variables to have help when writing code
         GRID_PANEL_P1("GRID_PANEL_P1"),                                                                           // in order to, do not remember all string but having suggestions
@@ -53,11 +54,11 @@ public class VisualBoard_Impl implements VisualBoard {
     }
 
 
-    public VisualBoard_Impl(Player_Impl p1, Player_Impl p2) {
-        this(10, p1, p2);                                                                                      // default value
+    public VisualBoard_Impl(Player_Impl p1, Player_Impl p2, BoardFeedback boardFeedbackP1, BoardFeedback boardFeedbackP2) {
+        this(10, p1, p2, boardFeedbackP1, boardFeedbackP2);                                                                                      // default value
     }
 
-    public VisualBoard_Impl(int boardSize, Player_Impl player1, Player_Impl player2) {
+    public VisualBoard_Impl(int boardSize, Player_Impl player1, Player_Impl player2, BoardFeedback boardFeedbackP1, BoardFeedback boardFeedbackP2) {
         singleBoardWidth = 450;
         singleBoardHeight = 300;
         placeShipColor = Color.GRAY;
@@ -66,7 +67,7 @@ public class VisualBoard_Impl implements VisualBoard {
         missColor = Color.GRAY;
         waterColor = Color.WHITE;
         healColor = Color.YELLOW;
-        zoneColor = Color.ORANGE;
+        hotZoneColor = Color.ORANGE;
         destructedColor = Color.PINK ;
         tableSize = boardSize;
 
@@ -91,6 +92,9 @@ public class VisualBoard_Impl implements VisualBoard {
 
         this.player1 = player1;
         this.player2 = player2;
+
+        this.boardFeedbackP1 = boardFeedbackP1;
+        this.boardFeedbackP2 = boardFeedbackP2;
     }
 
     private void createComponents() {
@@ -173,6 +177,8 @@ public class VisualBoard_Impl implements VisualBoard {
                     paintFeedback(attack.x, attack.y, attack.hit == HIT ? hitColor : missColor, boardPanel);
                     attacking |= attack.hit;
                 }
+
+                repaintMap(isP1);
 
                 if (!attacking || (isP1 ? !player2.hasShips() : !player1.hasShips()) )                                                                                    // attack missed change player turn
                     endTurn[0] = true;
@@ -445,7 +451,7 @@ public class VisualBoard_Impl implements VisualBoard {
         if (index >= 0 && index < targetPanel.getComponentCount()) {
             JButton square = (JButton) targetPanel.getComponent(index);
             square.setBackground(feedbackColor);
-            square.setEnabled(feedbackColor == waterColor || feedbackColor == healColor);
+            square.setEnabled(feedbackColor == waterColor || feedbackColor == healColor || feedbackColor == hotZoneColor);
         }
     }
 
@@ -455,8 +461,9 @@ public class VisualBoard_Impl implements VisualBoard {
         paintFeedback(x, y, islandColor, placeShipBoard);
     }
 
-    public void repaintMap (BoardFeedback sourceBoard, boolean isP1) {
+    public void repaintMap (boolean isP1) {
 
+        BoardFeedback sourceBoard = (isP1 ? boardFeedbackP1 : boardFeedbackP2);
         JPanel targetPanel = (JPanel) componentMap.get((isP1 ? MapElements.GRID_PANEL_P1.getValue() : MapElements.GRID_PANEL_P2.getValue()));
 
         for(int x = 0; x < sourceBoard.getWidth(); x ++) {
@@ -487,7 +494,7 @@ public class VisualBoard_Impl implements VisualBoard {
                         break;
 
                     case "hotzone":
-                        paintFeedback(x, y, zoneColor, targetPanel);
+                        paintFeedback(x, y, hotZoneColor, targetPanel);
                         break;
 
                     default:
@@ -504,6 +511,10 @@ public class VisualBoard_Impl implements VisualBoard {
         endTurn[0] = false;
         this.board2.setVisible(false);
         this.board1.setVisible(true);
+        JButton buttonP1 = (JButton) componentMap.get(MapElements.BUTTON_P1.getValue());
+        buttonP1.setEnabled(true);
+        buttonP1.setVisible(true);
+
     }
 
     @Override
@@ -511,6 +522,10 @@ public class VisualBoard_Impl implements VisualBoard {
         endTurn[0] = false;
         this.board1.setVisible(false);
         this.board2.setVisible(true);
+
+        JButton buttonP2 = (JButton) componentMap.get(MapElements.BUTTON_P2.getValue());
+        buttonP2.setEnabled(true);
+        buttonP2.setVisible(true);
     }
 
     public void turnBot() {
