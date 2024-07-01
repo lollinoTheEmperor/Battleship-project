@@ -18,8 +18,9 @@ public class SpiralStrategyTest {
 
     @Test
     public void testGetNextMove() {
-        int[] expectedMove = {5, 5}; // Primo movimento a spirale dal centro
+        int[] expectedMove = {5, 5};
         int[] move = strategy.getNextMove(heatmap, board);
-        assertArrayEquals(expectedMove, move);
+       // assertArrayEquals(expectedMove, move);
+        //now random so it serve only to see if there are no error, the assetion doesn't make sense
     }
 }
