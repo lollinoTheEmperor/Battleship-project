@@ -56,41 +56,55 @@ public class BotPlayer extends Player_Impl {
     // as hitted chose an adjante to hit otherwise it use a strategy
     public int[] getNextMove() {
         changeStrategyIfNeeded();
-        int[] nextMove = findAdjacentMove(); // check befoe adiacent cell
-        //so not computed more time in the for
-        int [] strat = strategy.getNextMove(heatmap, myFeedbacks);
-        if (nextMove == null) {
-            nextMove = new int[2];
-            for (Map.Entry<Integer, Ship_Impl> entry : shipManager.getShips().entrySet()) {
-                Ship_Impl ship = entry.getValue();
-                if (ship instanceof Ship_Radar) {
-                    int quadrant = ((Ship_Radar)ship).getQuadrant();
-                    Random ran = new Random();
-                    if(quadrant == 1) {
-                        nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
-                        nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
-                        return nextMove;
-                    } else if(quadrant == 2) {
-                        nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
-                        nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
-                        return nextMove;
-                    } else if(quadrant == 3) {
-                        nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0)));
-                        nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
-                        return nextMove;
-                    } else if(quadrant == 4) {
-                        nextMove[0] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
-                        nextMove[1] = ran.nextInt(((int) Math.round(myBoard.getHeight() / 2.0))) + ((int) Math.round(myBoard.getHeight() / 2.0));
-                        return nextMove;
-                    } else {
-                        nextMove = strat;
-                    }
-                } else {
-                    nextMove = strat;
-                }
+
+        int[] nextMove = findAdjacentMove();
+        if (nextMove != null) {
+            return nextMove;
+        }
+
+        int[] strat = strategy.getNextMove(heatmap, myFeedbacks);
+        nextMove = getRadarMove();
+
+        return (nextMove != null) ? nextMove : strat;
+    }
+
+    private int[] getRadarMove() {
+        for (Map.Entry<Integer, Ship_Impl> entry : shipManager.getShips().entrySet()) {
+            Ship_Impl ship = entry.getValue();
+            if (ship instanceof Ship_Radar) {
+                return getRandomMoveInQuadrant(((Ship_Radar) ship).getQuadrant());
             }
         }
-        return nextMove;
+        return null;
+    }
+
+    private int[] getRandomMoveInQuadrant(int quadrant) {
+        Random ran = new Random();
+        int halfHeight = (int) Math.round(myBoard.getHeight() / 2.0);
+        int x, y;
+
+        switch (quadrant) {
+            case 1:
+                x = ran.nextInt(halfHeight);
+                y = ran.nextInt(halfHeight);
+                break;
+            case 2:
+                x = ran.nextInt(halfHeight) + halfHeight;
+                y = ran.nextInt(halfHeight);
+                break;
+            case 3:
+                x = ran.nextInt(halfHeight);
+                y = ran.nextInt(halfHeight) + halfHeight;
+                break;
+            case 4:
+                x = ran.nextInt(halfHeight) + halfHeight;
+                y = ran.nextInt(halfHeight) + halfHeight;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid quadrant: " + quadrant);
+        }
+
+        return new int[]{x, y};
     }
     //update the heat map, call getNextMove and adjour the move count,
     // attack in base which one is the next move
@@ -112,26 +126,35 @@ public class BotPlayer extends Player_Impl {
             moveCount = 0;
         }
     }
-    //check if there are ship marked as hitted and if so check the near one
+    //check if there are ship marked as hitted and if so check the near one, now refacotr in two method
     private int[] findAdjacentMove() {
         int width = myFeedbacks.getWidth();
         int height = myFeedbacks.getHeight();
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (myFeedbacks.isHit(x, y)) {
-                    int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-                    for (int[] dir : directions) {
-                        int newX = x + dir[0];
-                        int newY = y + dir[1];
-                        if (isValidMove(newX, newY, width, height)) {
-                            return new int[]{newX, newY};
-                        }
+                    int[] move = findValidAdjacentMove(x, y, width, height);
+                    if (move != null) {
+                        return move;
                     }
                 }
             }
         }
         return null; // none found
     }
+    private int[] findValidAdjacentMove(int x, int y, int width, int height) {
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        for (int[] dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+            if (isValidMove(newX, newY, width, height)) {
+                return new int[]{newX, newY};
+            }
+        }
+        return null;
+    }
+
     //check if is a valid move
     private boolean isValidMove(int x, int y, int width, int height) {
         return x >= 0 && x < width && y >= 0 && y < height && !myFeedbacks.isAlreadyAttacked(x, y);
