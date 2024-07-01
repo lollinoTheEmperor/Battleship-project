@@ -30,6 +30,9 @@ public class VisualBoard_Impl implements VisualBoard {
     protected BoardFeedback boardFeedbackP1;
     protected BoardFeedback boardFeedbackP2;
 
+    /**
+     * Map to use swing objects in the class (due to their limited scope, or visibility probles)
+     */
     public enum MapElements {                                                                                            // created variables to have help when writing code
         GRID_PANEL_P1("GRID_PANEL_P1"),                                                                           // in order to, do not remember all string but having suggestions
         GRID_PANEL_P2("GRID_PANEL_P2"),
@@ -68,7 +71,7 @@ public class VisualBoard_Impl implements VisualBoard {
         waterColor = Color.WHITE;
         healColor = Color.WHITE;
         hotZoneColor = Color.ORANGE;
-        destructedColor = Color.PINK ;
+        destructedColor = Color.PINK;
         tableSize = boardSize;
 
         gameFrame = new JFrame("Game Window");
@@ -182,7 +185,7 @@ public class VisualBoard_Impl implements VisualBoard {
 
                 repaintMap(isP1);
 
-                if (!attacking || (isP1 ? !player2.hasShips() : !player1.hasShips()) )                                                                                    // attack missed change player turn
+                if (!attacking || (isP1 ? !player2.hasShips() : !player1.hasShips()))                                                                                    // attack missed change player turn
                     endTurn[0] = true;
 
             }
@@ -397,13 +400,13 @@ public class VisualBoard_Impl implements VisualBoard {
     @Override
     public boolean validateLengthShip(int startPoint, int endPoint, int shipSize) {
         System.out.println(startPoint + " " + endPoint + " " + shipSize);
-        return shipSize == endPoint - startPoint+1;                                                                     // using 0 we have math problem (in method) so do +1
+        return shipSize == endPoint - startPoint + 1;                                                                     // using 0 we have math problem (in method) so do +1
     }
 
     @Override
     public int validateCoordPlaceShip(int startX, int startY, int endX, int endY) {
         //Are not allowed ship of size 1
-        if(startX != endX || startY != endY) {
+        if (startX != endX || startY != endY) {
             if (startY == endY)
                 return HORIZONTAL;
 
@@ -421,7 +424,7 @@ public class VisualBoard_Impl implements VisualBoard {
         for (Ship_Impl ship : (isP1 ? player2.shipManager.getShips().values() : player1.shipManager.getShips().values())) {
             if (allShips.containsKey(ship.typeShip))
                 allShips.put(ship.typeShip, allShips.get(ship.typeShip) + 1);
-             else
+            else
                 allShips.put(ship.typeShip, 1);
         }
 
@@ -491,9 +494,9 @@ public class VisualBoard_Impl implements VisualBoard {
         BoardFeedback sourceBoard = (isP1 ? boardFeedbackP1 : boardFeedbackP2);
         JPanel targetPanel = (JPanel) componentMap.get((isP1 ? MapElements.GRID_PANEL_P1.getValue() : MapElements.GRID_PANEL_P2.getValue()));
 
-        for(int x = 0; x < sourceBoard.getWidth(); x ++) {
+        for (int x = 0; x < sourceBoard.getWidth(); x++) {
             for (int y = 0; y < sourceBoard.getHeight(); y++) {
-                switch (sourceBoard.getCell(x,y).toLowerCase()) {
+                switch (sourceBoard.getCell(x, y).toLowerCase()) {
                     case "hit":
                         paintFeedback(x, y, hitColor, targetPanel);
                         break;
