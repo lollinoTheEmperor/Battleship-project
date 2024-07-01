@@ -10,19 +10,7 @@ public class CheckboardStrategy implements AttackStrategy{
 
     @Override
     public int[] getNextMove(Heatmap_Impl heatmap, BoardFeedback board) {
-        int width = board.getWidth();
-        int height = board.getHeight();
-
-        List<int[]> validPositions = new ArrayList<>();
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if ((x + y) % 2 == 0) {
-                    validPositions.add(new int[]{x, y});
-                }
-            }
-        }
-
+        List<int[]> validPositions = getValidPositions(board);
         Collections.shuffle(validPositions, random);
 
         for (int[] pos : validPositions) {
@@ -32,6 +20,26 @@ public class CheckboardStrategy implements AttackStrategy{
         }
 
         return heatmap.getBestMove(); // if all positions are already attacked
+    }
+
+    private List<int[]> getValidPositions(BoardFeedback board) {
+        int width = board.getWidth();
+        int height = board.getHeight();
+        List<int[]> validPositions = new ArrayList<>();
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (isValidPosition(x, y)) {
+                    validPositions.add(new int[]{x, y});
+                }
+            }
+        }
+
+        return validPositions;
+    }
+
+    private boolean isValidPosition(int x, int y) {
+        return (x + y) % 2 == 0;
     }
 }
 
