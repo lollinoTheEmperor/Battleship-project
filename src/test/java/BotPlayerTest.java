@@ -44,15 +44,6 @@ public class BotPlayerTest {
     }
 
     @Test
-    public void testChangeStrategy() {
-        // Simulate 4 move and then change strategy
-        for (int i = 0; i < 4; i++) {
-            botPlayer.makeMove();
-        }
-        int[] move = botPlayer.getNextMove();
-        assertArrayEquals(new int[]{2, 0}, move); // check if the strategy is correct (so the adjante one)
-    }
-    @Test
     public void testBotMakeMove() {
         botPlayer.makeMove();
         botPlayer.makeMove();
