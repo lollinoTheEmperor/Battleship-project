@@ -84,7 +84,7 @@ public class Ship_Bomber extends Ship_Impl{
                     xa = x;
                     ya = y-1;
                     xb = x+1;
-                    yb = y+1;
+                    yb = y-1;
                     xc = x+1;
                     yc = y;
                     xd = x;
