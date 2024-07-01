@@ -1,5 +1,4 @@
 import java.util.Random;
-
 public class Ship_Radar extends Ship_Impl{
 
     BoardStart board;
@@ -10,45 +9,18 @@ public class Ship_Radar extends Ship_Impl{
         quadrant = 0;
     }
 
+    //loops through the quadrants to see which one is the most "populated" one by ships (as in individual squares not a complete ship)
     public void mapRev(BoardStart boardwithShip, BoardFeedback boardFeedback) {
 
         int width = boardwithShip.getHeight();
         int height = boardwithShip.getHeight();
 
-        int counter1 = 0;
-        int counter2 = 0;
-        int counter3 = 0;
-        int counter4 = 0;
-
-
-        for (int i = 0; i < ((int) Math.round(width / 2.0)); i++) {
-            for (int x = 0; x < ((int) Math.round(height / 2.0)); x++) {
-                counter1 += getCounter(boardwithShip, i, x, boardFeedback);
-            }
-        }
-
-        for (int i = width / 2; i < width; i++) {
-            for (int x = height / 2; x < height; x++) {
-                counter4 += getCounter(boardwithShip, i, x, boardFeedback);
-            }
-        }
-
-
-        for (int i = width / 2; i < width; i++) {
-            for (int x = 0; x < ((int) Math.round(height / 2.0)); x++) {
-                counter2 += getCounter(boardwithShip, i, x, boardFeedback);
-            }
-        }
-
-
-        for (int i = 0; i < ((int) Math.round(width / 2.0)); i++) {
-            for (int x = height / 2; x < height; x++) {
-                counter3 += getCounter(boardwithShip, i, x, boardFeedback);
-            }
-        }
-
+        int counter1 = quadrantChecker(1, width, height, boardFeedback, boardwithShip);
+        int counter2 = quadrantChecker(2, width, height, boardFeedback, boardwithShip);
+        int counter3 = quadrantChecker(3, width, height, boardFeedback, boardwithShip);
+        int counter4 = quadrantChecker(4, width, height, boardFeedback, boardwithShip);
+    
         Random random = new Random();
-
 
         if(counter1 == 0 && counter2 == 0 && counter3 == 0 && counter4 == 0) {
             System.out.println("No Ships");
@@ -118,8 +90,54 @@ public class Ship_Radar extends Ship_Impl{
     public int getQuadrant() {
         return quadrant;
     }
-}
 
+    //updates the correct counter and returns it
+    public int quadrantChecker(int quadrant, int width, int height, BoardFeedback boardFeedback, BoardStart boardwithShip) {
+
+        int counter = 0;
+
+        switch (quadrant) {
+            case 1:
+                for (int i = 0; i < ((int) Math.round(width / 2.0)); i++) {
+                    for (int x = 0; x < ((int) Math.round(height / 2.0)); x++) {
+                        counter += getCounter(boardwithShip, i, x, boardFeedback) ;
+                    }
+                }
+                break;
+    
+            case 2:
+                for (int i = width / 2; i < width; i++) {
+                    for (int x = 0; x < ((int) Math.round(height / 2.0)); x++) {
+                        counter += getCounter(boardwithShip, i, x, boardFeedback);
+                    }
+                }
+                break;
+    
+            case 3:
+                for (int i = 0; i < ((int) Math.round(width / 2.0)); i++) {
+                    for (int x = height / 2; x < height; x++) {
+                        counter += getCounter(boardwithShip, i, x, boardFeedback);
+                    }
+                }
+                break;
+    
+            case 4:
+                for (int i = width / 2; i < width; i++) {
+                    for (int x = height / 2; x < height; x++) {
+                        counter += getCounter(boardwithShip, i, x, boardFeedback);
+                    }
+                }
+                break;
+    
+            default:
+                throw new IllegalArgumentException("Invalid quadrant: " + quadrant);
+        }
+        return counter;
+    }
+
+
+
+}
 
 
     

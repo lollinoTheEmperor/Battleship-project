@@ -3,3 +3,6 @@ name2:0
 name3:0
 uffa:1
 pgn99:0
+GG:0
+gg:0
+P:0

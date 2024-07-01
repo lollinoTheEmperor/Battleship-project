@@ -35,7 +35,7 @@ public class Ship_Impl implements Ship{
         return coordinates;
     }
 
-    //when hit reduce hp of Ship
+    //when hit reduce hp of Ship, if it returns true then the calling method knows this ships should be marked as destroyed
     @Override
     public boolean takeDamage() {
         //if a hit can only take away 1hp, otherwise need more parameters
