@@ -3,7 +3,7 @@
 - Gruber Gabriel (Lytir03)
 - Larcher Lorenzo (lollinoTheEmperor)
 - Marcon Lorenzo (maconlor)
-- Pugnani Stefano ([@Pugnani](https://github.com/Pugnani) 
+- Pugnani Stefano ([@Pugnani](https://github.com/Pugnani))
 
 **Instrcutions** \
 Enter the project folder, then with the terminal use the two following commands
